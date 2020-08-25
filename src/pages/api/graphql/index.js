@@ -6,7 +6,11 @@ import jwt from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 import util from 'util'
 
-const cors = require('micro-cors')()
+import Cors from "micro-cors";
+
+const cors = Cors({
+    allowMethods: ["GET", "POST", "OPTIONS"]
+  });
 
 async function decodeJWT(token) {
     const client = jwksClient({
@@ -88,6 +92,6 @@ export const config = {
 
 const handler = apolloServer.createHandler({ path: '/api/graphql' })
 
-//export default handler
+console.log(cors(handler))
 
 export default cors(handler)
