@@ -6,29 +6,7 @@ import jwt from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 import util from 'util'
 
-import Cors from 'micro-cors'
-
-// Initializing the cors middleware
-const cors = Cors({
-    allowMethods: ['GET', 'HEAD','POST','OPTIONS'],
-  })
-  
-
-  // Helper method to wait for a middleware to execute before continuing
-// And to throw an error when an error happens in a middleware
-function runMiddleware(req, res, fn) {
-    return new Promise((resolve, reject) => {
-      fn(req, res, (result) => {
-        if (result instanceof Error) {
-          return reject(result)
-        }
-  
-        return resolve(result)
-      })
-    })
-  }
-
-
+import { cors } from 'micro-cors'
 
 async function decodeJWT(token) {
     const client = jwksClient({
@@ -45,7 +23,7 @@ async function decodeJWT(token) {
         })
     }
     const options = {
-        audience: `https://vercel.com/angelopaolosantos/api/graphql`,
+        audience: `http://localhost:3000/api/graphql`,
         issuer: `https://dev-angelops.us.auth0.com/`,
         algorithms: ['RS256']
     }
@@ -110,4 +88,6 @@ export const config = {
 
 const handler = apolloServer.createHandler({ path: '/api/graphql' })
 
-export default cors(handler)
+export default cors((req, res)=>{
+    req.method === 'OPTIONS' ? res.end() : handler(req, res)
+})
