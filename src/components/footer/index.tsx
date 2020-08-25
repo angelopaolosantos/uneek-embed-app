@@ -1,134 +1,43 @@
 import { Icon, InputGroup, Input } from 'rsuite'
+import Link from 'next/link'
 
 const Footer = () => (
     <div className="container">
         <div className="footer-block">
-            <div>
-                <h3>About Uneek</h3>
-                <ul>
-                    <li>Uneek's Story</li>
-                    <li>About the Designer</li>
-                    <li>Awards</li>
-                    <li>Shows and Events</li>
-                    <li>Press</li>
-                </ul>
-            </div>
-            <div>
-                <h3>Customer Service</h3>
-                <ul>
-                    <li>Find a Retailer</li>
-                    <li>Contact Us</li>
-                    <li>Terms of Use</li>
-                    <li>Privacy Policy</li>
-                </ul>
-            </div>
-            <div>
-                <h3>Tools</h3>
-                <ul>
-                    <li>Lookbooks</li>
-                    <li>Blog</li>
-                    <li>Retailer Login</li>
-                    <li>FAQ</li>
-                </ul>
-            </div>
-            <div>
-                <h3>Social</h3>
+            <div className="brand-logo"><Link href="/"><a><img src="/images/UNEEK_LOGO_WEB_150px_white.png" /></a></Link></div>
+            <div className="social-links">
                 <ul className="horizontal-list">
-                    <li><Icon icon='facebook' size='2x' /></li>
-                    <li><Icon icon='instagram' size='2x' /></li>
-                    <li><Icon icon='pinterest' size='2x' /></li>
-                    <li><Icon icon='youtube-play' size='2x' /></li>
-                    <li><Icon icon='twitter' size='2x' /></li>
+                    <li><a href="https://www.facebook.com/UneekFineJewelry" target="_BLANK"><Icon icon='facebook' size='2x' /></a></li>
+                    <li><a href="https://www.instagram.com/uneekjewelry/" target="_BLANK"><Icon icon='instagram' size='2x' /></a></li>
+                    <li><a href="https://www.pinterest.com/uneekjewelry/" target="_BLANK"><Icon icon='pinterest' size='2x' /></a></li>
+                    <li><a href="https://www.youtube.com/channel/UCMHuDQJoe7uMNSIO5Ekw73A" target="_BLANK"><Icon icon='youtube-play' size='2x' /></a></li>
+                    <li><a href="https://twitter.com/uneekjewelry" target="_BLANK"><Icon icon='twitter' size='2x' /></a></li>
+                    <li><a href="https://www.linkedin.com/company/uneek-jewelry/" target="_BLANK"><Icon icon='linkedin-square' size='2x' /></a></li>
                 </ul>
-                <div>
-                    <InputGroup inside>
-                        <Input placeholder="Join our newsletter" />
-                        <InputGroup.Button>
-                            <Icon icon="send" />
-                        </InputGroup.Button>
-                    </InputGroup>
-                </div>
             </div>
         </div>
-
-        <div className="copyright-block">
-            <ul className="horizontal-list">
-                <li>
-                    Sitemap
-                </li>
-                <li>
-                    Retailer Login
-                </li>
-            </ul>
-            <div>
-                Copyright &copy; 2020 Uneek Jewelry
-            </div>
-        </div>
-
         <style jsx>{`
-        .container {
+        .footer-block {
             color: white;
             background-color: #5a5b5b;
-            padding: 50px 15px;
-        }
-        
-        .footer-block {
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 50px 1rem;
             display: flex;
-            justify-content: space-between;   
-        }
-
-        h3 {
-            font-size: 1.4em;
-            font-family: 'Roboto', sans-serif;
-            text-transform: uppercase;
-        }
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        li {
-            font-size: 1.0em;
-        }
-
-        .horizontal-list li {
-            display: inline-block;
-            margin: 5px;
-        }
-
-        .copyright-block {
-            margin-top: 50px;
-            font-size: 0.8em;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            text-align: center;
+        }
+        .social-links {
+            display: flex;
+        }
+        .horizontal-list {
+            display: flex;
+            list-style-type: none;
+        }
+        .horizontal-list li{
+            margin: 0.5rem;
         }
 
-        @media only screen and (max-width: 600px){
-            .footer-block {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .footer-block > div {
-                margin: 15px auto;
-            }
-
-            h3 {
-                font-size: 1.6em;
-            }
-            ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-            }
-            li {
-                font-size: 1.4em;
-            }
+        .social-links a {
+            color: #fff;
         }
         `}
         </style>

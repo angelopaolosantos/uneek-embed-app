@@ -1,6 +1,6 @@
 import MainNavigation from './main-navigation'
 import SideNavigation from './side-navigation'
-import { Component } from 'react'
+import { useState, Component } from 'react'
 
 type AppState = {
   activeKey: any
@@ -48,13 +48,13 @@ class Navigation extends Component<{}, AppState> {
         navbar.classList.add('sticky')
         navbar.classList.remove('nav-wrapper')
         this.setState({isSticky: true, stickyOffset: sticky})
-        console.log(`isSticky: `, this.state.isSticky)
+        // console.log(`isSticky: `, this.state.isSticky)
       }
     } else if(window.pageYOffset < this.state.stickyOffset) {
       navbar.classList.remove('sticky')
       navbar.classList.add('nav-wrapper')
       this.setState({isSticky: false, stickyOffset: 0})
-      console.log(`isSticky: `, this.state.isSticky)
+      // console.log(`isSticky: `, this.state.isSticky)
     } else if (window.pageYOffset > 0 && this.state.stickyOffset==0) {
       this.setState({stickyOffset: 50})
     }
@@ -65,8 +65,6 @@ class Navigation extends Component<{}, AppState> {
     if (isMobile !== this.state.isMobile) {
       this.setState({ isMobile });
     }
-    this.handleSticky()
-    console.log(`isMobile: `, isMobile)
   }
 
   render() {

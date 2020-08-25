@@ -1,4 +1,4 @@
-.carousel-item {
+.responsive-carousel-item {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -9,33 +9,33 @@
   align-items: center;
 }
 
-.carousel-text {
+.responsive-carousel-text {
   margin-left: 10vw;
 }
 
-.carousel-image-1 {
+.responsive-carousel-image-1 {
   background-image: url("https://www.uneekjewelry.com/blog/wp-content/uploads/2020/08/home-page-1.jpg");
 }
 
-.carousel-image-2 {
+.responsive-carousel-image-2 {
   background-image: url("https://www.uneekjewelry.com/blog/wp-content/uploads/2020/08/home-page-2.jpg");
 }
 
-.carousel-image-3 {
+.responsive-carousel-image-3 {
   background-image: url("https://www.uneekjewelry.com/blog/wp-content/uploads/2020/08/home-page-3.jpg");
 }
 
-.carousel-item h1, h2 {
+.responsive-carousel-item h1, h2 {
   color: #fff;
   font-size: 2.5em;
   margin: 0;
 }
 
-.carousel-item h2 {
+.responsive-carousel-item h2 {
   font-size: 3em;
 }
 
-.carousel-button {
+.responsive-carousel-button {
   border: 3px solid #fff;
   color: #fff;
   padding: 15px;
@@ -46,35 +46,35 @@
   position: relative;
 }
 
-.carousel-button:hover {
+.responsive-carousel-button:hover {
   background-color: #fff;
   color: #535353;
 }
 
-.carousel-text a {
+.responsive-carousel-text a {
   text-decoration: none;
 }
 
 @media only screen and (max-width: 600px) {
-  .carousel-item {  
+  .responsive-carousel-item {  
     justify-content: center;
     align-items: center;
   }
   
-  .carousel-text {
+  .responsive-carousel-text {
     margin: 1rem;
   }
 
-  .carousel-button {
+  .responsive-carousel-button {
     max-width: unset;
     width: 100%;
   }
 
-  .carousel-item h1 {
+  .responsive-carousel-item h1 {
     font-size: 2.0em;
   }
   
-  .carousel-item h2 {
+  .responsive-carousel-item h2 {
     font-size: 2.5em;
   }
 }
@@ -133,20 +133,20 @@
   }
 }
 
-.carousel ::-webkit-scrollbar {
+.responsive-carousel ::-webkit-scrollbar {
   width: 0;
 }
 
-.carousel ::-webkit-scrollbar-track {
+.responsive-carousel ::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.carousel ::-webkit-scrollbar-thumb {
+.responsive-carousel ::-webkit-scrollbar-thumb {
   background: transparent;
   border: none;
 }
 
-.carousel {
+.responsive-carousel {
   -ms-overflow-style: none;
 }
 
@@ -157,14 +157,14 @@ li {
   padding: 0;
 }
 
-.carousel {
+.responsive-carousel {
   position: relative;
   height: 100vh;
   perspective: 100px;
   text-align: left;
 }
 
-.carousel__viewport {
+.responsive-carousel__viewport {
   position: absolute;
   top: 0;
   right: 0;
@@ -177,7 +177,7 @@ li {
   scroll-snap-type: x mandatory;
 }
 
-.carousel__slide {
+.responsive-carousel__slide {
   position: relative;
   flex: 0 0 100%;
   width: 100%;
@@ -185,11 +185,11 @@ li {
   counter-increment: item;
 }
 
-.carousel__slide:nth-child(even) {
+.responsive-carousel__slide:nth-child(even) {
   background-color: none;
 }
 
-.carousel__snapper {
+.responsive-carousel__snapper {
   position: absolute;
   top: 0;
   left: 0;
@@ -199,30 +199,30 @@ li {
 }
 
 @media (hover: hover) {
-  .carousel__snapper {
+  .responsive-carousel__snapper {
     animation-name: tonext, snap;
     animation-timing-function: ease;
     animation-duration: 4s;
     animation-iteration-count: infinite;
   }
 
-  .carousel__slide:last-child .carousel__snapper {
+  .responsive-carousel__slide:last-child .responsive-carousel__snapper {
     animation-name: tostart, snap;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .carousel__snapper {
+  .responsive-carousel__snapper {
     animation-name: none;
   }
 }
 
-.carousel:hover .carousel__snapper,
-.carousel:focus-within .carousel__snapper {
+.responsive-carousel:hover .responsive-carousel__snapper,
+.responsive-carousel:focus-within .responsive-carousel__snapper {
   animation-name: none;
 }
 
-.carousel__navigation {
+.responsive-carousel__navigation {
   position: absolute;
   right: 0;
   bottom: 25px;
@@ -230,12 +230,12 @@ li {
   text-align: center;
 }
 
-.carousel__navigation-list,
-.carousel__navigation-item {
+.responsive-carousel__navigation-list,
+.responsive-carousel__navigation-item {
   display: inline-block;
 }
 
-.carousel__navigation-button {
+.responsive-carousel__navigation-button {
   display: inline-block;
   width: 1.5rem;
   height: 1.5rem;
@@ -247,10 +247,10 @@ li {
   transition: transform 0.1s;
 }
 
-.carousel::before,
-.carousel::after,
-.carousel__prev,
-.carousel__next {
+.responsive-carousel::before,
+.responsive-carousel::after,
+.responsive-carousel__prev,
+.responsive-carousel__next {
   position: absolute;
   top: 50vh;
 
@@ -262,18 +262,18 @@ li {
   outline: 0;
 }
 
-.carousel::before,
-.carousel__prev {
+.responsive-carousel::before,
+.responsive-carousel__prev {
   left: 0.5rem;
 }
 
-.carousel::after,
-.carousel__next {
+.responsive-carousel::after,
+.responsive-carousel__next {
   right: 0.5rem;
 }
 
-.carousel::before,
-.carousel::after {
+.responsive-carousel::before,
+.responsive-carousel::after {
   content: "";
   z-index: 1;
   background-color: rgba(104, 104, 104, 0.3);
@@ -287,10 +287,10 @@ li {
   pointer-events: none;
 }
 
-.carousel::before {
+.responsive-carousel::before {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='0,50 80,100 80,0' fill='%23fff'/%3E%3C/svg%3E");
 }
 
-.carousel::after {
+.responsive-carousel::after {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='100,50 20,100 20,0' fill='%23fff'/%3E%3C/svg%3E");
 }

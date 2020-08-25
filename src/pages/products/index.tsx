@@ -5,7 +5,6 @@ import Template from '../../components/templates/default'
 import Link from 'next/link'
 
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext, DotGroup, ImageWithZoom } from 'pure-react-carousel';
-import 'pure-react-carousel/dist/react-carousel.es.css';
 
 type AppState = {
     currentSlide: number;    

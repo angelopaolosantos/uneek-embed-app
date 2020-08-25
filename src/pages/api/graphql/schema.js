@@ -71,7 +71,9 @@ const typeDefs = gql`
     users(id: Int): [User]!
     retailers(ID: Int, Status: String): [Retailer]!
     productPage(search: String, limit: Int, page: Int): Products
-    product(id: Int): Product
+    productCategoryPage(collection: String, limit: Int, page: Int): Products
+    products: [Product]
+    product(sku: String): Product
     categories: [Category]
     category(id: String): Category
   }

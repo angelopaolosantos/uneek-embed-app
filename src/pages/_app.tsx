@@ -1,5 +1,7 @@
 // import default style
 import '../styles/custom-theme.less'
+import '../styles/carousel.scss'
+import 'pure-react-carousel/dist/react-carousel.es.css'
 
 import ApolloProvider from '../contexts/apollo/ApolloProvider'
 import { Auth0Provider } from '@auth0/auth0-react'

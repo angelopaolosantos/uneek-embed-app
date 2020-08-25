@@ -1,83 +1,91 @@
-@import (css) url('https://fonts.googleapis.com/css2?family=Asap&family=Roboto&display=swap');
-@import '~rsuite/lib/styles/index.less';
+@import (css)
+  url("https://fonts.googleapis.com/css2?family=Asap&family=Roboto&display=swap");
+@import "~rsuite/lib/styles/index.less";
 // @import '~rsuite/lib/styles/themes/default/index.less';
 // @import '~rsuite/lib/styles/themes/dark/index.less';
 
 @font-face {
-    font-family: "Constantia";
-    src: url("http://localhost:3000/fonts/constan.ttf");
+  font-family: "Constantia";
+  src: url("http://localhost:3000/fonts/constan.ttf");
 }
 
 @font-face {
-    font-family: "Asap";
-    src: url("http://localhost:3000/fonts/Asap-Regular.ttf");
+  font-family: "Asap";
+  src: url("http://localhost:3000/fonts/Asap-Regular.ttf");
 }
 
 // rsuite variables
 @base-color: #525b5b;
 @button-ripple: true;
 @font-size-base: 14px;
-@font-family-base: 'Asap', sans-serif;
+@font-family-base: "Asap", sans-serif;
 
 // Stick Nav CSS
 
 .sticky {
-    position: fixed;
-    top: 0px;
-    width: 100%;
+  position: fixed;
+  top: 0px;
+  width: 100%;
 }
 
 .sticky + .content {
-    padding-top: 56px;
+  padding-top: 56px;
 }
 
 #navbar {
-    background-color: white;
-    z-index: 100;
+  background-color: white;
+  z-index: 100;
 }
 
 .nav-wrapper {
-    position: relative;
+  position: relative;
 }
 
 // Sub Menu CSS
 
 .submenu-container {
-    display: flex;
-    justify-content: center;
-    z-index: 5;
-    border: 1px #d2d2d2 solid;
+  display: flex;
+  justify-content: center;
+  z-index: 5;
+  border: 1px #d2d2d2 solid;
+  padding: 1rem;
+  text-align: center;
 }
 
 .submenu-container .submenu ul {
-    list-style-type: none;
-    padding: 0px;
-    text-align: right;
+  list-style-type: none;
+  padding: 0px;
+  text-align: right;
 }
 
-.submenu, .image-showcase {
-    padding: 25px;
+.submenus {
+  display: flex;
+}
+
+.submenu,
+.image-showcase {
+  padding: 25px;
 }
 
 .submenu-container .submenu h3 {
-    font-size: 1.2em;
-    line-height: 1.2em;
+  font-size: 1.2em;
+  line-height: 1.2em;
 }
 
 .submenu-container .submenu li {
-    font-size: 1em;
-    padding: 5px 0px;
+  font-size: 1em;
+  padding: 5px 0px;
 }
 
 .submenu-container .image-showcase img {
-    max-width: 200px;
+  max-width: 200px;
 }
 
 .submenu-container .image-showcase p {
-    font-size: 0.8em;
-    padding: 5px 0px;
+  font-size: 0.8em;
+  padding: 5px 0px;
 }
 
 .rs-carousel {
-    height: auto;
+  height: auto;
 }

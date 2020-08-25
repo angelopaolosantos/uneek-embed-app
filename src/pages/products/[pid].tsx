@@ -4,8 +4,8 @@ import Link from 'next/link'
 import Template from '../../components/templates/default'
 import { Icon, Breadcrumb, Divider } from 'rsuite'
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext, DotGroup, ImageWithZoom } from 'pure-react-carousel';
-import 'pure-react-carousel/dist/react-carousel.es.css'
 import { fetchAPI } from '../../contexts/apollo/fetchAPI'
+
 
 const Page = ({result}) => {
     const [currentSlide, setCurrentSlide] = useState(0)
@@ -27,7 +27,6 @@ const Page = ({result}) => {
     )
 
     if (!result) {
-        console.log(result)
         content = <div>Error Occured</div>
     }
 
@@ -50,21 +49,14 @@ const Page = ({result}) => {
                                 <CarouselProvider
                                     naturalSlideWidth={100}
                                     naturalSlideHeight={100}
-                                    totalSlides={3}
+                                    totalSlides={1}
                                     currentSlide={currentSlide}
                                 >
                                     <Slider>
                                         <Slide index={0}><ImageWithZoom src={result.product.images} /></Slide>
-                                        <Slide index={1}><ImageWithZoom src={result.product.images} /></Slide>
-                                        <Slide index={2}><ImageWithZoom src={result.product.images} /></Slide>
                                     </Slider>
-                                    <DotGroup />
-                                    <ButtonBack>Back</ButtonBack>
-                                    <ButtonNext>Next</ButtonNext>
                                 </CarouselProvider>
                                 <img data-index="0" onClick={handleImageOnClick} className="mini-image" src={result.product.images} />
-                                <img data-index="1" onClick={handleImageOnClick} className="mini-image" src={result.product.images} />
-                                <img data-index="2" onClick={handleImageOnClick} className="mini-image" src={result.product.images} />
                             </div>
                             <div className="product-details">
                                 <h3 className="product-name">{result.product.name}</h3>
@@ -213,10 +205,9 @@ export default Page
 
 export async function getServerSideProps({params}) {
     const { pid } = params
-    console.log("pid: ", pid)
     const QUERY = `
-        query GetProduct($productId: Int!) {
-        product(id: $productId) {
+        query GetProduct($productSku: String!) {
+        product(sku: $productSku) {
             sku
             name
             description
@@ -236,7 +227,7 @@ export async function getServerSideProps({params}) {
         }
       }`
 
-    const result = await fetchAPI(QUERY, { variables: { productId: parseInt(pid) } })
+    const result = await fetchAPI(QUERY, { variables: { productSku: pid } })
 
     return {
       props: {

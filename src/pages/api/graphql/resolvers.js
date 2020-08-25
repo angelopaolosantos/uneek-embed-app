@@ -1,4 +1,5 @@
 import { AuthenticationError } from 'apollo-server-micro'
+import { argsToArgsConfig } from 'graphql/type/definition'
 
 const resolvers = {
     Query: {
@@ -59,17 +60,46 @@ const resolvers = {
             console.log("limit:", limit)
 
             const result = await _context.db
-                .collection('products')
-                .find(mongoSearch).skip(skip).limit(limit)
+                .collection('products2')
+                .find(mongoSearch).sort({sku: 1}).skip(skip).limit(limit)
                 .toArray()
 
             console.log(result)
 
             const pageCount = await _context.db
-                .collection('products')
+                .collection('products2')
                 .find(mongoSearch).count()
 
             console.log("pageCount: ", pageCount)
+
+            return { products: result, count: pageCount }
+        },
+        productCategoryPage: async (_parent, _args, _context, _info) => {
+            let mongoSearch = {}
+            let limit = 9
+            if (_args.limit) {
+                limit = _args.limit
+            }
+            let page = 1
+            if (_args.page) {
+                page = _args.page
+            }
+            let skip = 0
+            if (page > 1) {
+                skip = limit * (page - 1)
+            }
+            
+            const regex = new RegExp(`\\b(${_args.collection})\\b`, 'i');
+            console.log(regex)
+            mongoSearch = {collection: regex}
+
+            const result = await _context.db
+                .collection('products2')
+                .find(mongoSearch).sort({sku: 1}).skip(skip).limit(limit)
+                .toArray()
+            const pageCount = await _context.db
+                .collection('products2')
+                .find(mongoSearch).count()
 
             return { products: result, count: pageCount }
         },
@@ -77,6 +107,13 @@ const resolvers = {
             const result = await _context.db
                 .collection('products')
                 .findOne(_args)
+            return result
+        },
+        products: async (_parent, _args, _context, _info) => {
+            const result = await _context.db
+                .collection('products2')
+                .find(_args)
+                .toArray()
             return result
         },
         category: async (_parent, _args, _context, _info) => {

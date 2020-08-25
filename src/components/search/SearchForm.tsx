@@ -1,20 +1,15 @@
 import { InputGroup, Input, Icon, Form } from 'rsuite'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 const SearchForm = (props) => {
     const router = useRouter()
     const [formValue, setformValue] = useState('')
 
-    useEffect(()=>{
-        console.log("Run this once")
-        console.log(router.query)
-    }, [])
-
     function handleSubmit() {
-        props.setCurrentPage(1)
-        props.setKeywords(formValue)
-        router.push(`/search?keyword=${formValue}&page=${props.currentPage}`)
+        props.setCurrentPage(1);
+        props.setSearch(formValue)
+        router.push(`/search?keywords=${formValue}&page=1`)
     }
     
     return (
