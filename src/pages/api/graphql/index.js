@@ -2,10 +2,33 @@
 import { ApolloServer } from 'apollo-server-micro'
 import schema from './schema'
 import { MongoClient } from 'mongodb'
-
 import jwt from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 import util from 'util'
+
+import Cors from 'cors'
+
+// Initializing the cors middleware
+const cors = Cors({
+    methods: ['GET', 'HEAD'],
+  })
+  
+
+  // Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(req, res, fn) {
+    return new Promise((resolve, reject) => {
+      fn(req, res, (result) => {
+        if (result instanceof Error) {
+          return reject(result)
+        }
+  
+        return resolve(result)
+      })
+    })
+  }
+
+
 
 async function decodeJWT(token) {
     const client = jwksClient({
@@ -85,4 +108,4 @@ export const config = {
     },
 }
 
-export default apolloServer.createHandler({ path: '/api/graphql' })
+export default apolloServer.createHandler({ path: '/api/graphql', cors: true })
