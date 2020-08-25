@@ -22,7 +22,7 @@ async function decodeJWT(token) {
         })
     }
     const options = {
-        audience: `http://localhost:3000/api/graphql`,
+        audience: `https://vercel.com/angelopaolosantos/api/graphql`,
         issuer: `https://dev-angelops.us.auth0.com/`,
         algorithms: ['RS256']
     }
