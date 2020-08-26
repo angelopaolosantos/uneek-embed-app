@@ -1,5 +1,5 @@
 export async function fetchAPI(query, { variables = {} } = {}) {
-    const API_URL = `http://localhost:3000/api/graphql`
+    const API_URL = `${process.env.NEXT_PUBLIC_UNEEK_DOMAIN}/api/graphql`
     const API_TOKEN = ""
     const res = await fetch(API_URL, {
       method: 'POST',
