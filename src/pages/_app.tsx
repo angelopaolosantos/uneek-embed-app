@@ -1,29 +1,26 @@
-// import default style
-import '../styles/custom-theme.less'
-import '../styles/carousel.scss'
-import 'pure-react-carousel/dist/react-carousel.es.css'
+/** Import Global CSS */
 
-import ApolloProvider from '../contexts/apollo/ApolloProvider'
-import { Auth0Provider } from '@auth0/auth0-react'
+import "../styles/rsuite-custom.less";
+import "pure-react-carousel/dist/react-carousel.es.css";
+import "../styles/carousel.scss";
+import "../styles/antd-custom.scss"
+import "../styles/global.scss";
+
+import ApolloProvider from "../contexts/apollo/ApolloProvider";
+import Head from "next/head"
+
 // import App from "next/app";
-import type { AppProps /*, AppContext */ } from 'next/app'
-import Head from 'next/head'
+import type { AppProps /*, AppContext */ } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Auth0Provider
-      domain={process.env.NEXT_PUBLIC_DOMAIN}
-      clientId={process.env.NEXT_PUBLIC_CLIENT_ID}
-      redirectUri="http://localhost:3000/"
-    >
-      <ApolloProvider>
-        <Head>
-          <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"></meta>
-        </Head>
-        <Component {...pageProps} />
-      </ApolloProvider>
-    </Auth0Provider>
-  )
+    <ApolloProvider>
+      <Head>
+      <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"></meta>
+      </Head>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  );
 }
 
 // Only uncomment this method if you have blocking data requirements for
@@ -38,4 +35,4 @@ function MyApp({ Component, pageProps }: AppProps) {
 //   return { ...appProps }
 // }
 
-export default MyApp
+export default MyApp;

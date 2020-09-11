@@ -1,6 +1,6 @@
 export async function fetchAPI(query, { variables = {} } = {}) {
     const API_URL = `${process.env.NEXT_PUBLIC_UNEEK_DOMAIN}/api/graphql`
-    const API_TOKEN = ""
+    const API_TOKEN = "" // provide token if required
     const res = await fetch(API_URL, {
       method: 'POST',
       headers: {
@@ -13,13 +13,14 @@ export async function fetchAPI(query, { variables = {} } = {}) {
       }),
     })
 
-    console.log(res)
+    console.log("from fetchAPI:", res)
   
     const json = await res.json()
     if (json.errors) {
       console.error(json.errors)
       // throw new Error('Failed to fetch API')
-      return null
+      throw new Error('Failed to fetch API')
+      // return null
     }
     return json.data
   }

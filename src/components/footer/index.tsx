@@ -31,6 +31,8 @@ const Footer = () => (
         .horizontal-list {
             display: flex;
             list-style-type: none;
+            margin: 0px;
+            padding: 0px;
         }
         .horizontal-list li{
             margin: 0.5rem;
@@ -38,6 +40,12 @@ const Footer = () => (
 
         .social-links a {
             color: #fff;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .footer-block {
+                flex-direction: column;
+            }
         }
         `}
         </style>

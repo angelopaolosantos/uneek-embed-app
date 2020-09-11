@@ -1,27 +1,17 @@
-@import (css)
-  url("https://fonts.googleapis.com/css2?family=Asap&family=Roboto&display=swap");
-@import "~rsuite/lib/styles/index.less";
-// @import '~rsuite/lib/styles/themes/default/index.less';
-// @import '~rsuite/lib/styles/themes/dark/index.less';
+/** variables */
+$small: 576px;
+$medium: 768px;
+$large: 992px;
+$extra-large: 1200px;
+
+@import url("https://fonts.googleapis.com/css2?family=Asap&family=Roboto&display=swap");
 
 @font-face {
   font-family: "Constantia";
   src: url("http://localhost:3000/fonts/constan.ttf");
 }
 
-@font-face {
-  font-family: "Asap";
-  src: url("http://localhost:3000/fonts/Asap-Regular.ttf");
-}
-
-// rsuite variables
-@base-color: #525b5b;
-@button-ripple: true;
-@font-size-base: 14px;
-@font-family-base: "Asap", sans-serif;
-
-// Stick Nav CSS
-
+/** components/main-navigation/index.tsx */
 .sticky {
   position: fixed;
   top: 0px;
@@ -39,6 +29,12 @@
 
 .nav-wrapper {
   position: relative;
+}
+
+/** container */
+.section-container {
+  max-width: $large;
+  margin: 0px auto;
 }
 
 // Sub Menu CSS
@@ -86,6 +82,15 @@
   padding: 5px 0px;
 }
 
-.rs-carousel {
-  height: auto;
+.test {
+  color: red;
+  font-size: 14px;
+}
+
+a {
+  color: #353535;
+}
+
+a:hover {
+  color: #b3b3b3;
 }

@@ -1,13 +1,13 @@
-import MainNavigation from './main-navigation'
-import SideNavigation from './side-navigation'
-import { useState, Component } from 'react'
+import MainNavigation from "./main-navigation";
+import SideNavigation from "./side-navigation";
+import { useState, Component } from "react";
 
 type AppState = {
-  activeKey: any
-  isMobile: boolean
-  isSticky: boolean
-  stickyOffset: number
-}
+  activeKey: any;
+  isMobile: boolean;
+  isSticky: boolean;
+  stickyOffset: number;
+};
 
 class Navigation extends Component<{}, AppState> {
   constructor(props) {
@@ -17,12 +17,12 @@ class Navigation extends Component<{}, AppState> {
       activeKey: null,
       isMobile: false,
       isSticky: false,
-      stickyOffset: 0
+      stickyOffset: 0,
     };
   }
   handleSelect(eventKey) {
     this.setState({
-      activeKey: eventKey
+      activeKey: eventKey,
     });
   }
 
@@ -33,35 +33,35 @@ class Navigation extends Component<{}, AppState> {
     window.addEventListener("scroll", this.handleSticky.bind(this));
     this.handleSticky();
   }
-  
+
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize.bind(this));
     window.removeEventListener("scroll", this.handleSticky.bind(this));
   }
 
   handleSticky() {
-    const navbar = document.getElementById('navbar')
-    
-    if (this.state.isSticky==false){
-      const sticky = navbar.offsetTop
-      if(window.pageYOffset >= sticky) {
-        navbar.classList.add('sticky')
-        navbar.classList.remove('nav-wrapper')
-        this.setState({isSticky: true, stickyOffset: sticky})
+    const navbar = document.getElementById("navbar");
+
+    if (this.state.isSticky == false) {
+      const sticky = navbar.offsetTop;
+      if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky");
+        navbar.classList.remove("nav-wrapper");
+        this.setState({ isSticky: true, stickyOffset: sticky });
         // console.log(`isSticky: `, this.state.isSticky)
       }
-    } else if(window.pageYOffset < this.state.stickyOffset) {
-      navbar.classList.remove('sticky')
-      navbar.classList.add('nav-wrapper')
-      this.setState({isSticky: false, stickyOffset: 0})
+    } else if (window.pageYOffset < this.state.stickyOffset) {
+      navbar.classList.remove("sticky");
+      navbar.classList.add("nav-wrapper");
+      this.setState({ isSticky: false, stickyOffset: 0 });
       // console.log(`isSticky: `, this.state.isSticky)
-    } else if (window.pageYOffset > 0 && this.state.stickyOffset==0) {
-      this.setState({stickyOffset: 50})
+    } else if (window.pageYOffset > 0 && this.state.stickyOffset == 0) {
+      this.setState({ stickyOffset: 50 });
     }
   }
 
   handleResize() {
-    let isMobile = (window.innerWidth <= 992);
+    let isMobile = window.innerWidth <= 992;
     if (isMobile !== this.state.isMobile) {
       this.setState({ isMobile });
     }
@@ -69,12 +69,13 @@ class Navigation extends Component<{}, AppState> {
 
   render() {
     const { isMobile, isSticky } = this.state;
-    let navigation
+
+    let navigation;
 
     if (isMobile) {
-      navigation = <SideNavigation />
+      navigation = <SideNavigation />;
     } else {
-      navigation = <MainNavigation />
+      navigation = <MainNavigation />;
     }
 
     return (
@@ -85,4 +86,4 @@ class Navigation extends Component<{}, AppState> {
   }
 }
 
-export default Navigation
+export default Navigation;

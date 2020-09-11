@@ -1,4 +1,4 @@
-// pages/404.js
+/** pages/404.tsx */
 import Head from 'next/head'
 import Link from 'next/link'
 import Template from '../components/templates/default'

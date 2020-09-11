@@ -1,16 +1,16 @@
 import Head from "next/head";
 import Template from "../components/templates/default";
-import {
-  CarouselProvider,
-  Slider,
-  Slide,
-  ButtonBack,
-  ButtonNext,
-  DotGroup,
-  ImageWithZoom,
-} from "pure-react-carousel";
+import { useEffect } from 'react'
 
-const Home = () => {
+
+const Home = ({partner_key}) => {
+  console.log(partner_key)
+
+  useEffect(()=>{
+    sessionStorage['partner_key'] = partner_key
+    console.log("session key",sessionStorage['partner_key'])
+  },[])
+
   return (
     <Template>
       <Head>
@@ -111,3 +111,11 @@ const Home = () => {
 };
 
 export default Home;
+
+export async function getServerSideProps({query: { partner_key }}) {
+  if (partner_key) { // if partner_key query is 
+    return { props: { partner_key } }
+  }
+
+  return { props: {} }
+}

@@ -4,21 +4,33 @@ const Dropdown = () => (
   <div className="container">
     <div className="submenu-container">
       <div>
-        <Link href="/categories/one-of-a-kind">
-          <a>View all One-of-a-Kind Jewelry</a>
+        <Link href="/categories/fashion-jewelry">
+          <a>View all Fashion jewelry</a>
         </Link>
         <div className="submenus">
           <div className="submenu">
             <ul>
-              <h3>By Product Type</h3>
-              <li>Rings</li>
-              <li>Earring</li>
-              <li>Pendants &amp; Necklaces</li>
+              <h3>By Type</h3>
+              <li>Rings &amp; Bands</li>
+              <li>Eternity Bands</li>
+              <li>Earrings</li>
+              <li>Hoops</li>
               <li>Bracelets</li>
               <li>Bangles</li>
+              <li>Pendants &amp; Necklaces</li>
             </ul>
           </div>
-        </div>  
+          <div className="submenu">
+            <ul>
+              <h3>Stone Type</h3>
+              <li>Colored Diamond</li>
+              <li>Sapphire</li>
+              <li>Ruby</li>
+              <li>Emerald</li>
+              <li>Exotic</li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div className="image-showcase">
         <img src="/images/navigation/fashion-showcase-1.jpg" />

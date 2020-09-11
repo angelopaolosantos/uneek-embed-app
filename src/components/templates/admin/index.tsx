@@ -1,18 +1,12 @@
-import Header from '../../header'
-import Footer from '../../footer'
-import MainNavigation from '../../main-navigation'
-
 const Template = ({children}) => (
   <div className="container">
     <div className="content-wrapper">
-      <Header displayText="Uneek Launches New Website!" />
-      <MainNavigation />
       <div className="content">
       {children}
       </div>
     </div>
     <div className="footer">
-    <Footer />
+    Uneek Admin
     </div>
     <style jsx>{`
     .container {

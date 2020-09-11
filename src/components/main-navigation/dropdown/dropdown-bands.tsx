@@ -4,24 +4,16 @@ const Dropdown = () => (
   <div className="submenu-container">
     <div>
         <Link href="/categories/bridal-jewelry">
-          <a>View all engagement rings</a>
+          <a>View all wedding &amp; anniversary bands</a>
         </Link>
       <div className="submenus">
         <div className="submenu">
           <ul>
-            <h3>By Setting</h3>
-            <li>Three Stone</li>
-            <li>Solitaire</li>
-            <li>Halo</li>
-          </ul>
-        </div>
-        <div className="submenu">
-          <ul>
-            <h3>By Collection</h3>
-            <li>Silhoette</li>
-            <li>Petals</li>
-            <li>Us</li>
-            <li>Infinity</li>
+            <h3>By Type</h3>
+            <li>Wedding Bands</li>
+            <li>Eternity Bands</li>
+            <li>Stackable Bands</li>
+            <li>Fashion Bands</li>
           </ul>
         </div>
       </div>

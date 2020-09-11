@@ -3,6 +3,7 @@ import DropdownEngagement from "./dropdown/dropdown-engagement";
 import DropdownFashion from "./dropdown/dropdown-fashion";
 import DropdownEternity from "./dropdown/dropdown-eternity";
 import DropdownStackables from "./dropdown/dropdown-stackables";
+import DropdownBands from "./dropdown/dropdown-bands"
 import DropdownOOAK from "./dropdown/dropdown-ooak";
 import Link from "next/link";
 
@@ -12,35 +13,30 @@ const MainNavigation = () => {
       <div className="menu-wrapper">
         <ul className="menu">
           <li className="menu-item">
-            <Link href="/categories/bridal-jewelry"><a>Bridal Jewelry</a></Link>
+            <Link href="/categories/bridal-jewelry"><a>Engagement Rings</a></Link>
             <div className="mega-menu">
               <DropdownEngagement />
             </div>
           </li>
           <li className="menu-item">
-          <Link href="/categories/fashion-jewelry"><a>Fashion Jewelry</a></Link>
+          <Link href="/categories/fashion-jewelry"><a>Wedding &amp; Anniversary Bands</a></Link>
+            <div className="mega-menu">
+              <DropdownBands />
+            </div>
+          </li>
+          <li className="menu-item">
+          <Link href="/categories/eternity-bands"><a>Fine Jewelry</a></Link>
             <div className="mega-menu">
               <DropdownFashion />
             </div>
           </li>
           <li className="menu-item">
-          <Link href="/categories/eternity-bands"><a>Eternity Bands</a></Link>
-            <div className="mega-menu">
-              <DropdownEternity />
-            </div>
-          </li>
-          <li className="menu-item">
-          <Link href="/categories/stackables"><a>Stackables</a></Link>
-            <div className="mega-menu">
-              <DropdownStackables />
-            </div>
-          </li>
-          <li className="menu-item">
-          <Link href="/categories/one-of-a-kind"><a>One of a Kind</a></Link>
+          <Link href="/categories/stackables"><a>One Of A Kind</a></Link>
             <div className="mega-menu">
               <DropdownOOAK />
             </div>
           </li>
+          
         </ul>
         <ul className="menu">
           <li>
