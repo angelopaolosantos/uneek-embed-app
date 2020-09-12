@@ -22,7 +22,7 @@ const Page = () => {
 
     if (response && response.data.createAccessKey.success) {
       message.success(response.data.createAccessKey.message)
-      router.push('/admin/retailers')
+      router.push('/admin/accesskeys')
     } else {
       message.error(response.data.createAccessKey.message)
     }
@@ -94,7 +94,7 @@ const Page = () => {
           <Button type="primary" htmlType="submit">
             Submit
           </Button>&nbsp;
-          <Link href="/admin/retailers"><Button>Cancel</Button></Link>
+          <Link href="/admin/accesskeys"><Button>Cancel</Button></Link>
         </Form.Item>
       </Form>
     </div>

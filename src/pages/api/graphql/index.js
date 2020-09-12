@@ -1,10 +1,8 @@
 // pages/api/graphql.js
 import { ApolloServer } from 'apollo-server-micro'
-import schema from './schema'
 import { MongoClient } from 'mongodb'
-import util from 'util'
-
 import Cors from "micro-cors";
+import schemas from './schemas'
 
 const cors = Cors({
     allowMethods: ["GET", "POST", "OPTIONS"]
@@ -13,7 +11,7 @@ const cors = Cors({
 let db
 
 const apolloServer = new ApolloServer({
-    schema,
+    schema: schemas,
     context: async ({ req }) => {
         /*
         let token = req.headers.authorization || '';

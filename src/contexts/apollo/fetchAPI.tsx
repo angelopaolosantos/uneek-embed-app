@@ -17,10 +17,11 @@ export async function fetchAPI(query, { variables = {} } = {}) {
   
     const json = await res.json()
     if (json.errors) {
-      console.error(json.errors)
+      const errorMessages = {messages: json.errors, error: true}
+      
+      console.error(errorMessages)
       // throw new Error('Failed to fetch API')
-      throw new Error('Failed to fetch API')
-      // return null
+      return errorMessages
     }
     return json.data
   }

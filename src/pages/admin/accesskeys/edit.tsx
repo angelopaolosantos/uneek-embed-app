@@ -3,14 +3,22 @@ import { gql, useMutation } from "@apollo/client";
 import { Form, Input, Button, Divider, Select, message } from "antd";
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-const { Option } = Select;
+import { useEffect, useState } from 'react'
 
 const Page = ({ result }) => {
   const router = useRouter()
+  const { Option } = Select;  
+  
+  useEffect(()=>{
+    if (result.error==true) {
+      message.error("Error occured")
+      router.push('/admin/accesskeys')
+    }
+  },[])
 
   const EDIT_ACCESS_KEY = gql`
     mutation EditAccessKey($id: ID!, $input: AccessKeyInput) {
-      updateAccessKey(_id: $id, input: $input) {
+      updateAccessKey(id: $id, input: $input) {
         success
         message
       }
@@ -20,13 +28,17 @@ const Page = ({ result }) => {
 
   const onFinish = async (values) => {
     const id = result.accessKey._id;
+    try {
     const response = await editAccessKey({ variables: { id, input: values }})
     
-    if (response && response.data.updateAccessKey.success) {
+    if (response.data.updateAccessKey.success) {
       message.success(response.data.updateAccessKey.message)
-      router.push('/admin/retailers')
     } else {
       message.error(response.data.updateAccessKey.message)
+    }
+    } catch(e) {
+      console.log(e.message)
+      message.error(`Error occured: "${e.message}"`)
     }
   };
 
@@ -95,7 +107,7 @@ const Page = ({ result }) => {
             Submit
           </Button>
           &nbsp;
-          <Link href="/admin/retailers"><Button>Cancel</Button></Link>
+          <Link href="/admin/accesskeys"><Button>Cancel</Button></Link>
         </Form.Item>
       </Form>
     </div>
@@ -109,7 +121,7 @@ export async function getServerSideProps({ query }) {
   
   const QUERY = `
             query GetAccessKey($id: ID!) {
-                accessKey(_id: $id) {
+                accessKey(id: $id) {
                 _id
                 retailer
                 type

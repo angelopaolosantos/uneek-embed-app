@@ -1,0 +1,145 @@
+import { Table, Space, Button, Divider, Popconfirm, message } from 'antd'
+import Link from 'next/link'
+import { gql, useMutation, useQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
+import Template from '../../../components/templates/admin'
+
+const QUERY_ACCESS_KEYS = gql`
+  query GetAccessKeys($filter: AccessKeyInput) {
+    accessKeys(filter: $filter) {
+      _id
+      retailer
+      type
+      status
+      key
+      url
+    }
+  }
+`
+
+const Page = () => {
+  const { loading, error, data, refetch } = useQuery(QUERY_ACCESS_KEYS, {
+    variables: { filter: null },
+    pollInterval:500,
+  })
+
+  const router = useRouter()
+
+  const DELETE_ACCESS_KEY = gql`
+    mutation DeleteAccessKey($id: ID!) {
+      deleteAccessKey(id: $id) {
+        success
+        message
+      }
+    }
+  `
+
+  const [deleteAccessKey] = useMutation(DELETE_ACCESS_KEY)
+
+  const onDelete = async (id: string) => {
+    const response = await deleteAccessKey({ variables: { id } })
+
+    if (response.data.deleteAccessKey.success) {
+      message.success(response.data.deleteAccessKey.message) // show pop message when successful
+      refetch()
+    } else {
+      message.error(response.data.deleteAccessKey.message) // show pop message when error
+    }
+  }
+
+  const columns = [
+    {
+      title: 'Retailer',
+      dataIndex: 'retailer',
+      key: 'retailer',
+      render: (text, record) => (
+        <Link href={`/admin/accesskeys/edit/?id=${record._id}`}>
+          <a>{text}</a>
+        </Link>
+      ),
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: 'Key',
+      dataIndex: 'key',
+      key: 'key',
+    },
+    {
+      title: 'URL',
+      dataIndex: 'url',
+      key: 'url',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => {
+        return (
+          <Space size="middle">
+            <Link href={`/admin/accesskeys/edit/?id=${record._id}`}>
+              <Button>Update</Button>
+            </Link>
+
+            <Popconfirm
+              title="Are you sure delete this item?"
+              onConfirm={() => {
+                onDelete(record._id)
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button>Delete</Button>
+            </Popconfirm>
+          </Space>
+        )
+      },
+    },
+  ]
+
+  // rowSelection object indicates the need for row selection
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        'selectedRows: ',
+        selectedRows
+      )
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      name: record.name,
+    }),
+  }
+
+  return (
+    <Template>
+      <main className="container">
+        <h1>Access Keys</h1>
+        <Link href="/admin/accesskeys/add">
+          <Button>Add Item</Button>
+        </Link>
+        <Divider />
+        {data && (
+          <Table
+            rowSelection={{
+              type: 'checkbox',
+              ...rowSelection,
+            }}
+            columns={columns}
+            dataSource={data.accessKeys}
+          />
+        )}
+      </main>
+    </Template>
+  )
+}
+
+export default Page
