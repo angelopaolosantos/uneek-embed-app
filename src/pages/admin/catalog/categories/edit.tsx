@@ -29,6 +29,8 @@ const Page = ({ result }) => {
 
   const onFinish = async (values) => {
     const id = result.category._id;
+    console.log(id)
+    console.log(values)
     try {
     const response = await editCategory({ variables: { id, input: values }})
     
@@ -57,15 +59,12 @@ const Page = ({ result }) => {
 
   return (
     <div className="container">
-      <h1>Edit item</h1>
+      <h1>Edit category item</h1>
       <Divider />
       <Form
         {...layout}
         name="basic"
-        initialValues={
-          result && result.category
-            ? { ...result.category }
-            : { type: "embed", status: "enabled" }
+        initialValues={result.category
         }
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -73,6 +72,20 @@ const Page = ({ result }) => {
         <Form.Item
           label="Name"
           name="name"
+          rules={[{ required: true, message: "Required" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Parent"
+          name="parent"
+          rules={[{ required: true, message: "Required" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Category"
+          name="category"
           rules={[{ required: true, message: "Required" }]}
         >
           <Input />
@@ -102,6 +115,7 @@ export async function getServerSideProps({ query }) {
                 _id
                 name
                 parent
+                category
           }
       }`;
 

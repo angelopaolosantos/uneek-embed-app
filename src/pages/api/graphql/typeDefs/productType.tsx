@@ -3,7 +3,6 @@ import { gql } from 'apollo-server-micro'
 export default gql`
   type Product {
     _id: ID!
-    id: Int
     thumbnail: String
     sku: String
     name: String
@@ -11,24 +10,26 @@ export default gql`
     product_type: String
     category: [String]
     gender: String
-    price: String
+    price: Float
     status: String
     metal: String
     center_size: String
     center_shape: String
     side_stone_weight: String
     side_stone_pieces: String
-    images: String
-    msrp_14k: String
-    msrp_18k: String
-    msrp_plat: String
-    msrp: String
+    primary_image: String
+    images: [String]
+    msrp_14k: Float
+    msrp_18k: Float
+    msrp_plat: Float
+    msrp: Float
     gemstone: String
     center_stone: String
     url: String
     meta_keyword: String
     meta_description: String
     meta_title: String
+    related: [ID]
   }
 
   type Products {
@@ -39,9 +40,10 @@ export default gql`
   type Query {
     productPage(search: String, limit: Int, page: Int): Products
     productCategoryPage(collection: String, limit: Int, page: Int): Products
-    products: [Product]
-    product(sku: String): Product
+    product(sku: String!): Product
     productById(id: ID!): Product
+    products(filter: ProductInput): [Product]
+    productsSearch(search: String): [Product]
   }
 
   input ProductInput {
@@ -52,18 +54,18 @@ export default gql`
     product_type: String
     category: [String]
     gender: String
-    price: String
+    price: Float
     status: String
     metal: String
     center_size: String
     center_shape: String
     side_stone_weight: String
     side_stone_pieces: String
-    images: String
-    msrp_14k: String
-    msrp_18k: String
-    msrp_plat: String
-    msrp: String
+    images: [String]
+    msrp_14k: Float
+    msrp_18k: Float
+    msrp_plat: Float
+    msrp: Float
     gemstone: String
     center_stone: String
     url: String
@@ -81,5 +83,6 @@ export default gql`
     createProduct(input: ProductInput): Output
     updateProduct(id: ID!, input: ProductInput): Output
     deleteProduct(id: ID!): Output
+    addProductImage(id: ID!, url: String): Output
   }
 `

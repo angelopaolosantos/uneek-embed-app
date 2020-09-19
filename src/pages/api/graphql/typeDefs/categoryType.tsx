@@ -6,8 +6,8 @@ export default gql`
   type Category {
     _id: ID!
     name: String!
-    parent: String
-    parent_id: ID
+    parent: String!
+    category: String!
   }
   type Query {
     categories(filter: CategoryInput): [Category]
@@ -22,6 +22,7 @@ export default gql`
   input CategoryInput {
     name: String
     parent: String
+    category: String
   }
 
   type Mutation {

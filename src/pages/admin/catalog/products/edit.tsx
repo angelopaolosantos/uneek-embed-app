@@ -49,9 +49,6 @@ const Page = ({ result }) => {
   return (
     <div className="container">
       <h1>Edit Product</h1>
-      <Divider />
-      <img src={result.productById.images} width="250" />
-      <Button>Update Images</Button>
       <Form
         {...layout}
         name="basic"
@@ -78,9 +75,6 @@ const Page = ({ result }) => {
         <Form.Item label="Description" name="description">
           <TextArea rows={4} />
         </Form.Item>
-        <Form.Item label="Images" name="images">
-          <Input />
-        </Form.Item>
         <Form.Item label="Product Type" name="product_type">
           <Select style={{ width: 200 }}>
             <Option value="Engagement Ring">Engagement Ring</Option>
@@ -92,9 +86,6 @@ const Page = ({ result }) => {
             <Option value="Bangle">Bangle</Option>
             <Option value="Accessory">Accessory</Option>
           </Select>
-        </Form.Item>
-        <Form.Item label="Category" name="category">
-          <Input />
         </Form.Item>
         <Form.Item label="Gender" name="gender">
           <Select style={{ width: 120 }}>
@@ -162,6 +153,20 @@ const Page = ({ result }) => {
           </Link>
         </Form.Item>
       </Form>
+      <Divider></Divider>
+      <div>
+      <h3>Images</h3>
+      <img src={result.productById.images} width="250" />
+      <Link href={`/admin/catalog/products/editImages/?id=${result.productById._id}`}><Button>Update Images</Button></Link>
+      </div>
+      <Divider></Divider>
+      <div><h3>Categories</h3> <ul>{ result.productById.category.map((data)=>{
+      return (<li>{data}</li>)
+      })
+      }
+      </ul>
+      <Link href={`/admin/catalog/products/editCategories/?id=${result.productById._id}`}><Button>Update Categories</Button></Link>
+      </div>
     </div>
   );
 };

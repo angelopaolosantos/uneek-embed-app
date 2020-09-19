@@ -43,18 +43,31 @@ const Page = () => {
 
   return (
     <div className="container">
-        <h1>Add new item</h1>
+        <h1>Add new category item</h1>
         <Divider />
       <Form
         {...layout}
         name="basic"
-        initialValues={{type: "embed", status: "enabled"}}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
         <Form.Item
           label="Name"
           name="name"
+          rules={[{ required: true, message: "Required" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Parent"
+          name="parent"
+          rules={[{ required: true, message: "Required" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Category"
+          name="category"
           rules={[{ required: true, message: "Required" }]}
         >
           <Input />

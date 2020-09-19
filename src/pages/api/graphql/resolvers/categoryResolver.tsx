@@ -5,7 +5,7 @@ export default {
     category: async (_parent, _args, _context, _info) => {
 
       try {
-        const result = await _context.db.collection('categories').findOne({ _id: ObjectId(_args.id) })
+        const result = await _context.db.collection('categories2').findOne({ _id: ObjectId(_args.id) })
         return result
       } catch (e) {
         console.log(e.message)
@@ -15,8 +15,8 @@ export default {
     categories: async (_parent, _args, _context, _info) => {
       try {
         const result = await _context.db
-          .collection('categories')
-          .find(_args)
+          .collection('categories2')
+          .find(_args.filter)
           .toArray()
         return result
       } catch (e) {
@@ -28,7 +28,7 @@ export default {
   Mutation: {
     updateCategory: async (_parent, _args, _context, _info) => {
       try {
-        const response = await _context.db.collection('categories').updateOne(
+        const response = await _context.db.collection('categories2').updateOne(
           { _id: ObjectId(_args.id) },
           {
             $set: {
@@ -65,7 +65,7 @@ export default {
     },
     createCategory: async (_parent, _args, _context, _info) => {
       try {
-        const response = await _context.db.collection('categories').insertOne({
+        const response = await _context.db.collection('categories2').insertOne({
           ..._args.input,
         })
 
@@ -92,7 +92,7 @@ export default {
     deleteCategory: async (_parent, _args, _context, _info) => {
       try {
         const response = await _context.db
-          .collection('categories')
+          .collection('categories2')
           .deleteOne({ _id: ObjectId(_args.id) })
 
         if (response.deletedCount > 0) {

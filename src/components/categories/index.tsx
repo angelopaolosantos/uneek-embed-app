@@ -6,6 +6,15 @@ import { useRouter } from "next/router";
 const { Paragraph, Graph } = Placeholder;
 
 const Products = (props) => {
+
+  console.log(props)
+
+  return ("test")
+
+  /*
+  if (props.result && props.result.count > 0) {
+    return (<div>No Result</div>)
+  }
   const pages = Math.ceil(props.result.count / 9);
   const router = useRouter();
 
@@ -108,6 +117,7 @@ const Products = (props) => {
       </div>
     </div>
   );
+  */
 };
 
 export default Products;

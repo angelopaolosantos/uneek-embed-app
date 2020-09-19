@@ -13,7 +13,7 @@ export async function fetchAPI(query, { variables = {} } = {}) {
       }),
     })
 
-    console.log("from fetchAPI:", res)
+    //console.log("from fetchAPI:", res)
   
     const json = await res.json()
     if (json.errors) {

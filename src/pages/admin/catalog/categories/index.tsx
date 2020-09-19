@@ -3,21 +3,9 @@ import Link from 'next/link'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 import Template from '../../../../components/templates/admin'
+import { fetchAPI } from '../../../../contexts/apollo/fetchAPI'
 
-const QUERY_CATEGORIES = gql`
-  query GetCategories($filter: CategoryInput) {
-    categories(filter: $filter) {
-      _id
-      name
-    }
-  }
-`
-
-const Page = () => {
-  const { loading, error, data, refetch } = useQuery(QUERY_CATEGORIES, {
-    variables: { filter: null },
-    // pollInterval:500,
-  })
+const Page = ({ result }) => {
 
   const router = useRouter()
 
@@ -37,7 +25,9 @@ const Page = () => {
 
     if (response.data.deleteCategory.success) {
       message.success(response.data.deleteCategory.message) // show pop message when successful
-      refetch()
+      router.push({
+        pathname: '/admin/catalog/categories'
+      })
     } else {
       message.error(response.data.deleteCategory.message) // show pop message when error
     }
@@ -58,6 +48,11 @@ const Page = () => {
       title: 'Parent',
       dataIndex: 'parent',
       key: 'parent',
+    },
+    {
+      title: 'Category',
+      dataIndex: 'category',
+      key: 'category',
     },
     {
       title: 'Action',
@@ -100,6 +95,17 @@ const Page = () => {
     }),
   }
 
+  let data
+
+  if (result.categories && result.categories.length > 0) {
+    // Each child in a list should have a unique "key" prop
+    data = result.categories.map((data)=>{
+      return {...data, key: data._id}
+    })
+  }
+
+  console.log(data)
+
   return (
     <Template>
       <main className="container">
@@ -115,7 +121,7 @@ const Page = () => {
               ...rowSelection,
             }}
             columns={columns}
-            dataSource={data.categories}
+            dataSource={data}
           />
         )}
       </main>
@@ -124,3 +130,26 @@ const Page = () => {
 }
 
 export default Page
+
+export async function getServerSideProps({ params, query }) {
+
+  const QUERY_CATEGORIES = `
+  {
+    categories {
+      _id
+      name
+      parent
+      category
+    }
+  }
+  `
+
+  const result = await fetchAPI(QUERY_CATEGORIES)
+  console.log('fetch result:', result)
+
+  return {
+    props: {
+      result,
+    }, // will be passed to the page component as props
+  }
+}
