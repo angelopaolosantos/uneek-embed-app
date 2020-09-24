@@ -4,11 +4,12 @@ import { useEffect } from 'react'
 
 
 const Home = ({partner_key}) => {
-  console.log(partner_key)
 
   useEffect(()=>{
-    sessionStorage['partner_key'] = partner_key
-    console.log("session key",sessionStorage['partner_key'])
+    if(typeof(partner_key) == "string") {
+      sessionStorage.setItem('partner_key',partner_key)
+    }
+    console.log("session key: ",sessionStorage.getItem('partner_key'))
   },[])
 
   return (

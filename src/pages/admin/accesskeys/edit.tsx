@@ -92,6 +92,11 @@ const Page = ({ result }) => {
         <Form.Item label="URL" name="url">
           <Input />
         </Form.Item>
+        <Form.Item label="Email Address" name="email"
+        rules={[{ required: true, message: "Please enter email address" }, { type:"email", message: "Please enter a valid email address"}]}
+        >
+          <Input />
+        </Form.Item>
         <Form.Item
           label="Status"
           name="status"
@@ -128,6 +133,7 @@ export async function getServerSideProps({ query }) {
                 status
                 key
                 url
+                email
           }
       }`;
 

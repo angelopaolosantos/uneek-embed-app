@@ -4,23 +4,31 @@ import { fetchAPI } from '../../contexts/apollo/fetchAPI'
 import { useState } from 'react'
 import { Pagination } from 'rsuite'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+
+const formatNumber = (num) => {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
 
 const paginate = (array, page_size, page_number) => {
   return array.slice((page_number - 1) * page_size, page_number * page_size)
 }
 
 const Page = ({ result, query }) => {
-
   const router = useRouter()
 
   const products = result.products
   const productsPerPage = 9
   const totalPages = Math.ceil(products.length / productsPerPage)
 
-  const [activePage, setActivePage] = useState(query.page ? parseInt(query.page) : 1)
+  const [activePage, setActivePage] = useState(
+    query.page ? parseInt(query.page) : 1
+  )
   const [pages, setPages] = useState(totalPages)
-  const [showProducts, setShowProducts] = useState(paginate(products, productsPerPage, activePage))
-  
+  const [showProducts, setShowProducts] = useState(
+    paginate(products, productsPerPage, activePage)
+  )
+
   const onPageChange = (pageNumber) => {
     setActivePage(pageNumber)
     setShowProducts(paginate(products, productsPerPage, pageNumber))
@@ -37,30 +45,37 @@ const Page = ({ result, query }) => {
   }
 
   const productsHtml = () => {
-    return showProducts.map((product)=> {
+    return showProducts.map((product) => {
       return (
-      <div key={product.sku} className="product-container">
-        <div>
-          <img className="product-img" src={product.primary_image} />
+        <div key={product.sku} className="product-container">
+          <div className="product-img-container">
+            <Link href={`/products/${product.sku}`}>
+              <img className="product-img" src={product.primary_image} />
+            </Link>
+          </div>
+          <div>
+            <Link href={`/products/${product.sku}`}>
+              <a>{product.name}</a>
+            </Link>
+          </div>
+          <div>
+            <Link href={`/products/${product.sku}`}>
+              <a>
+                <strong>{product.sku}</strong>
+              </a>
+            </Link>
+          </div>
+          {product.price > 0 && <div>MSRP: ${formatNumber(product.price)}</div>}
+          <style jsx>
+            {`
+              img.product-img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+              }
+            `}
+          </style>
         </div>
-        <div>
-          {product.name}
-        </div>
-        <div>
-          {product.sku}
-        </div>
-        <div>
-          {product.price}
-        </div>
-        <style jsx>
-        {`
-          img.product-img {
-            width: 100%;
-            height: auto;
-          }
-        `}
-      </style>
-      </div>
       )
     })
   }
@@ -71,13 +86,10 @@ const Page = ({ result, query }) => {
         <title>Uneek Jewelry - {pageTitle}</title>
       </Head>
       <main className="main-container">
+        <h1>{pageTitle}</h1>
 
-          <h1>{pageTitle}</h1>
-        
         {parent}
-        <div className="products-container">
-        {productsHtml()}
-        </div>
+        <div className="products-container">{productsHtml()}</div>
         <Pagination
           prev
           last

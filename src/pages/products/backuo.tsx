@@ -227,73 +227,7 @@ const Page = ({ result }) => {
             </div>
           </div>
         </main>
-        <Drawer
-          show={show}
-          onHide={close}
-          backdrop={true}
-          placement={"right"}
-          full={full}
-          size="xs"
-        >
-          <Drawer.Header>
-            <Drawer.Title>Inquiry for {result.product.sku}</Drawer.Title>
-          </Drawer.Header>
-          <div className="drawer-body-container">
-            <p>
-              Thank you for your interest with this item. Kindly let us know any
-              questions regarding this piece and a sales representative will
-              respond to you as soon as possible.
-            </p>
-            <Divider />
-            {inquiryError.length > 0 && (
-              <div className="error-message">
-                <Message showIcon
-                  type="error"
-                  title="Error"
-                  description={
-                    <div>
-                      <ul>
-                        {inquiryError.map((val) => (
-                          <li>{val}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  }
-                />
-              </div>
-            )}
-            <Form fluid onChange={handleChange} onSubmit={handleSubmit}>
-              <FormGroup>
-                <ControlLabel>Name</ControlLabel>
-                <FormControl name="customer" />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Email</ControlLabel>
-                <FormControl name="email" type="email" />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Message</ControlLabel>
-                <FormControl
-                  name="message"
-                  rows={5}
-                  componentClass="textarea"
-                />
-              </FormGroup>
-              <FormGroup>
-                <ButtonToolbar>
-                  <Button appearance="primary" onClick={handleSubmit} block={isMobile}>
-                    Submit
-                  </Button>
-                  <Button appearance="default" onClick={close} block={isMobile}>
-                    Cancel
-                  </Button>
-                </ButtonToolbar>
-              </FormGroup>
-              <input name="stylecode" type="hidden" value={result.product.sku} />
-            </Form>
-          </div>
-        </Drawer>
-
+        
         <style jsx>
           {`
             .myCarousel {
@@ -434,7 +368,9 @@ const Page = ({ result }) => {
 export default Page;
 
 export async function getServerSideProps({ params }) {
+  console.log(params)
   const { pid } = params;
+  console.log(pid)
   const QUERY = `
         query GetProduct($productSku: String!) {
         product(sku: $productSku) {

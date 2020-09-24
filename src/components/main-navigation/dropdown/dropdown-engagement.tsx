@@ -3,25 +3,25 @@ import Link from "next/link"
 const Dropdown = () => (
   <div className="submenu-container">
     <div>
-        <Link href="/categories/bridal-jewelry">
+        <Link href="/categories/engagement-rings">
           <a>View all engagement rings</a>
         </Link>
       <div className="submenus">
         <div className="submenu">
           <ul>
             <h3>By Setting</h3>
-            <li>Three Stone</li>
-            <li>Solitaire</li>
-            <li>Halo</li>
+            <li><Link href="/categories/engagement-rings/three-stone"><a>Three Stone</a></Link></li>
+            <li><Link href="/categories/engagement-rings/solitaire"><a>Solitaire</a></Link></li>
+            <li><Link href="/categories/engagement-rings/halo"><a>Halo</a></Link></li>
           </ul>
         </div>
         <div className="submenu">
           <ul>
             <h3>By Collection</h3>
-            <li>Silhoette</li>
-            <li>Petals</li>
-            <li>Us</li>
-            <li>Infinity</li>
+            <li><Link href="/categories/engagement-rings/silhouette-collection"><a>Silhoette</a></Link></li>
+            <li><Link href="/categories/engagement-rings/petals-collection"><a>Petals</a></Link></li>
+            <li><Link href="/categories/engagement-rings/us-collection"><a>Us</a></Link></li>
+            <li><Link href="/categories/engagement-rings/infinity-collection"><a>Infinity</a></Link></li>
           </ul>
         </div>
       </div>

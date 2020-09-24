@@ -13,25 +13,25 @@ const MainNavigation = () => {
       <div className="menu-wrapper">
         <ul className="menu">
           <li className="menu-item">
-            <Link href="/categories/bridal-jewelry"><a>Engagement Rings</a></Link>
+            <Link href="/categories/engagement-rings"><a>Engagement Rings</a></Link>
             <div className="mega-menu">
               <DropdownEngagement />
             </div>
           </li>
           <li className="menu-item">
-          <Link href="/categories/fashion-jewelry"><a>Wedding &amp; Anniversary Bands</a></Link>
+          <Link href="/categories/wedding-and-anniversary-bands"><a>Wedding &amp; Anniversary Bands</a></Link>
             <div className="mega-menu">
               <DropdownBands />
             </div>
           </li>
           <li className="menu-item">
-          <Link href="/categories/eternity-bands"><a>Fine Jewelry</a></Link>
+          <Link href="/categories/fine-jewelry"><a>Fine Jewelry</a></Link>
             <div className="mega-menu">
               <DropdownFashion />
             </div>
           </li>
           <li className="menu-item">
-          <Link href="/categories/stackables"><a>One Of A Kind</a></Link>
+          <Link href="/categories/one-of-a-kind"><a>One Of A Kind</a></Link>
             <div className="mega-menu">
               <DropdownOOAK />
             </div>

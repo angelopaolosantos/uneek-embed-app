@@ -81,6 +81,12 @@ const Page = () => {
           <Input />
         </Form.Item>
         <Form.Item
+          label="Email Address"
+          name="email"
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           label="Status"
           name="status"
           rules={[{ required: true, message: "Please input your username!" }]}

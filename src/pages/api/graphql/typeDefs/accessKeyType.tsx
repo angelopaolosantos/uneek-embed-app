@@ -10,6 +10,7 @@ export default gql`
     status: String
     key: String
     url: String
+    email: String
   }
 
   type Query {
@@ -23,6 +24,7 @@ export default gql`
     status: String
     key: String
     url: String
+    email: String
   }
 
   type Output {

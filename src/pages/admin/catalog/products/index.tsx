@@ -150,8 +150,8 @@ export async function getServerSideProps({ params, query }) {
   const { search } = query
   console.log('search', search)
   const QUERY = `
-    query SearchProducts($search: String) {
-      products(search: $search) {
+    query SearchProducts($filter: ProductInput) {
+      products(filter: $filter) {
         _id
         sku
         name
@@ -162,7 +162,7 @@ export async function getServerSideProps({ params, query }) {
     }
   `
 
-  const result = await fetchAPI(QUERY, { variables: { search } })
+  const result = await fetchAPI(QUERY, { variables: { filter: { sku: search } } })
   console.log('fetch result:', result)
 
   return {
