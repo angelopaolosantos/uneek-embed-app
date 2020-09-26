@@ -1,71 +1,17 @@
-import { useQuery, gql } from "@apollo/client";
-import _ from "lodash";
-import { Placeholder, Pagination } from "rsuite";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { Pagination } from 'rsuite'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import ReactHtmlParser from 'react-html-parser'
 
-const { Paragraph, Graph } = Placeholder;
+const formatNumber = (num) => {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
 
 const SearchResults = (props) => {
-  const search = _.trim(props.search);
-  if (search != "" && search.length > 3) {
-    const QUERY = gql`
-      query SearchProducts($search: String, $limit: Int, $page: Int) {
-        productPage(search: $search, limit: $limit, page: $page) {
-          products {
-            sku
-            name
-            price
-            images
-          }
-          count
-        }
-      }
-    `;
-    const { loading, error, data } = useQuery(QUERY, {
-      variables: {
-        search: search,
-        limit: props.limit,
-        page: props.currentPage,
-      },
-    });
-    if (loading) {
-      return (
-        <div className="products-block">
-          <div className="placeholder">
-            <Graph width={100} active />
-            <Paragraph rows={3} active />
-          </div>
-          <div className="placeholder">
-            <Graph width={100} active />
-            <Paragraph rows={3} active />
-          </div>
-          <div className="placeholder">
-            <Graph width={100} active />
-            <Paragraph rows={3} active />
-          </div>
+  const { result } = props
 
-          <style jsx>
-            {`
-              .products-block {
-                display: grid;
-                grid-template-columns: auto auto auto;
-              }
-              .placeholder {
-                padding: 15px;
-                margin: 5px;
-              }
-            `}
-          </style>
-        </div>
-      );
-    }
-
-    if (error) {
-      return <div>"Error Occured"</div>;
-    }
-
-    const listProd = data.productPage.products.map((product) => {
+  if (result) {
+    const listProd = result.products.map((product) => {
       return (
         <div key={product.sku} className="product">
           <div className="product-img">
@@ -78,12 +24,14 @@ const SearchResults = (props) => {
           <div className="product-detail">
             <div className="product-name">
               <Link href={`/products/${product.sku}`}>
-                <a>{product.name}</a>
+                <a>{ReactHtmlParser(product.name)}</a>
               </Link>
             </div>
             <div className="product-sku">{product.sku}</div>
             {product.price > 0 && (
-              <div className="product_price">{product.price}</div>
+              <div className="product_price">
+                MSRP ${formatNumber(product.price)}
+              </div>
             )}
           </div>
           <style jsx>
@@ -111,21 +59,21 @@ const SearchResults = (props) => {
             `}
           </style>
         </div>
-      );
-    });
+      )
+    })
 
-    const pages = Math.ceil(data.productPage.count / props.limit);
+    const pages = Math.ceil(result.count / props.limit)
 
-    const router = useRouter();
+    const router = useRouter()
 
     const handleOnSelect = (page) => {
-      props.setCurrentPage(page);
-      router.push(`/search?keywords=${props.search}&page=${page}`);
-    };
+      props.setCurrentPage(page)
+      router.push(`/search?keywords=${props.search}&page=${page}`)
+    }
 
     return (
       <div className="container">
-        <h3>{data.productPage.count} results found.</h3>
+        <h3>{result.count} results found.</h3>
         <div className="products-block">{listProd}</div>
         <div className="pagination">
           {pages > 1 && (
@@ -133,6 +81,7 @@ const SearchResults = (props) => {
               prev={true}
               next={true}
               pages={pages}
+              size="lg"
               maxButtons={5}
               activePage={props.currentPage}
               onSelect={handleOnSelect}
@@ -150,7 +99,7 @@ const SearchResults = (props) => {
 
             .products-block {
               display: grid;
-              grid-template-columns: 33% 33% 33%;
+              grid-template-columns: 1fr 1fr 1fr;
             }
 
             .pagination {
@@ -165,11 +114,30 @@ const SearchResults = (props) => {
           `}
         </style>
       </div>
-    );
+    )
   } else {
-    // Default content
-    return <div></div>;
+    const max = 3
+    const min = 1
+    const filename = `/images/404/Uneek_02_2020_${
+      Math.floor(Math.random() * (max - min)) + min
+    }.jpg`
+    return (
+      <div className="container">
+        <img className="hero-img" src={filename} />
+        <style jsx>
+          {`
+          .container {
+            padding: 15px 0px;
+          }
+          .hero-img {
+          width: 100%;
+          height: auto;
+        }
+          `}
+        </style>
+      </div>
+    )
   }
-};
+}
 
-export default SearchResults;
+export default SearchResults

@@ -43,7 +43,8 @@ const Page = ({ result }) => {
         let values = {
           images: [
             ...result.productById.images,
-            fileUploadResponse.data.file[1].Location, // Save 2nd Image Result 2500x2500 version
+            fileUploadResponse.data.file[0].Location, // Save 1st Image Result 650x650 version
+            //fileUploadResponse.data.file[1].Location, // Save 2nd Image Result 2500x2500 version
           ],
         }
 

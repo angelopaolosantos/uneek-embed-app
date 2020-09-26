@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { Pagination } from 'rsuite'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import ReactHtmlParser from 'react-html-parser'
 
 const formatNumber = (num) => {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -47,31 +48,46 @@ const Page = ({ result, query }) => {
   const productsHtml = () => {
     return showProducts.map((product) => {
       return (
-        <div key={product.sku} className="product-container">
-          <div className="product-img-container">
+        <div key={product.sku} className="product">
+          <div className="product-img">
             <Link href={`/products/${product.sku}`}>
-              <img className="product-img" src={product.primary_image} />
+              <img className="responsive" src={product.primary_image} />
             </Link>
           </div>
-          <div>
-            <Link href={`/products/${product.sku}`}>
-              <a>{product.name}</a>
-            </Link>
+          <div className="product-detail">
+            <div className="product-name">
+              <Link href={`/products/${product.sku}`}>
+                <a>{ReactHtmlParser(product.name)}</a>
+              </Link>
+            </div>
+            <div className="product-sku">{product.sku}</div>
+            {product.price > 0 && (
+              <div className="product_price">
+                MSRP ${formatNumber(product.price)}
+              </div>
+            )}
           </div>
-          <div>
-            <Link href={`/products/${product.sku}`}>
-              <a>
-                <strong>{product.sku}</strong>
-              </a>
-            </Link>
-          </div>
-          {product.price > 0 && <div>MSRP: ${formatNumber(product.price)}</div>}
           <style jsx>
             {`
-              img.product-img {
+              .product {
+                text-align: center;
+                padding: 15px;
+                margin: 5px;
+              }
+
+              .responsive {
                 width: 100%;
                 height: auto;
-                object-fit: cover;
+              }
+
+              .product-name {
+                font-size: 1.2em;
+              }
+              .product-sku {
+                font-size: 0.8em;
+              }
+              .product-price {
+                font-size: 1.2em;
               }
             `}
           </style>
@@ -87,19 +103,17 @@ const Page = ({ result, query }) => {
       </Head>
       <main className="main-container">
         <h1>{pageTitle}</h1>
-
-        {parent}
         <div className="products-container">{productsHtml()}</div>
         <Pagination
           prev
-          last
           next
-          first
           size="lg"
           pages={pages}
           maxButtons={5}
+          ellipsis={true}
           activePage={activePage}
           onSelect={onPageChange}
+          boundaryLinks={true}
         />
       </main>
       <style jsx>
@@ -112,8 +126,13 @@ const Page = ({ result, query }) => {
           .products-container {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            grid-gap: 25px;
           }
+
+          @media only screen and (max-width: 600px) {
+              .products-container {
+                grid-template-columns: auto auto;
+              }
+            }
         `}
       </style>
     </Template>

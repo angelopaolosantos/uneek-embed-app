@@ -1,8 +1,10 @@
+// import { AuthenticationError } from 'apollo-server-micro'\
 import { ObjectId } from 'mongodb'
 
 export default {
   Query: {
     accessKeys: async (_parent, _args, _context, _info) => {
+      // if (_context.userInfo) {
       let filter = {}
 
       if (_args.filter) {
@@ -32,6 +34,8 @@ export default {
         console.log(e.message)
         throw new Error(e.message)
       }
+      //}
+      //throw new AuthenticationError('Unauthorized Access')
     },
     accessKey: async (_parent, _args, _context, _info) => {
       try {
@@ -44,6 +48,17 @@ export default {
         throw new Error(e.message)
       }
     },
+    verifyAccessKey: async (_parent, _args, _context, _info) => {
+      try {
+        const result = await _context.db
+          .collection('access_keys')
+          .findOne({ key: _args.key, status: "enabled", type: "embed" })
+        return result
+      } catch (e) {
+        console.log(e.message)
+        throw new Error(e.message)
+      }
+    }
   },
   Mutation: {
     updateAccessKey: async (_parent, _args, _context, _info) => {

@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb'
 
 export default {
   Query: {
+    /**  http://localhost:3000/search*/
     productPage: async (_parent, _args, _context, _info) => {
       let mongoSearch = {}
       let limit = 9
@@ -26,7 +27,7 @@ export default {
           searchSku = [...searchSku, { sku: regex1 }]
         })
 
-        let searchList = { $or: [{ $and: searchName }, ...searchSku] }
+        let searchList = { $or: [{ $and: searchName }, ...searchSku], status: "active" }
         mongoSearch = searchList
         console.log(mongoSearch)
       }
@@ -39,7 +40,7 @@ export default {
       console.log('limit:', limit)
 
       const result = await _context.db
-        .collection('products2') // Change to 3
+        .collection('products')
         .find(mongoSearch)
         .sort({ sku: 1 })
         .skip(skip)
@@ -49,7 +50,7 @@ export default {
       console.log(result)
 
       const pageCount = await _context.db
-        .collection('products2') // Change to 3
+        .collection('products') 
         .find(mongoSearch)
         .count()
 
@@ -94,6 +95,7 @@ export default {
       const result = await _context.db.collection('products').findOne(_args)
       return result
     },
+    /** /categories/[...categories] */
     products: async (_parent, _args, _context, _info) => {
       let filter = _args.filter
 
@@ -108,18 +110,21 @@ export default {
         .toArray()
       return result
     },
+    /** Admin */
     productsSearch: async (_parent, _args, _context, _info) => {
       let search = {}
       if (_args.search) {
         const regex1 = new RegExp(`\\b(${_args.search})\\b`, 'i')
         search = { ...search, sku: regex1 }
       }
+
       const result = await _context.db
         .collection('products')
         .find(search)
         .toArray()
       return result
     },
+    /** Admin */
     productById: async (_parent, _args, _context, _info) => {
       console.log(_args)
       const result = await _context.db

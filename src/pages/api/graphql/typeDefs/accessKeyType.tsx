@@ -16,6 +16,7 @@ export default gql`
   type Query {
     accessKeys(filter: AccessKeyInput): [AccessKey]
     accessKey(id: ID!): AccessKey
+    verifyAccessKey(key: String): AccessKey
   }
 
   input AccessKeyInput {

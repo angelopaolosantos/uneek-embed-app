@@ -18,7 +18,7 @@ const Dropdown = () => (
         <div className="submenu">
           <ul>
             <h3>By Collection</h3>
-            <li><Link href="/categories/engagement-rings/silhouette-collection"><a>Silhoette</a></Link></li>
+            <li><Link href="/categories/engagement-rings/silhouette-collection"><a>Silhouette</a></Link></li>
             <li><Link href="/categories/engagement-rings/petals-collection"><a>Petals</a></Link></li>
             <li><Link href="/categories/engagement-rings/us-collection"><a>Us</a></Link></li>
             <li><Link href="/categories/engagement-rings/infinity-collection"><a>Infinity</a></Link></li>
@@ -27,12 +27,12 @@ const Dropdown = () => (
       </div>
     </div>
     <div className="image-showcase">
-      <img src="/images/navigation/engagement-showcase-1.jpg" />
-      <p>Image Showcase Text here!</p>
+    <Link href="/categories/engagement-rings/us-collection"><a><img src="/images/navigation/engagement-showcase-1.jpg" /></a></Link>
+    <p><Link href="/categories/engagement-rings/us-collection"><a>Us Collection</a></Link></p>
     </div>
     <div className="image-showcase">
-      <img src="/images/navigation/engagement-showcase-2.jpg" />
-      <p>Image Showcase Text here!</p>
+    <Link href="/categories/engagement-rings/petals-collection"><a><img src="/images/navigation/engagement-showcase-2.jpg" /></a></Link>
+      <p><Link href="/categories/engagement-rings/petals-collection"><a>Petals Collection</a></Link></p>
     </div>
   </div>
 );

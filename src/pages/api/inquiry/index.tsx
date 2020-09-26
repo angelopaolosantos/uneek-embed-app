@@ -1,6 +1,13 @@
 import nodemailer from 'nodemailer'
 import { MongoClient } from 'mongodb'
 
+let db = null
+const dbName = 'uneekdb'
+const dbClient = new MongoClient(process.env.NEXT_PUBLIC_MONGO_DB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+
 export default async (req, res) => {
   let mailOptions = null
   let mailOptionsRetailer = null
@@ -24,16 +31,14 @@ export default async (req, res) => {
     },
   })
 
-  const dbClient = new MongoClient(process.env.NEXT_PUBLIC_MONGO_DB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-
   try {
-    if (!dbClient.isConnected()) await dbClient.connect()
-    let db = dbClient.db('uneekdb') // database name
-
-    console.log('connected to mongo database: ', dbClient.isConnected())
+    if (!dbClient.isConnected()) {
+      await dbClient.connect()
+      db = dbClient.db(dbName) // database name
+      console.log('connected to mongo: ', dbClient.isConnected())
+    } else {
+      console.log('using cached mongo')
+    }
 
     let result = await db
       .collection('access_keys')
