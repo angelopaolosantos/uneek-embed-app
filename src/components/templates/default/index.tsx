@@ -1,11 +1,14 @@
 import Header from '../../header'
 import Footer from '../../footer'
 import MainNavigation from '../../main-navigation'
+import Link from 'next/link'
 
 const Template = ({children}) => (
   <div className="container">
     <div className="content-wrapper">
-      <Header displayText="Uneek Launches New Website!" />
+      <Header>
+        Follow <strong>Uneek</strong> on <Link href="https://www.instagram.com/uneekjewelry/" ><a target="_blank"><em>Instagram!</em></a></Link>
+      </Header>
       <MainNavigation />
       <div className="content">
       {children}

@@ -35,12 +35,12 @@ const Dropdown = () => (
       </div>
     </div>
     <div className="image-showcase">
-      <img src="/images/navigation/engagement-showcase-1.jpg" />
-      <p>Image Showcase Text here!</p>
+      <img src="/images/navigation/wedding-showcase-1.jpg" />
+      <p><strong>Explore Wedding Bands</strong></p>
     </div>
     <div className="image-showcase">
-      <img src="/images/navigation/engagement-showcase-2.jpg" />
-      <p>Image Showcase Text here!</p>
+    <Link href="/categories/wedding-and-anniversary-bands/eternity-bands"><img src="/images/navigation/wedding-showcase-2.jpg" /></Link>
+      <p><Link href="/categories/wedding-and-anniversary-bands/eternity-bands"><a><strong>Eternity Bands</strong></a></Link></p>
     </div>
   </div>
 )

@@ -4,10 +4,12 @@ import { fetchAPI } from '../../../../contexts/apollo/fetchAPI'
 import { gql, useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import Template from '../../../../components/admin/templates/default'
+import auth0, { redirect } from '../../../../utils/auth0'
 
 const { Search } = Input
 
-const Page = ({ result }) => {
+const Page = ({ result, session }) => {
   const router = useRouter()
 
   console.log(result)
@@ -104,49 +106,59 @@ const Page = ({ result }) => {
 
   if (result.products && result.products.length > 0) {
     // Each child in a list should have a unique "key" prop
-    data = result.products.map((data)=>{
-      return {...data, key: data.sku}
+    data = result.products.map((data) => {
+      return { ...data, key: data.sku }
     })
   }
 
   return (
-    <div>
-      <h1>Products</h1>
+    <Template session={session}>
       <div>
-      <Search
-              placeholder="input search text"
-              onSearch={(value) => {
-                console.log(value)
-                router.push({
-                  pathname: '/admin/catalog/products',
-                  query: { search: value }
-                })
-              }
-              }
-              style={{ width: 200 }}
-            />
-      <Link href="/admin/catalog/products/add">
-        <Button>Add Item</Button>
-      </Link>
+        <h1>Products</h1>
+        <div>
+          <Link href="/admin/catalog/products/add">
+            <Button>Add New Item</Button>
+          </Link>
+          <br />
+          <br />
+          <Search
+            placeholder="input search text"
+            onSearch={(value) => {
+              console.log(value)
+              router.push({
+                pathname: '/admin/catalog/products',
+                query: { search: value },
+              })
+            }}
+            style={{ width: 200 }}
+          />
+        </div>
+        <Divider />
+        {data && (
+          <Table
+            rowSelection={{
+              type: 'checkbox',
+              ...rowSelection,
+            }}
+            columns={columns}
+            dataSource={data}
+          />
+        )}
       </div>
-      <Divider />
-      {data && (
-        <Table
-          rowSelection={{
-            type: 'checkbox',
-            ...rowSelection,
-          }}
-          columns={columns}
-          dataSource={data}
-        />
-      )}
-    </div>
+    </Template>
   )
 }
 
 export default Page
 
-export async function getServerSideProps({ params, query }) {
+export async function getServerSideProps({ query, req, res }) {
+  const session = await auth0.getSession(req)
+  // check if user is logged in
+  if (!session && res) {
+    redirect(res, '/admin')
+    return {}
+  }
+
   const { search } = query
   console.log('search', search)
   const QUERY = `
@@ -162,12 +174,15 @@ export async function getServerSideProps({ params, query }) {
     }
   `
 
-  const result = await fetchAPI(QUERY, { variables: { filter: { sku: search } } })
+  const result = await fetchAPI(QUERY, {
+    variables: { filter: { sku: search } },
+  })
   console.log('fetch result:', result)
 
   return {
     props: {
       result,
+      session,
     }, // will be passed to the page component as props
   }
 }

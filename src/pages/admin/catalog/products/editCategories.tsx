@@ -13,10 +13,13 @@ import {
 } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Template from '../../../../components/admin/templates/default'
+import auth0, { redirect } from '../../../../utils/auth0'
+
 const { Option } = Select
 const { TextArea } = Input
 
-const Page = ({ result }) => {
+const Page = ({ result, session }) => {
   console.log(result)
 
   const router = useRouter()
@@ -137,6 +140,7 @@ const Page = ({ result }) => {
   }
 
   return (
+    <Template session={session} >
     <div className="container">
       <a
         onClick={() => {
@@ -145,7 +149,7 @@ const Page = ({ result }) => {
           )
         }}
       >
-        Return to edit product
+        Return to Edit Product
       </a>
       <h1>Edit Product Categories</h1>
       <div>
@@ -174,12 +178,20 @@ const Page = ({ result }) => {
         dataSource={categoryData}
       />
     </div>
+    </Template>
   )
 }
 
 export default Page
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ query, req, res }) {
+  const session = await auth0.getSession(req)
+  // check if user is logged in
+  if (!session && res) {
+    redirect(res, '/admin')
+    return {}
+  }
+  
   const { id } = query
 
   const QUERY = `
@@ -205,6 +217,7 @@ export async function getServerSideProps({ query }) {
   return {
     props: {
       result,
+      session
     }, // will be passed to the page component as props
   }
 }

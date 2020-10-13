@@ -29,8 +29,7 @@ export default gql`
     meta_keyword: String
     meta_description: String
     meta_title: String
-    related: [ID]
-    sort_level: Int
+    related_products: [Product]
   }
 
   type Products {

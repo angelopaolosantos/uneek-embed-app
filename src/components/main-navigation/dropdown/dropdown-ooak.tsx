@@ -86,12 +86,12 @@ const Dropdown = () => (
         </div>
       </div>
       <div className="image-showcase">
-        <img src="/images/navigation/fashion-showcase-1.jpg" />
-        <p>Image Showcase Text here!</p>
+      <Link href="/categories/one-of-a-kind/colored-diamond"><img src="/images/navigation/ooak-showcase-1.jpg" /></Link>
+        <p><Link href="/categories/one-of-a-kind/colored-diamond"><a><strong>Explore Colored Diamonds</strong></a></Link></p>
       </div>
       <div className="image-showcase">
-        <img src="/images/navigation/fashion-showcase-2.jpg" />
-        <p>Image Showcase Text here!</p>
+      <Link href="/categories/one-of-a-kind/exotic"><img src="/images/navigation/ooak-showcase-2.jpg" /></Link>
+        <p><Link href="/categories/one-of-a-kind/exotic"><a><strong>View Exotics</strong></a></Link></p>
       </div>
     </div>
   </div>

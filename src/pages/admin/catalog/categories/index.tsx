@@ -1,14 +1,13 @@
 import { Table, Space, Button, Divider, Popconfirm, message } from 'antd'
 import Link from 'next/link'
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
-import Template from '../../../../components/templates/admin'
 import { fetchAPI } from '../../../../contexts/apollo/fetchAPI'
+import Template from '../../../../components/admin/templates/default'
+import auth0, { redirect } from '../../../../utils/auth0'
 
-const Page = ({ result }) => {
-
+const Page = ({ result, session }) => {
   const router = useRouter()
-
   const DELETE_CATEGORY = gql`
     mutation DeleteCategory($id: ID!) {
       deleteCategory(id: $id) {
@@ -17,13 +16,12 @@ const Page = ({ result }) => {
       }
     }
   `
-
   const [deleteCategory] = useMutation(DELETE_CATEGORY)
 
   const onDelete = async (id: string) => {
     const response = await deleteCategory({ variables: { id } })
 
-    if (response.data.deleteCategory.success) {
+    if (response?.data.deleteCategory.success) {
       message.success(response.data.deleteCategory.message) // show pop message when successful
       router.push({
         pathname: '/admin/catalog/categories'
@@ -62,6 +60,10 @@ const Page = ({ result }) => {
           <Space size="middle">
             <Link href={`/admin/catalog/categories/edit/?id=${record._id}`}>
               <Button>Update</Button>
+            </Link>
+
+            <Link href={`/admin/catalog/categories/manage-products/?id=${record._id}`}>
+              <Button>Manage Products</Button>
             </Link>
 
             <Popconfirm
@@ -104,10 +106,8 @@ const Page = ({ result }) => {
     })
   }
 
-  console.log(data)
-
   return (
-    <Template>
+    <Template session={session}>
       <main className="container">
         <h1>Product Categories</h1>
         <Link href="/admin/catalog/categories/add">
@@ -131,7 +131,14 @@ const Page = ({ result }) => {
 
 export default Page
 
-export async function getServerSideProps({ params, query }) {
+export async function getServerSideProps({ req, res }) {
+
+  const session = await auth0.getSession(req)
+  // check if user is logged in
+  if (!session && res) {
+    redirect(res, '/admin')
+    return {}
+  }
 
   const QUERY_CATEGORIES = `
   {
@@ -145,11 +152,11 @@ export async function getServerSideProps({ params, query }) {
   `
 
   const result = await fetchAPI(QUERY_CATEGORIES)
-  console.log('fetch result:', result)
 
   return {
     props: {
       result,
+      session
     }, // will be passed to the page component as props
   }
 }

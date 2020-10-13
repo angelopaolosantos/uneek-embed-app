@@ -1,7 +1,8 @@
 import { Table, Space, Button, Divider, Popconfirm, message } from 'antd'
 import Link from 'next/link'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import Template from '../../../components/templates/admin'
+import Template from '../../../components/admin/templates/default'
+import auth0, { redirect } from '../../../utils/auth0'
 
 const QUERY_INQUIRIES = gql`
   {
@@ -18,10 +19,10 @@ const QUERY_INQUIRIES = gql`
   }
 `
 
-const Page = () => {
+const Page = ({session}) => {
   const { loading, error, data, refetch } = useQuery(QUERY_INQUIRIES, {
     variables: {},
-    pollInterval:500,
+    pollInterval:1000,
   })
   
   const DELETE_INQUIRY = gql`
@@ -116,7 +117,7 @@ const Page = () => {
   }
 
   return (
-    <Template>
+    <Template session={session}>
       <h1>Inquiries</h1>
       <Divider />
       {data && (
@@ -134,3 +135,18 @@ const Page = () => {
 }
 
 export default Page
+
+export async function getServerSideProps({ query, req, res }) {
+  const session = await auth0.getSession(req)
+  // check if user is logged in
+  if (!session && res) {
+    redirect(res, '/admin')
+    return {}
+  }
+
+  return {
+    props: {
+      session
+    }
+  }
+}

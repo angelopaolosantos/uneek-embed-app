@@ -3,10 +3,13 @@ import { gql, useMutation } from "@apollo/client";
 import { Form, Input, Button, Divider, Select, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Template from '../../../../components/admin/templates/default'
+import auth0, { redirect } from '../../../../utils/auth0'
+
 const { Option } = Select;
 const { TextArea } = Input;
 
-const Page = ({ result }) => {
+const Page = ({ result, session }) => {
   console.log(result);
 
   const router = useRouter();
@@ -47,7 +50,9 @@ const Page = ({ result }) => {
   };
 
   return (
+    <Template session={session} >
     <div className="container">
+    <Link href="/admin/catalog/products"><a>Go Back to Products</a></Link>
       <h1>Edit Product</h1>
       <Form
         {...layout}
@@ -157,7 +162,7 @@ const Page = ({ result }) => {
       <div>
       <h3>Images</h3>
       <img src={result.productById.images} width="250" />
-      <Link href={`/admin/catalog/products/editImages/?id=${result.productById._id}`}><Button>Update Images</Button></Link>
+      <Link href={`/admin/catalog/products/images/?id=${result.productById._id}`}><Button>Update Images</Button></Link>
       </div>
       <Divider></Divider>
       <div><h3>Categories</h3> <ul>{ result.productById.category.map((data)=>{
@@ -168,12 +173,20 @@ const Page = ({ result }) => {
       <Link href={`/admin/catalog/products/editCategories/?id=${result.productById._id}`}><Button>Update Categories</Button></Link>
       </div>
     </div>
+    </Template>
   );
 };
 
 export default Page;
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ query, res, req }) {
+  const session = await auth0.getSession(req)
+  // check if user is logged in
+  if (!session && res) {
+    redirect(res, '/admin')
+    return {}
+  }
+  
   const { id } = query;
 
   const QUERY = `
@@ -209,6 +222,7 @@ export async function getServerSideProps({ query }) {
   return {
     props: {
       result,
+      session
     }, // will be passed to the page component as props
   };
 }

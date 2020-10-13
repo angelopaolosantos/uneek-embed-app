@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
-const Header = ({displayText}) => (
+const Header = ({children}) => (
     <div className="container">
-        <div className="top-message"><p>{displayText}</p></div>
+        <div className="top-message">{children}</div>
         <div className="brand-logo"><Link href="/"><a><img src="/images/UNEEK_LOGO_WEB_150px.png" /></a></Link></div>
     <style jsx>{`
         .top-message {

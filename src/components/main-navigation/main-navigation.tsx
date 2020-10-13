@@ -1,8 +1,6 @@
 import { Icon } from "rsuite";
 import DropdownEngagement from "./dropdown/dropdown-engagement";
 import DropdownFashion from "./dropdown/dropdown-fashion";
-import DropdownEternity from "./dropdown/dropdown-eternity";
-import DropdownStackables from "./dropdown/dropdown-stackables";
 import DropdownBands from "./dropdown/dropdown-bands"
 import DropdownOOAK from "./dropdown/dropdown-ooak";
 import Link from "next/link";

@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 
-const dbClient = new MongoClient(process.env.NEXT_PUBLIC_MONGO_DB_URI, {
+const dbClient = new MongoClient(process.env.MONGO_DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -18,7 +18,7 @@ const connect = async () => {
       console.log(err.stack)
     }
   } else {
-    //console.log('using cached mongo')
+    console.log('using cached mongo')
   }
 }
 

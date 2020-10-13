@@ -1,71 +1,92 @@
-import { Form, Input, Button, Checkbox } from "antd";
+import { Button } from 'antd'
+import Link from 'next/link'
+import auth0 from '../../utils/auth0'
+import Template from '../../components/admin/templates/default'
 
-const Page = () => {
-  const onFinish = (values) => {
-    console.log("Success: ", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed: ", errorInfo);
-  };
-
-  const layout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 18},
-  };
-  const tailLayout = {
-    wrapperCol: { offset: 6, span: 18 },
-  };
-
+const Page = ({ session }) => {
   return (
-    <div>
-      <h1>Admin Page</h1>
-      <p>Create login page and redirect unauthorized login</p>
-      <div className="form-container" >
-          <div>
-      <Form
-        {...layout}
-        name="basic"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: "Please input your username!" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
-        <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-      </div>
-      </div>
+    <Template session={session}>
+      {session ? (
+        <div>
+          <h1>Admin Page</h1>
+          <p>Click links below to </p>
+          <ul>
+            <li>
+              <Link href="/admin/accesskeys">
+                <a>Access Keys</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/admin/catalog/products">
+                <a>Products</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/admin/catalog/categories">
+                <a>Categories</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/admin/inquiries">
+                <a>Inquiries</a>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      ) : (
+        <div className="login-container">
+          <div className="login-box">
+            <Link href="/admin">
+              <a>
+                <img
+                  src="https://uneek-web-assets.s3-us-west-1.amazonaws.com/uneek-embed/UNEEK_OFFICIAL_LOGO.png"
+                  width="150"
+                />
+              </a>
+            </Link>
+            <div>
+              <p>Log into Admin Panel</p>
+            </div>
+            <Button>
+              <Link href="/api/auth0/login">
+                <a>Login</a>
+              </Link>
+            </Button>
+          </div>
+        </div>
+      )}
       <style jsx>{`
-          .form-container {
-              padding: 1rem;
-              max-width: 400px;
-              border: 1px solid #d2d2d2;
-              margin: 1rem auto;
-          }
-          `}</style>
-    </div>
-  );
-};
+        .login-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .login-box {
+          max-width: 1000px;
+          border: 1px solid #d2d2d2;
+          text-align: center;
+          padding: 50px;
+        }
+      `}</style>
+    </Template>
+  )
+}
 
-export default Page;
+export default Page
+
+export async function getServerSideProps({ req, res }) {
+  const session = await auth0.getSession(req)
+
+  // check if user is logged in
+  if (session) {
+    const tokenCache = auth0.tokenCache(req, res)
+    const { accessToken } = await tokenCache.getAccessToken({
+      /** Add additional scopes here
+       *  scopes: [`delete:file`],
+       * */
+      refresh: true,
+    })
+  }
+
+  return { props: { session } }
+}

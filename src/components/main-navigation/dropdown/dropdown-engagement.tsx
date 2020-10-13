@@ -27,12 +27,12 @@ const Dropdown = () => (
       </div>
     </div>
     <div className="image-showcase">
-    <Link href="/categories/engagement-rings/us-collection"><a><img src="/images/navigation/engagement-showcase-1.jpg" /></a></Link>
-    <p><Link href="/categories/engagement-rings/us-collection"><a>Us Collection</a></Link></p>
+    <Link href="/categories/engagement-rings/us-collection"><a><img src="/images/navigation/collection-showcase-1.jpg" /></a></Link>
+    <p><Link href="/categories/engagement-rings/us-collection"><a><strong>Us Collection</strong></a></Link></p>
     </div>
     <div className="image-showcase">
-    <Link href="/categories/engagement-rings/petals-collection"><a><img src="/images/navigation/engagement-showcase-2.jpg" /></a></Link>
-      <p><Link href="/categories/engagement-rings/petals-collection"><a>Petals Collection</a></Link></p>
+    <Link href="/categories/engagement-rings/petals-collection"><a><img src="/images/navigation/collection-showcase-2.jpg" /></a></Link>
+      <p><Link href="/categories/engagement-rings/petals-collection"><a><strong>Petals Collection</strong></a></Link></p>
     </div>
   </div>
 );

@@ -12,10 +12,10 @@ export async function fetchAPI(query, { variables = {} } = {}) {
         variables,
       }),
     })
-
-    //console.log("from fetchAPI:", res)
-  
+    
+    // Get response in JSON format
     const json = await res.json()
+    
     if (json.errors) {
       const errorMessages = {messages: json.errors, error: true}
       
@@ -23,5 +23,6 @@ export async function fetchAPI(query, { variables = {} } = {}) {
       // throw new Error('Failed to fetch API')
       return errorMessages
     }
+    
     return json.data
   }

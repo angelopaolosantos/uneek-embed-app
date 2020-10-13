@@ -2,7 +2,8 @@ import { Table, Space, Button, Divider, Popconfirm, message } from 'antd'
 import Link from 'next/link'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import Template from '../../../components/templates/admin'
+import Template from '../../../components/admin/templates/default'
+import auth0, { redirect } from '../../../utils/auth0'
 
 const QUERY_ACCESS_KEYS = gql`
   query GetAccessKeys($filter: AccessKeyInput) {
@@ -17,10 +18,10 @@ const QUERY_ACCESS_KEYS = gql`
   }
 `
 
-const Page = () => {
+const Page = ({ session }) => {
   const { loading, error, data, refetch } = useQuery(QUERY_ACCESS_KEYS, {
     variables: { filter: null },
-    pollInterval:500,
+    // pollInterval: 1000,
   })
 
   const router = useRouter()
@@ -120,13 +121,20 @@ const Page = () => {
   }
 
   return (
-    <Template>
-      <main className="container">
+    <Template session={session}>
+      <div className="container">
         <h1>Access Keys</h1>
+        <p>
+          Manage access keys for web embed access. Retailer is required to
+          provide URL where the embedded page will appear.
+        </p>
+        <Divider />
         <Link href="/admin/accesskeys/add">
           <Button>Add Item</Button>
         </Link>
-        <Divider />
+        
+          <Button onClick={()=>refetch()}>Refresh</Button>
+      
         {data && (
           <Table
             rowSelection={{
@@ -137,9 +145,21 @@ const Page = () => {
             dataSource={data.accessKeys}
           />
         )}
-      </main>
+      </div>
     </Template>
   )
 }
 
 export default Page
+
+export async function getServerSideProps({ req, res }) {
+  
+  const session = await auth0.getSession(req)
+  // check if user is logged in
+  if (!session && res) {
+    redirect(res, '/admin')
+    return {}
+  }
+
+  return { props: { session } }
+}

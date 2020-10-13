@@ -2,9 +2,11 @@ import { gql, useMutation } from "@apollo/client";
 import { Form, Input, Button, Divider, Select, message } from "antd";
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Template from '../../../../components/admin/templates/default'
+import auth0, { redirect } from '../../../../utils/auth0'
 const { Option } = Select
 
-const Page = () => {
+const Page = ({session}) => {
   const router = useRouter()
 
   const CREATE_CATEGORY = gql`
@@ -42,7 +44,11 @@ const Page = () => {
   };
 
   return (
+    <Template session={session}>
     <div className="container">
+    <Link href="/admin/catalog/categories">
+          <a>Go back to Categories</a>
+        </Link>
         <h1>Add new category item</h1>
         <Divider />
       <Form
@@ -80,7 +86,23 @@ const Page = () => {
         </Form.Item>
       </Form>
     </div>
+    </Template>
   );
 };
 
 export default Page
+
+export async function getServerSideProps({ query, req, res }) {
+  const session = await auth0.getSession(req)
+  // check if user is logged in
+  if (!session && res) {
+    redirect(res, '/admin')
+    return {}
+  }
+
+  return {
+    props: {
+      session
+    }
+  }
+}

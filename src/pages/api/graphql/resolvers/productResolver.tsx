@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb'
+import { AuthenticationError } from 'apollo-server-micro'
 
 export default {
   Query: {
@@ -97,13 +98,17 @@ export default {
     },
     /** /categories/[...categories] */
     products: async (_parent, _args, _context, _info) => {
+      /*if(_context.auth?.permissions.includes("read:products")){
+      console.log(_context.auth.permissions)
+      } else {
+        throw new AuthenticationError('Unauthorized Access')
+      }*/
       let filter = _args.filter
 
-      if (filter.category) {
+      if (filter && "category" in filter) {
         filter.category = { $all: filter.category }
       }
-      
-      if (_args.filter.category) {}
+
       const result = await _context.db
         .collection('products')
         .find(filter)

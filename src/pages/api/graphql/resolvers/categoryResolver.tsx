@@ -3,9 +3,10 @@ import { ObjectId } from 'mongodb'
 export default {
   Query: {
     category: async (_parent, _args, _context, _info) => {
-
       try {
-        const result = await _context.db.collection('categories2').findOne({ _id: ObjectId(_args.id) })
+        const result = await _context.db
+          .collection('categories2')
+          .findOne({ _id: ObjectId(_args.id) })
         return result
       } catch (e) {
         console.log(e.message)
@@ -59,7 +60,7 @@ export default {
       } catch (e) {
         return {
           success: false,
-          message: 'Error occured, Item not updated.',
+          message: `Error occured, Item not updated.${e.message}`,
         }
       }
     },
@@ -115,5 +116,137 @@ export default {
         }
       }
     },
+    updateCategoryProducts: async (_parent, _args, _context, _info) => {
+      let category = _args.category
+      try {
+        // Get products
+        const productsData = await _context.db
+          .collection('products')
+          .find({ category: { $all: [category] } })
+          .toArray()
+
+        // Get Category products
+        const categoryData = await _context.db
+          .collection('categories2')
+          .findOne({ category })
+
+        // update data
+
+        if (Array.isArray(categoryData.products)) {
+          console.log('checking...')
+          let currentProducts = categoryData.products
+          let newProducts = []
+
+          productsData.forEach((product) => {
+            const productIndex = currentProducts.findIndex(
+              (object) => object.sku == product.sku
+            )
+
+            if (productIndex == -1) {
+              // add product to newProducts Array
+              newProducts = [...newProducts, product]
+            } else {
+              console.log(product.sku, ': Found ', productIndex)
+              currentProducts[productIndex] = product // update existing product details
+            }
+          })
+
+          /** Check currentProducts, remove items not found in productsData  */
+          const newCurrentProducts = currentProducts.filter((product) => {
+            const productIndex = productsData.findIndex(
+              (object) => object.sku == product.sku
+            )
+
+            if (productIndex == -1) {
+              // Item not found, remove from list
+              return false
+            }
+            return true
+          })
+
+          const newCategoryProducts = [...newCurrentProducts, ...newProducts]
+
+          //console.log("NewCatProd:", newCategoryProducts)
+
+          const response = await _context.db
+            .collection('categories2')
+            .updateOne(
+              { category },
+              {
+                $set: {
+                  products: newCategoryProducts,
+                },
+              }
+            )
+        } else {
+          const response = await _context.db
+            .collection('categories2')
+            .updateOne(
+              { category },
+              {
+                $set: {
+                  products: productsData,
+                },
+              }
+            )
+        }
+
+        return {
+          success: true,
+          message: 'Category products updated',
+        }
+      } catch (e) {
+        console.log(e.message)
+        // throw new Error(e.message)
+        return {
+          success: false,
+          message: 'Error occured, category products not updated',
+        }
+      }
+    },/*
+    updateCategory2: async (_parent, _args, _context, _info) => {
+      console.log(_args.input)
+
+      return {
+        success: false,
+        message: 'Item was not updated.',
+      }
+      /*
+      try {
+        const response = await _context.db.collection('categories2').updateOne(
+          { _id: ObjectId(_args.id) },
+          {
+            $set: {
+              products: _args.input,
+            },
+          }
+        )
+
+        console.log(response)
+
+        if (response.matchedCount > 0) {
+          if (response.modifiedCount > 0) {
+            return {
+              success: true,
+              message: 'Item updated!',
+            }
+          }
+          return {
+            success: true,
+            message: 'Item found. No change made.',
+          }
+        }
+
+        return {
+          success: false,
+          message: 'Item was not updated.',
+        }
+      } catch (e) {
+        return {
+          success: false,
+          message: `Error occured, Item not updated.${e.message}`,
+        }
+      }
+    },*/
   },
 }
