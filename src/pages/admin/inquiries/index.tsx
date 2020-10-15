@@ -8,7 +8,8 @@ const QUERY_INQUIRIES = gql`
   {
     inquiries {
       _id
-      customer
+      firstname
+      lastname
       email
       message
       product {
@@ -53,9 +54,9 @@ const Page = ({session}) => {
       dataIndex: 'customer',
       key: 'customer',
       render: (text, record) => (
-        <Link href={`/admin/retailers/edit/?id=${record._id}`}>
-          <a>{text}</a>
-        </Link>
+        
+        <strong>{(`${record.firstname} ${record.lastname}`).trim()}</strong>
+        
       ),
     },
     {

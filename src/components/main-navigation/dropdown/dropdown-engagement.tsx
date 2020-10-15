@@ -10,9 +10,10 @@ const Dropdown = () => (
         <div className="submenu">
           <ul>
             <h3>By Setting</h3>
-            <li><Link href="/categories/engagement-rings/three-stone"><a>Three Stone</a></Link></li>
-            <li><Link href="/categories/engagement-rings/solitaire"><a>Solitaire</a></Link></li>
-            <li><Link href="/categories/engagement-rings/halo"><a>Halo</a></Link></li>
+            <li><Link href="/categories/engagement-rings/halo"><a>Halo <img src="/images/halo.png" width={40} /></a></Link></li>
+            <li><Link href="/categories/engagement-rings/classic"><a>Classic <img src="/images/classic.png" width={40} /></a></Link></li>
+            <li><Link href="/categories/engagement-rings/three-stone"><a>Three Stone <img src="/images/three-stone.png" width={40} /></a></Link></li>
+            <li><Link href="/categories/engagement-rings/solitaire"><a>Solitaire <img src="/images/solitaire.png" width={40} /></a></Link></li>
           </ul>
         </div>
         <div className="submenu">

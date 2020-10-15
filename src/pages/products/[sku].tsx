@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Icon, Breadcrumb, Divider } from 'rsuite'
 import Head from 'next/head'
 import Template from '../../components/templates/default'
-import { fetchAPI } from '../../contexts/apollo/fetchAPI'
+// import { fetchAPI } from '../../contexts/apollo/fetchAPI'
 import {
   CarouselProvider,
   Slider,
@@ -15,11 +15,7 @@ import {
 import { Drawer, Form, Button, Input, message } from 'antd'
 import ReactHtmlParser from 'react-html-parser'
 import { getProducts, getProduct } from '../api/direct'
-
-const formatNumber = (num) => {
-  // format number with comma
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-}
+import { formatNumber } from '../../utils/uneek-utilities'
 
 const Page = ({ product }) => {
   const [form] = Form.useForm()

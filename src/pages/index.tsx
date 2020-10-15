@@ -1,70 +1,71 @@
 import Head from 'next/head'
 import Template from '../components/templates/default'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { fetchAPI } from '../contexts/apollo/fetchAPI'
 import Link from 'next/link'
-import { Button, IconButton, ButtonGroup, ButtonToolbar, Divider } from 'rsuite';
+import { Button, Divider } from 'rsuite'
+import ReactHtmlParser from 'react-html-parser'
+import {
+  formatNumber,
+} from '../utils/uneek-utilities'
 
-const getParentUrl = () => {
-  var isInIframe = parent !== window,
-    parentUrl = null
+const Home = ({ query, result }) => {
+  const popularProducts = result.products
 
-  if (isInIframe) {
-    parentUrl = document.referrer
-  }
-
-  return parentUrl
-}
-
-const VERIFY_ACCESS_KEY = `
-  query VerifyAccessKey($key: String!) {
-    verifyAccessKey(key: $key) {
-      key
-      url
+  const productsHtml = () => {
+    if (popularProducts) {
+      return popularProducts.map((product) => {
+        return (
+          <div key={product.sku} className="product">
+            <div className="product-img">
+              <Link href={`/products/${product.sku}`}>
+                <a>
+                  <img className="responsive" src={product.primary_image} />
+                </a>
+              </Link>
+            </div>
+            <div className="product-detail">
+              <div className="product-name">
+                <Link href={`/products/${product.sku}`}>
+                  <a>{ReactHtmlParser(product.name)}</a>
+                </Link>
+              </div>
+              <div className="product-sku">{product.sku}</div>
+              {product.price > 0 && (
+                <div className="product_price">
+                  MSRP ${formatNumber(product.price)}
+                </div>
+              )}
+            </div>
+            <style jsx>
+              {`
+                .product {
+                  text-align: center;
+                  padding: 15px;
+                  margin: 5px;
+                }
+                .responsive {
+                  width: 100%;
+                  height: auto;
+                }
+                .product-name {
+                  font-size: 1em;
+                }
+                .product-sku {
+                  font-size: 0.8em;
+                }
+                .product-price {
+                  font-size: 1.2em;
+                }
+              `}
+            </style>
+          </div>
+        )
+      })
     }
   }
-`
-
-const Home = ({ query }) => {
-  const router = useRouter()
-
-  useEffect(() => {
-    const parentUrl = getParentUrl()
-
-    if (query.partner_key) {
-      // check if partner key is valid
-      fetchAPI(VERIFY_ACCESS_KEY, { variables: { key: query.partner_key } })
-        .then((data) => {
-          if (data.verifyAccessKey) {
-            if (data.verifyAccessKey.url == parentUrl) {
-              // Parent Website and Retailer is authorized
-              console.log('Parent Website and Retailer is authorized')
-              sessionStorage.setItem('partner_key', data.verifyAccessKey.key)
-            } else {
-              // Parent Website and Retailer is not authorized. Block access
-              console.log('Website is not authorized')
-              router.push('/unauthorized')
-            }
-          } else {
-            // Retailer not authorized
-            console.log('Invalid access key')
-            router.push('/unauthorized')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-          // Retailer not authorized
-          router.push('/unauthorized')
-        })
-    } else {
-      // no partner key supplied, uncomment below in production
-      // router.push("/unauthorized")
-    }
-  }, [])
 
   return (
-    <Template>
+    <Template partnerKey={query.partner_key}>
       <Head>
         <meta name="description" content="Description"></meta>
         <meta name="keywords" content="Keywords"></meta>
@@ -73,19 +74,23 @@ const Home = ({ query }) => {
       <main>
         <section className="uneek-section">
           <div className="section1">
-          <div className="uneek-section-content">
+            <div className="uneek-section-content">
               <h1>One Of A Kind</h1>
               <p>Uneeks Signature Line</p>
-              <Link href="/categories/one-of-a-kind"><Button>Explore</Button></Link>
+              <Link href="/categories/one-of-a-kind">
+                <button>Explore</button>
+              </Link>
             </div>
           </div>
         </section>
         <section className="uneek-section">
           <div className="section2">
-          <div className="uneek-section-content">
+            <div className="uneek-section-content">
               <h1>Engagement Rings</h1>
               <p>Finding a perfect, made-for-you engagement ring is simple.</p>
-              <Link href="/categories/engagement-rings"><Button>Explore</Button></Link>
+              <Link href="/categories/engagement-rings">
+                <button>Explore</button>
+              </Link>
             </div>
           </div>
         </section>
@@ -93,10 +98,19 @@ const Home = ({ query }) => {
           <div className="section3">
             <div className="uneek-section-content">
               <h1>Fashion Jewelry</h1>
-              <p>We promise to provide personalized experiences and hand-crafted, stunning jewelry every time.</p>
-              <Link href="/categories/fine-jewelry"><Button>Explore</Button></Link>
+              <p>
+                We promise to provide personalized experiences and hand-crafted,
+                stunning jewelry every time.
+              </p>
+              <Link href="/categories/fine-jewelry">
+                <button>Explore</button>
+              </Link>
             </div>
           </div>
+        </section>
+        <section className="popular-items-section">
+          <h1>Popular Items</h1>
+          <div className="popular-items">{productsHtml()} </div>
         </section>
         <Divider></Divider>
         <section className="about-section">
@@ -112,19 +126,25 @@ const Home = ({ query }) => {
               delicacy and detail born of old-world metalsmithing and
               stone-setting disciplines.
             </p>
-            <Button>Read More</Button>
+            <Link href="/about-us">
+              <Button>Read More</Button>
+            </Link>
           </div>
         </section>
         <section>
-        <iframe src="//lightwidget.com/widgets/066a4dd31ad05860bff70365f33f424b.html" scrolling="no" className="lightwidget-widget" ></iframe>
+          <iframe
+            src="//lightwidget.com/widgets/066a4dd31ad05860bff70365f33f424b.html"
+            scrolling="no"
+            className="lightwidget-widget"
+          ></iframe>
         </section>
       </main>
       <style jsx>
         {`
           .lightwidget-widget {
-            width:100%;
-            border:0;
-            overflow:hidden;
+            width: 100%;
+            border: 0;
+            overflow: hidden;
           }
           .about-section {
             max-width: 900px;
@@ -136,57 +156,86 @@ const Home = ({ query }) => {
           .about-section > div {
             padding: 15px;
           }
+          .popular-items-section {
+            max-width: 900px;
+            margin: 15px auto;
+            text-align: center;
+          }
+          .popular-items {
+            display: grid;
+            grid-template-columns: auto auto auto auto;
+          }
           .uneek-section {
             margin: 15px auto;
             max-width: 1200px;
-            margin: 15px auto;
           }
-
-          .uneek-section > div{
+          .uneek-section > div {
             height: 500px;
             background-color: #d2d2d2; /* Used if the image is unavailable */
-            background-position: center; /* Center the image */
             background-repeat: no-repeat; /* Do not repeat the image */
             background-size: cover; /* Resize the background image to cover the entire container */
             padding: 25px;
           }
-
           .uneek-section-content {
             max-width: 450px;
           }
-
           .uneek-section-content p {
-            color: #fff
+            color: #fff;
+            margin: 5px;
           }
-
           .uneek-section-content h1 {
-            color: #fff
-          } 
-
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            font-size: 2.5em;
+            line-height: 1em;
+          }
+          .uneek-section-content button {
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 5px;
+            text-transform: uppercase;
+            background-color: Transparent;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+            width: 250px;
+          }
+          .uneek-section-content button:hover {
+            background-color: #fff;
+            color: #000;
+          }
           .uneek-category img {
             width: 100%;
             height: auto;
           }
-
           .section1 {
             background: url('/images/Uneek-Home-5.webp');
+            background-position: center;
             justify-content: flex-end;
             align-items: center;
             display: flex;
           }
-
           .section2 {
             background: url('/images/Uneek-Home-4.webp');
+            background-position: right center;
             justify-content: flex-start;
             align-items: center;
             display: flex;
           }
-          
           .section3 {
             background: url('/images/Uneek-Home-6.webp');
+            background-position: left center;
             justify-content: flex-end;
             align-items: center;
             display: flex;
+          }
+          @media only screen and (max-width: 600px) {
+            .about-section {
+              display: flex;
+              flex-direction: column;
+            }
           }
         `}
       </style>
@@ -197,5 +246,20 @@ const Home = ({ query }) => {
 export default Home
 
 export async function getServerSideProps({ query }) {
-  return { props: { query } }
+  const QUERY = `
+        query GetProducts($filter: ProductInput) {
+          products(filter: $filter) {
+            sku
+              name
+              description
+              price
+              primary_image
+          }
+        }`
+
+  const result = await fetchAPI(QUERY, {
+    variables: { filter: { category: '/popular' } },
+  })
+
+  return { props: { query, result } }
 }

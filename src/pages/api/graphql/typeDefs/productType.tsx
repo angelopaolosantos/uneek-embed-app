@@ -38,7 +38,7 @@ export default gql`
   }
 
   type Query {
-    productPage(search: String, limit: Int, page: Int): Products
+    productPage(search: String, limit: Int, page: Int, sort: Int): Products
     productCategoryPage(collection: String, limit: Int, page: Int): Products
     product(sku: String!): Product
     productById(id: ID!): Product
@@ -72,7 +72,6 @@ export default gql`
     meta_keyword: String
     meta_description: String
     meta_title: String
-    sort_level: Int
   }
 
   type Output {

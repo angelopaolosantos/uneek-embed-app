@@ -6,13 +6,32 @@ export default {
     /**  http://localhost:3000/search*/
     productPage: async (_parent, _args, _context, _info) => {
       let mongoSearch = {}
-      let limit = 9
+      let limit = 18
+      let sort = null
+      let page = 1
+      if (_args.sort) {
+        sort = _args.sort
+      }
       if (_args.limit) {
         limit = _args.limit
       }
-      let page = 1
       if (_args.page) {
         page = _args.page
+      }
+
+      let sortCondition
+      switch(sort) {
+        case 1: {
+          sortCondition = {price: 1}
+          break;
+        }
+        case 2: {
+          sortCondition = {price: -1}
+          break;
+        }
+        default: {
+          sortCondition = {sku: -1}
+        }
       }
 
       if (_args.search) {
@@ -20,15 +39,18 @@ export default {
 
         let searchName = [] // search by name
         let searchSku = [] // search by sku
+        let searchMetaKeywords = [] // search by meta keywords
 
         search.forEach((keyword) => {
           const regex1 = new RegExp(`${keyword}`, 'i')
           const regex2 = new RegExp(`\\b(${keyword})\\b`, 'i')
+          const regex3 = new RegExp(`\\b,*(${keyword}),*\\b`, 'i')
           searchName = [...searchName, { name: regex2 }]
           searchSku = [...searchSku, { sku: regex1 }]
+          searchMetaKeywords = [...searchMetaKeywords, { meta_keyword: regex3 }]
         })
 
-        let searchList = { $or: [{ $and: searchName }, ...searchSku], status: "active" }
+        let searchList = { $or: [{ $and: searchName }, { $and: searchMetaKeywords }, ...searchSku], status: "active" }
         mongoSearch = searchList
         console.log(mongoSearch)
       }
@@ -43,7 +65,7 @@ export default {
       const result = await _context.db
         .collection('products')
         .find(mongoSearch)
-        .sort({ sku: 1 })
+        .sort(sortCondition)
         .skip(skip)
         .limit(limit)
         .toArray()

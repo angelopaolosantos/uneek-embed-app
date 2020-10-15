@@ -1,4 +1,4 @@
-import { Icon, InputGroup, Input } from 'rsuite'
+import { Icon } from 'rsuite'
 import Link from 'next/link'
 
 const Footer = () => (

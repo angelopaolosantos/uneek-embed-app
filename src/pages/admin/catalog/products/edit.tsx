@@ -147,6 +147,12 @@ const Page = ({ result, session }) => {
         <Form.Item label="Meta Keyword" name="meta_keyword">
           <Input />
         </Form.Item>
+        <Form.Item label="Meta Description" name="meta_description">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Meta Title" name="meta_title">
+          <Input />
+        </Form.Item>
 
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">

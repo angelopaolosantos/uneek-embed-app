@@ -1,12 +1,26 @@
 import nodemailer from 'nodemailer'
 import { MongoClient } from 'mongodb'
 
-let db = null
-const dbName = 'uneekdb'
-const dbClient = new MongoClient(process.env.NEXT_PUBLIC_MONGO_DB_URI, {
+let db
+const dbName = process.env.MONGO_DB_NAME
+const dbClient = new MongoClient(process.env.MONGO_DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
+
+// Call this function to connect to Mongo DB
+const connect = async () => {
+  if (!dbClient.isConnected()) {
+    try {
+      await dbClient.connect()
+      db = dbClient.db(dbName)
+    } catch (err) {
+      console.log(err.stack)
+    }
+  } else {
+    console.log('...using cached mongo db')
+  }
+}
 
 export default async (req, res) => {
   let mailOptions = null
@@ -32,13 +46,7 @@ export default async (req, res) => {
   })
 
   try {
-    if (!dbClient.isConnected()) {
-      await dbClient.connect()
-      db = dbClient.db(dbName) // database name
-      console.log('connected to mongo: ', dbClient.isConnected())
-    } else {
-      console.log('using cached mongo')
-    }
+    await connect()
 
     let result = await db
       .collection('access_keys')
@@ -95,7 +103,7 @@ export default async (req, res) => {
       <div>
       <h1>Customer Inquiry</h1>
       From: ${result.retailer}<br />
-      <strong>Customer</strong> 
+      <strong>Customer Details:</strong><br /> 
       First Name: ${firstname}<br />
       Last Name: ${lastname}<br />
       Email Address: ${email}<br />

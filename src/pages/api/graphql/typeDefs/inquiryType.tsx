@@ -5,7 +5,8 @@ import { gql } from 'apollo-server-micro'
 export default gql`
   type Inquiry {
     _id: ID!
-    customer: String
+    firstname: String
+    lastname: String
     email: String
     message: String
     product: Product
