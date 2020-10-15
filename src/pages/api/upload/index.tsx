@@ -25,8 +25,8 @@ export default async (req, res) => {
 
     /** Amazon S3 Credentials, don't use root account credentials */
     const s3 = new AWS.S3({
-      accessKeyId: process.env.AWS_ACCESS_KEY,
-      secretAccessKey: process.env.AWS_SECRET_KEY,
+      accessKeyId: process.env.UNEEK_AWS_ACCESS_KEY,
+      secretAccessKey: process.env.UNEEK_AWS_SECRET_KEY,
     })
 
     /** Get file base name, remove file extension */
