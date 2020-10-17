@@ -393,6 +393,10 @@ const Page = ({ product }) => {
       </Template>
     )
   } else {
+    const max = 3
+  const min = 1
+  const filename = `/images/404/Uneek_02_2020_${Math.floor(Math.random() * (max - min)) + min}.jpg`;
+
     return (
       <Template>
         <Head>
@@ -402,14 +406,14 @@ const Page = ({ product }) => {
           <div className="container">
             <h1>Products</h1>
             <p>Item not found</p>
-            <p>Add images</p>
+            <img className="hero-img" src={filename} />
           </div>
         </main>
         <style jsx>
           {`
             .container {
               max-width: 992px;
-              margin: 0px auto;
+              margin: 1em auto;
             }
           `}
         </style>

@@ -42,6 +42,13 @@ const Home = ({ query, result }) => {
                   text-align: center;
                   padding: 15px;
                   margin: 5px;
+                  transition: all 0.5s
+                }
+
+                .product:hover {
+                  border: 1px solid #d2d2d2;
+                  transform: translateY(-10px);
+                  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                 }
                 .responsive {
                   width: 100%;
@@ -157,8 +164,8 @@ const Home = ({ query, result }) => {
             padding: 15px;
           }
           .popular-items-section {
-            max-width: 900px;
-            margin: 15px auto;
+            max-width: 992px;
+            margin: 1rem auto;
             text-align: center;
           }
           .popular-items {
@@ -236,6 +243,11 @@ const Home = ({ query, result }) => {
               display: flex;
               flex-direction: column;
             }
+
+            .popular-items {
+            display: grid;
+            grid-template-columns: auto auto;
+          }
           }
         `}
       </style>

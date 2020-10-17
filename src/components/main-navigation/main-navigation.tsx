@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const MainNavigation = () => {
   return (
-    <div className="container">
+    <div className="section-container">
       <div className="menu-wrapper">
         <ul className="menu">
           <li className="menu-item">
@@ -52,26 +52,12 @@ const MainNavigation = () => {
             position: absolute;
             left: 0px;
             top: 56px;
-            background-color: white;
             width: 100%;
             display: none;
-           
           }
 
           .menu-item:hover > .mega-menu {
-           
             display: block;
-          }
-
-          .container {
-            max-width: 992px;
-            margin: 0px auto;
-          }
-
-          .container a,
-          .container a:hover,
-          .container a:active {
-            text-decoration: none;
           }
 
           .menu-wrapper {

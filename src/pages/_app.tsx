@@ -1,11 +1,11 @@
-/** Import Global CSS */
-
-import "../styles/rsuite-custom.less";
+/** Note: Must import Antd and RSuite separately 
+ * avoid conflict 
+ * */
+import "../styles/default/antd.less"
+import "../styles/default/rsuite.less"
+import "../styles/default/global.scss";
 import "pure-react-carousel/dist/react-carousel.es.css";
-import "../styles/carousel.scss";
-import "../styles/antd-custom.scss"
-import "../styles/global.scss";
-
+//import "../styles/carousel.scss";
 import ApolloProvider from "../contexts/apollo/ApolloProvider";
 import Head from "next/head"
 

@@ -19,7 +19,7 @@ const Template = (props) => {
     isPartnerAuthorized(partnerKey, parentUrl).then((data) => {
       console.log(data)
       if (data === false) {
-        router.push('/unauthorized')
+        //router.push('/unauthorized')
       }
     })
   }, [])

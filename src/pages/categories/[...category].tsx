@@ -7,10 +7,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import ReactHtmlParser from 'react-html-parser'
 import { SelectPicker } from 'rsuite'
-
-const formatNumber = (num) => {
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-}
+import { formatNumber } from '../../utils/uneek-utilities'
 
 const paginate = (array, page_size, page_number) => {
   return array.slice((page_number - 1) * page_size, page_number * page_size)
@@ -18,35 +15,63 @@ const paginate = (array, page_size, page_number) => {
 
 const Page = ({ result, query }) => {
   const router = useRouter()
-  const category = result.categories[0]
-
-  /** If Category doesn't exist redirect to 404 */
-  useEffect(() => {
-    if(!category) {
-      router.push('/404')
-    }
-  }, [])
-  
-  /** Set State Variables */
-  const [products, setProducts] = useState(category?.products ? category.products : null)
-  const [sort, setSort] = useState(query.sort ? parseInt(query.sort) : null)
+  const [sort, setSort] = useState<number | null>(
+    query.sort ? parseInt(query.sort) : null
+  )
   const [productsPerPage, setProductsPerPage] = useState(
     query.perpage ? parseInt(query.perpage) : 18
   )
-  const [totalPages, setTotalPages] = useState(
-    products?.length ? Math.ceil(products.length / productsPerPage) : 0
-  )
-  const [activePage, setActivePage] = useState(
+  const [activePage, setActivePage] = useState<number>(
     query.page ? parseInt(query.page) : 1
   )
-  const [pages, setPages] = useState(totalPages)
-  const [showProducts, setShowProducts] = useState(
-    products ? paginate(products, productsPerPage, activePage) : null
-  )
+
+  const [products, setProducts] = useState([])
+  const [pages, setPages] = useState<number>(0)
+  const [showProducts, setShowProducts] = useState([])
+  const [category, setCategory] = useState('')
+
+  useEffect(() => {
+    if (result.categories.length == 0) {
+      router.push('/404')
+    } else {
+      let products = result.categories[0].products
+
+      if (sort) {
+        let sortedProducts = [...products] // create a copy of current products
+        switch (sort) {
+          case 1: {
+            sortedProducts.sort((a, b) => (a.price > b.price ? 1 : -1))
+            console.log('sort 1')
+            break
+          }
+          case 2: {
+            sortedProducts.sort((a, b) => (a.price < b.price ? 1 : -1))
+            console.log('sort 2')
+            break
+          }
+          default: {
+            console.log('sort null')
+            sortedProducts = result.categories[0].products
+          }
+        }
+
+        setProducts(sortedProducts)
+        setShowProducts(paginate(sortedProducts, productsPerPage, activePage))
+      }else {
+        setProducts(products)
+        setShowProducts(paginate(products, productsPerPage, activePage))
+      }
+
+      setCategory(result.categories[0].name)
+      setPages(Math.ceil(products.length / productsPerPage))
+      setActivePage(1)
+    }
+  }, [result])
+
+  /** on changing products shown per page */
 
   const onProductsPerPageChange = (value) => {
     setProductsPerPage(value)
-    setTotalPages(Math.ceil(products.length / value))
     setPages(Math.ceil(products.length / value))
     setActivePage(1)
     setShowProducts(paginate(products, value, 1))
@@ -54,6 +79,8 @@ const Page = ({ result, query }) => {
     const asURL = `${query.category.join('/')}?page=1&perpage=${value}`
     router.push(`?page=1&perpage=${value}`, asURL, { shallow: true })
   }
+
+  /** on changing sorting order */
 
   const onSortChange = (value) => {
     let sortedProducts = [...products] // create a copy of current products
@@ -70,7 +97,7 @@ const Page = ({ result, query }) => {
       }
       default: {
         console.log('sort null')
-        sortedProducts = category.products
+        sortedProducts = result.categories[0].products
       }
     }
 
@@ -90,6 +117,8 @@ const Page = ({ result, query }) => {
     )
   }
 
+  /** on changing page number */
+
   const onPageChange = (pageNumber) => {
     setActivePage(pageNumber)
     setShowProducts(paginate(products, productsPerPage, pageNumber))
@@ -102,21 +131,17 @@ const Page = ({ result, query }) => {
     }
   }
 
-  let pageTitle = ''
-  // let parent = ''
-  if (result.categories && result.categories.length > 0) {
-    pageTitle = category.name
-    // parent = category.parent
-  }
-
+  /** -------------- HTML ------------------ */
   const productsHtml = () => {
-    if (showProducts) {
+    if (showProducts.length > 0) {
       return showProducts.map((product) => {
         return (
           <div key={product.sku} className="product">
             <div className="product-img">
               <Link href={`/products/${product.sku}`}>
-                <a><img className="responsive" src={product.primary_image} /></a>
+                <a>
+                  <img className="responsive" src={product.primary_image} />
+                </a>
               </Link>
             </div>
             <div className="product-detail">
@@ -138,6 +163,14 @@ const Page = ({ result, query }) => {
                   text-align: center;
                   padding: 15px;
                   margin: 5px;
+                  transition: all 0.5s;
+                }
+
+                .product:hover {
+                  border: 1px solid #d2d2d2;
+                  transform: translateY(-10px);
+                  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+                    0 6px 20px 0 rgba(0, 0, 0, 0.19);
                 }
 
                 .responsive {
@@ -146,7 +179,7 @@ const Page = ({ result, query }) => {
                 }
 
                 .product-name {
-                  font-size: 1.0em;
+                  font-size: 1em;
                 }
                 .product-sku {
                   font-size: 0.8em;
@@ -154,7 +187,6 @@ const Page = ({ result, query }) => {
                 .product-price {
                   font-size: 1.2em;
                 }
-               
               `}
             </style>
           </div>
@@ -194,21 +226,24 @@ const Page = ({ result, query }) => {
   ]
 
   const selectPickerProps = {
-    searchable:false,
-    size:"xs",
+    searchable: false,
+    size: 'xs',
   }
+
+  console.log(sort)
 
   return (
     <Template>
       <Head>
-        <title>Uneek Jewelry - {pageTitle}</title>
+        <title>Uneek Jewelry - {category}</title>
       </Head>
-      <main className="main-container">
-        <h1>{pageTitle}</h1>
+      <main className="section-container">
+        <h1>{category}</h1>
         {products?.length > 0 && (
           <div className="filter-selection">
             Sort by&nbsp;
-            <SelectPicker {...selectPickerProps}
+            <SelectPicker
+              {...selectPickerProps}
               data={sortData}
               defaultValue={sort}
               onChange={onSortChange}
@@ -218,7 +253,7 @@ const Page = ({ result, query }) => {
             <SelectPicker
               {...selectPickerProps}
               data={productsPerPageData}
-              defaultValue={productsPerPage}
+              value={productsPerPage}
               onChange={onProductsPerPageChange}
               cleanable={false}
             />
@@ -239,18 +274,14 @@ const Page = ({ result, query }) => {
       </main>
       <style jsx>
         {`
-          .filter-selection {
-            margin: 1em;
-          }
-          .main-container {
-            max-width: 992px;
-            margin: 1rem auto;
+          .section-container {
             text-align: center;
           }
 
-          .main-container h1{
-            font-size: 2.5em;
+          .filter-selection {
+            margin: 1em;
           }
+          
           .products-container {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -260,9 +291,6 @@ const Page = ({ result, query }) => {
             .products-container {
               grid-template-columns: auto auto;
             }
-
-            .main-container h1{
-            font-size: 2.0em;
           }
           }
         `}
@@ -273,12 +301,12 @@ const Page = ({ result, query }) => {
 
 export default Page
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ query, res }) {
   const category = `/${query.category.join('/')}`
 
   const QUERY = `
-        query GetCategories($filter1: CategoryInput) {
-          categories(filter: $filter1) {
+        query GetCategories($filter: CategoryInput) {
+          categories(filter: $filter) {
             name
             parent
             category
@@ -293,7 +321,7 @@ export async function getServerSideProps({ query }) {
         }`
 
   const result = await fetchAPI(QUERY, {
-    variables: { filter1: { category } },
+    variables: { filter: { category } },
   })
 
   return {
