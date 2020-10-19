@@ -16,7 +16,16 @@ function getParentUrl() {
   return parentUrl
 }
 
+const isBrowser = () => typeof window !== 'undefined'
+
 async function isPartnerAuthorized(partnerKey, parentUrl) {
+  if (isBrowser) {
+    if (window.sessionStorage.getItem('partner_key')) {
+      console.log('Verified Partner already in session')
+      return true
+    }
+  }
+
   const VERIFY_ACCESS_KEY = `
       query VerifyAccessKey($key: String!) {
         verifyAccessKey(key: $key) {
@@ -25,14 +34,8 @@ async function isPartnerAuthorized(partnerKey, parentUrl) {
         }
       }
     `
-  console.log('Partner Key:', partnerKey)
-  
-  if (sessionStorage.getItem('partner_key')) {
-    console.log("Verified Partner already in session")
-    return true
-  }
 
-  if (partnerKey && typeof partnerKey == "string") {
+  if (partnerKey && typeof partnerKey == 'string') {
     // check if partner key is valid
     const result = await fetchAPI(VERIFY_ACCESS_KEY, {
       variables: { key: partnerKey },
@@ -41,8 +44,10 @@ async function isPartnerAuthorized(partnerKey, parentUrl) {
 
     if (result?.verifyAccessKey.url == parentUrl) {
       console.log('Parent Website and Retailer is authorized')
-      sessionStorage.setItem('partner_key', result.verifyAccessKey.key)
-      return true
+      if (isBrowser) {
+        window.sessionStorage.setItem('partner_key', result.verifyAccessKey.key)
+        return true
+      }
     }
   }
 
