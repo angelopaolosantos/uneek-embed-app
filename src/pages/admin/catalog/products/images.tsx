@@ -24,7 +24,8 @@ const Page = ({ result, session }) => {
 
   const fileUpload = (file) => {
     /** Upload API URL */
-    const url = `http://${process.env.UNEEK_DOMAIN}/api/upload`
+    //const url = `https://${process.env.UNEEK_DOMAIN}/api/upload`
+    const url = `https://uneek-embed-app.vercel.app/api/upload`
     const formData = new FormData()
 
     formData.append('file', file)
