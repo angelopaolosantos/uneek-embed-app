@@ -7,8 +7,8 @@ export default initAuth0({
   clientSecret: process.env.AUTH0_CLIENT_SECRET,
   audience: process.env.AUTH0_AUDIENCE,
   scope: process.env.AUTH0_SCOPE,
-  redirectUri: process.env.AUTH0_REDIRECT_URI,
-  postLogoutRedirectUri: process.env.AUTH0_POST_LOGOUT_REDIRECT_URI,
+  redirectUri: `https://${process.env.UNEEK_DOMAIN}/api/auth0/callback`,
+  postLogoutRedirectUri: `https://${process.env.UNEEK_DOMAIN}/admin`,
   session: {
     // The secret used to encrypt the cookie.
     cookieSecret: process.env.AUTH0_COOKIE_SECRET,
