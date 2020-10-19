@@ -35,7 +35,8 @@ async function isPartnerAuthorized(partnerKey, parentUrl) {
       }
     `
 
-  if (partnerKey && typeof partnerKey == 'string') {
+  if (partnerKey) {
+    console.log("partner key: ",partnerKey)
     // check if partner key is valid
     const result = await fetchAPI(VERIFY_ACCESS_KEY, {
       variables: { key: partnerKey },
@@ -48,6 +49,8 @@ async function isPartnerAuthorized(partnerKey, parentUrl) {
         window.sessionStorage.setItem('partner_key', result.verifyAccessKey.key)
         return true
       }
+    } else {
+      console.log('Parent Website and Retailer is not authorized')
     }
   }
 
