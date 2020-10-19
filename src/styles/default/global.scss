@@ -13,7 +13,8 @@ $secondary-color: #d2d2d2;
 @import url("https://fonts.googleapis.com/css2?family=Asap&family=Roboto&display=swap");
 @font-face {
   font-family: "Constantia";
-  src: url("http://localhost:3000/fonts/constan.ttf");
+  //src: url("http://localhost:3000/fonts/constan.ttf");
+  src: url("https://uneek-embed-app.vercel.app/fonts/constan.ttf");
 }
 
 /** components/main-navigation/index.tsx */
