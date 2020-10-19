@@ -28,9 +28,15 @@ const Search = () => {
     const queryLimit = query.limit
 
     if (keywords) setSearch(keywords)
-    if (page) setCurrentPage(parseInt(Array.isArray(page) ? "1" : page))
-    if (sort) setSort(parseInt(Array.isArray(querySort) ? null : querySort))
-    if (limit) setLimit(parseInt(Array.isArray(queryLimit) ? "18" : queryLimit))
+    if (page && typeof page == "string") {
+      setCurrentPage(parseInt(page) ? 1 : parseInt(page))
+    }
+    if (querySort && typeof querySort == "string") {
+      setSort(parseInt(querySort) ? null : parseInt(querySort))
+    }
+    if (queryLimit && typeof queryLimit == "string") {
+      setLimit(parseInt(queryLimit) ? 18 : parseInt(queryLimit))
+    }
   }, [])
   
 
