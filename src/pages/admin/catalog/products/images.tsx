@@ -24,7 +24,7 @@ const Page = ({ result, session }) => {
 
   const fileUpload = (file) => {
     /** Upload API URL */
-    const url = `http://${UNEEK_DOMAIN}/api/upload`
+    const url = `http://${process.env.UNEEK_DOMAIN}/api/upload`
     const formData = new FormData()
 
     formData.append('file', file)
