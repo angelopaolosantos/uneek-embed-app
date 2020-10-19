@@ -21,7 +21,7 @@ const Dropdown = () => (
               </Link>
             </li>
             <li>
-              <Link href="/categories	/wedding-and-anniversary-bands/diamond-stackable-bands">
+              <Link href="/categories	/wedding-and-anniversary-bands/stackable-bands">
                 <a>Diamond Stackable Bands</a>
               </Link>
             </li>

@@ -31,7 +31,7 @@ const NavigationBlock = () => (
         <Menu.ItemGroup key="g3" title="By Type">
           <Menu.Item key="10"><Link href="/categories/wedding-and-anniversary-bands/wedding-bands">Wedding Bands</Link></Menu.Item>
           <Menu.Item key="11"><Link href="/categories/wedding-and-anniversary-bands/eternity-bands">Eternity Bands</Link></Menu.Item>
-          <Menu.Item key="12"><Link href="/categories	/wedding-and-anniversary-bands/diamond-stackable-bands">
+          <Menu.Item key="12"><Link href="/categories	/wedding-and-anniversary-bands/stackable-bands">
                 <a>Diamond Stackable Bands</a>
               </Link></Menu.Item>
           <Menu.Item key="13"><Link href="/categories	/wedding-and-anniversary-bands/gemstone-bands">
