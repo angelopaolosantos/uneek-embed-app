@@ -118,7 +118,7 @@ export default async (req, res) => {
       `,
     }
   } catch (e) {
-    res.json({ success: false, message: 'Error occured' })
+    res.json({ success: false, message: e.message })
     return console.log('Error while connecting to mongo database', e.message)
   }
 
@@ -126,7 +126,7 @@ export default async (req, res) => {
    
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        res.json({ success: false, message: 'Error occured' })
+        res.json({ success: false, message: error.message })
         return console.log(error.message)
       }
       console.log('Email sent', info.response)
@@ -135,7 +135,7 @@ export default async (req, res) => {
 
       transporter.sendMail(mailOptionsRetailer, function (error, info) {
         if (error) {
-          res.json({ success: false, message: 'Error occured' })
+          res.json({ success: false, message: error.message })
           return console.log(error.message)
         }
 
