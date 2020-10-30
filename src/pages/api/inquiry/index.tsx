@@ -70,7 +70,7 @@ export default async (req, res) => {
       console.log(inquiryResult)
     }
 
-    dbClient.close()
+    // dbClient.close() // Removed to stop "Topology is closed" error 
 
     mailOptions = {
       from: `"Uneek Jewelry" <${process.env.MAILER_USER}>`,
