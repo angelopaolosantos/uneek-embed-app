@@ -68,8 +68,8 @@ const Page = ({session}) => {
         </Form.Item>
         <Form.Item label="Status" name="status">
           <Select style={{ width: 120 }}>
-            <Option value="TRUE">Enabled</Option>
-            <Option value="FALSE">Disabled</Option>
+          <Option value="active">Active</Option>
+            <Option value="inactive">Inactive</Option>
           </Select>
         </Form.Item>
         <Form.Item label="Name" name="name">

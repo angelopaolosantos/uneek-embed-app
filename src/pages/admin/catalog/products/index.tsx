@@ -48,6 +48,16 @@ const Page = ({ result, session }) => {
       ),
     },
     {
+      title: 'Image',
+      dataIndex: 'primary_image',
+      key: 'primary_image',
+      render: (text, record) => (
+        <Link href={`/admin/catalog/products/edit/?id=${record._id}`}>
+          <a><img src={record.primary_image} width={65} /></a>
+        </Link>
+      ),
+    },
+    {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
@@ -104,9 +114,9 @@ const Page = ({ result, session }) => {
     }),
   }
 
-  if (result.products && result.products.length > 0) {
+  if (result.productsSearch && result.productsSearch.length > 0) {
     // Each child in a list should have a unique "key" prop
-    data = result.products.map((data) => {
+    data = result.productsSearch.map((data) => {
       return { ...data, key: data.sku }
     })
   }
@@ -119,8 +129,12 @@ const Page = ({ result, session }) => {
           <Link href="/admin/catalog/products/add">
             <Button>Add New Item</Button>
           </Link>
-          <br />
-          <br />
+          
+          <Link href="/admin/catalog/products/import">
+            <Button>Import Products</Button>
+          </Link>
+          
+          <Divider />
           <Search
             placeholder="input search text"
             onSearch={(value) => {
@@ -133,7 +147,6 @@ const Page = ({ result, session }) => {
             style={{ width: 200 }}
           />
         </div>
-        <Divider />
         {data && (
           <Table
             rowSelection={{
@@ -162,20 +175,21 @@ export async function getServerSideProps({ query, req, res }) {
   const { search } = query
   console.log('search', search)
   const QUERY = `
-    query SearchProducts($filter: ProductInput) {
-      products(filter: $filter) {
+    query SearchProducts($search: String) {
+      productsSearch(search: $search) {
         _id
         sku
         name
         product_type
         status
         category
+        primary_image
       }
     }
   `
 
   const result = await fetchAPI(QUERY, {
-    variables: { filter: { sku: search } },
+    variables: { search },
   })
   console.log('fetch result:', result)
 

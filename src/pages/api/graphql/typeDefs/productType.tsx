@@ -61,6 +61,7 @@ export default gql`
     center_shape: String
     side_stone_weight: String
     side_stone_pieces: String
+    primary_image: String
     images: [String]
     msrp_14k: Float
     msrp_18k: Float
@@ -84,5 +85,6 @@ export default gql`
     updateProduct(id: ID!, input: ProductInput): Output
     deleteProduct(id: ID!): Output
     addProductImage(id: ID!, url: String): Output
+    upsertProduct(input: ProductInput): Output
   }
 `

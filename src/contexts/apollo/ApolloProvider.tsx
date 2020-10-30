@@ -4,6 +4,7 @@ let client
 
 if (!client) {
   client = new ApolloClient({
+    /** called on the front end too so NEXT_PUBLIC is used */
     uri: `${process.env.NEXT_PUBLIC_UNEEK_DOMAIN}/api/graphql`,
     cache: new InMemoryCache(),
   })

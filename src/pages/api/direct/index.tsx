@@ -25,20 +25,20 @@ const connect = async () => {
 export const getCategories = async () => {
   await connect()
   const result = await db.collection('categories2').find({}, {}).toArray()
-  //console.log('is connected? ', dbClient.isConnected())
   return result
 }
 
 export const getProducts = async () => {
   await connect()
-  const result = await db.collection('products').find().toArray()
-  //console.log('is connected? ', dbClient.isConnected())
+  const result = await db
+    .collection('products')
+    .find({ status: 'active' })
+    .toArray()
   return JSON.parse(JSON.stringify(result))
 }
 
 export const getProduct = async (sku) => {
   await connect()
   const result = await db.collection('products').findOne({ sku })
-  //console.log('is connected? ', dbClient.isConnected())
   return JSON.parse(JSON.stringify(result))
 }

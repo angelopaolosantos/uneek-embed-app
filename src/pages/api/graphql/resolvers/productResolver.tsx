@@ -20,17 +20,17 @@ export default {
       }
 
       let sortCondition
-      switch(sort) {
+      switch (sort) {
         case 1: {
-          sortCondition = {price: 1}
-          break;
+          sortCondition = { price: 1 }
+          break
         }
         case 2: {
-          sortCondition = {price: -1}
-          break;
+          sortCondition = { price: -1 }
+          break
         }
         default: {
-          sortCondition = {sku: -1}
+          sortCondition = { sku: -1 }
         }
       }
 
@@ -44,13 +44,20 @@ export default {
         search.forEach((keyword) => {
           const regex1 = new RegExp(`${keyword}`, 'i')
           const regex2 = new RegExp(`\\b(${keyword})\\b`, 'i')
-          const regex3 = new RegExp(`\\b,*(${keyword}),*\\b`, 'i')
+          // const regex3 = new RegExp(`\\b,*(${keyword}),*\\b`, 'i')
           searchName = [...searchName, { name: regex2 }]
           searchSku = [...searchSku, { sku: regex1 }]
-          searchMetaKeywords = [...searchMetaKeywords, { meta_keyword: regex3 }]
+          // searchMetaKeywords = [...searchMetaKeywords, { meta_keyword: regex3 }]
         })
 
-        let searchList = { $or: [{ $and: searchName }, { $and: searchMetaKeywords }, ...searchSku], status: "active" }
+        let searchList = {
+          $or: [
+            { $and: searchName },
+            // { $and: searchMetaKeywords },
+            ...searchSku,
+          ],
+          status: 'active',
+        }
         mongoSearch = searchList
         console.log(mongoSearch)
       }
@@ -73,7 +80,7 @@ export default {
       console.log(result)
 
       const pageCount = await _context.db
-        .collection('products') 
+        .collection('products')
         .find(mongoSearch)
         .count()
 
@@ -127,7 +134,7 @@ export default {
       }*/
       let filter = _args.filter
 
-      if (filter && "category" in filter) {
+      if (filter && 'category' in filter) {
         filter.category = { $all: filter.category }
       }
 
@@ -141,9 +148,11 @@ export default {
     productsSearch: async (_parent, _args, _context, _info) => {
       let search = {}
       if (_args.search) {
-        const regex1 = new RegExp(`\\b(${_args.search})\\b`, 'i')
+        const regex1 = new RegExp(`${_args.search}`, 'i')
         search = { ...search, sku: regex1 }
       }
+
+      console.log(search)
 
       const result = await _context.db
         .collection('products')
@@ -284,6 +293,53 @@ export default {
         return {
           success: false,
           message: 'Error occured, Images was not updated.',
+        }
+      }
+    },
+    upsertProduct: async (_parent, _args, _context, _info) => {
+
+      let input = _args.input
+      if (input.category) {
+        input.category = JSON.parse(input.category)
+      }
+
+      if (input.images) {
+        input.images = JSON.parse(input.images)
+      }
+
+      try {
+        const response = await _context.db
+          .collection('products')
+          .updateOne(
+            { sku: _args.input.sku },
+            { $set: input },
+            { upsert: true }
+          )
+
+        console.log(response)
+
+        if(response.upsertedCount > 0) {
+          return {
+            success: true,
+            message: 'New item added',
+          }
+        }
+
+        if(response.modifiedCount > 0) {
+          return {
+            success: true,
+            message: 'Existing item modified',
+          }
+        }
+
+        return {
+          success: false,
+          message: 'No change, item was not added/modified',
+        }
+      } catch (e) {
+        return {
+          success: false,
+          message: 'Error occured, item was not created.',
         }
       }
     },

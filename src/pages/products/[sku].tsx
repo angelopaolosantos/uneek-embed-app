@@ -394,8 +394,10 @@ const Page = ({ product }) => {
     )
   } else {
     const max = 3
-  const min = 1
-  const filename = `/images/404/Uneek_02_2020_${Math.floor(Math.random() * (max - min)) + min}.jpg`;
+    const min = 1
+    const filename = `/images/404/Uneek_02_2020_${
+      Math.floor(Math.random() * (max - min)) + min
+    }.jpg`
 
     return (
       <Template>
@@ -424,11 +426,13 @@ const Page = ({ product }) => {
 
 export default Page
 
-export async function getStaticPaths() { // All paths
+export async function getStaticPaths() {
+  // All paths
   const products = await getProducts()
   const paths = products
     .filter((product) => {
-      if (product.sku == '' || !product.sku) { // remove items without sku
+      if (product.sku == '' || !product.sku) {
+        // remove items without sku
         console.log(`${product._id} has no sku`)
         return false
       }
@@ -459,42 +463,3 @@ export async function getStaticProps({ params }) {
     },
   }
 }
-
-/*
-export async function getServerSideProps({ params }) {
-  const { sku } = params
-  const QUERY = `
-          query GetProduct($sku: String!) {
-          product(sku: $sku) {
-              sku
-              name
-              description
-              product_type
-              price
-              metal
-              center_size
-              center_shape
-              side_stone_weight
-              side_stone_pieces
-              images
-              url
-              meta_keyword
-              meta_description
-              meta_title
-              gender
-              category
-          }
-        }`
-
-  const result = await fetchAPI(QUERY, { variables: { sku } })
-
-  console.log(result)
-
-  return {
-    props: {
-      result,
-      params,
-    }, // will be passed to the page component as props
-  }
-}
-*/

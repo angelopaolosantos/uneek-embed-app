@@ -56,10 +56,10 @@ const Page = ({ result, query }) => {
         }
 
         setProducts(sortedProducts)
-        setShowProducts(paginate(sortedProducts, productsPerPage, activePage))
+        setShowProducts(paginate(sortedProducts, productsPerPage, 1))
       }else {
         setProducts(products)
-        setShowProducts(paginate(products, productsPerPage, activePage))
+        setShowProducts(paginate(products, productsPerPage, 1))
       }
 
       setCategory(result.categories[0].name)
@@ -76,8 +76,8 @@ const Page = ({ result, query }) => {
     setActivePage(1)
     setShowProducts(paginate(products, value, 1))
 
-    const asURL = `${query.category.join('/')}?page=1&perpage=${value}`
-    router.push(`?page=1&perpage=${value}`, asURL, { shallow: true })
+    const asURL = `${query.category.join('/')}?page=1&perpage=${value}&sort=${sort}`
+    router.push(`?page=1&perpage=${value}&sort=${sort}`, asURL, { shallow: true })
   }
 
   /** on changing sorting order */
@@ -103,7 +103,6 @@ const Page = ({ result, query }) => {
 
     setProducts(sortedProducts)
     setSort(value)
-
     setActivePage(1)
     setShowProducts(paginate(sortedProducts, productsPerPage, 1))
 
@@ -123,8 +122,8 @@ const Page = ({ result, query }) => {
     setActivePage(pageNumber)
     setShowProducts(paginate(products, productsPerPage, pageNumber))
 
-    const asURL = `${query.category.join('/')}?page=${pageNumber}`
-    router.push(`?page=${pageNumber}`, asURL, { shallow: true })
+    const asURL = `${query.category.join('/')}?page=${pageNumber}&perpage=${productsPerPage}&sort=${sort}`
+    router.push(`?page=${pageNumber}&perpage=${productsPerPage}&sort=${sort}`, asURL, { shallow: true })
     if (process.browser) {
       console.log(window)
       window.scrollTo(0, 0)

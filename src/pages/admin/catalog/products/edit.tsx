@@ -26,7 +26,7 @@ const Page = ({ result, session }) => {
 
   const onFinish = async (values) => {
     const id = result.productById._id;
-    console.log(id)
+    console.log(values)
     const response = await editProduct({ variables: { id, input: values } });
 
     if (response && response.data.updateProduct.success) {
@@ -70,8 +70,8 @@ const Page = ({ result, session }) => {
         </Form.Item>
         <Form.Item label="Status" name="status">
           <Select style={{ width: 120 }}>
-            <Option value="TRUE">Enabled</Option>
-            <Option value="FALSE">Disabled</Option>
+            <Option value="active">Active</Option>
+            <Option value="inactive">Inactive</Option>
           </Select>
         </Form.Item>
         <Form.Item label="Name" name="name">
@@ -167,7 +167,7 @@ const Page = ({ result, session }) => {
       <Divider></Divider>
       <div>
       <h3>Images</h3>
-      <img src={result.productById.images} width="250" />
+      <img src={result.productById.primary_image} width="250" />
       <Link href={`/admin/catalog/products/images/?id=${result.productById._id}`}><Button>Update Images</Button></Link>
       </div>
       <Divider></Divider>
@@ -213,6 +213,7 @@ export async function getServerSideProps({ query, res, req }) {
                   center_shape
                   side_stone_weight
                   side_stone_pieces
+                  primary_image
                   images
                   gemstone
                   center_stone

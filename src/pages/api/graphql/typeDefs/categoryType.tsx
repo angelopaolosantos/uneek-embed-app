@@ -67,6 +67,6 @@ export default gql`
     updateCategory(id: ID!, input: CategoryInput): Output
     updateCategory2(id: ID!, input: CategoryInput): Output
     deleteCategory(id: ID!): Output 
-    updateCategoryProducts(category: String!): Output
+    updateCategoryProducts(category: String!, sort: String): Output
   }
 `

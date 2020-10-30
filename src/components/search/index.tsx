@@ -7,61 +7,33 @@ import { fetchAPI } from '../../contexts/apollo/fetchAPI'
 import { SelectPicker } from 'rsuite'
 
 const Search = () => {
-  const [search, setSearch] = useState<String | String[] | undefined>("")
-  const [currentPage, setCurrentPage] = useState<Number>(1)
+  /** Declare states */
+  const [search, setSearch] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
   const [result, setResult] = useState(null)
-
   const [limit, setLimit] = useState(18)
   const [sort, setSort] = useState(null)
-
   const router = useRouter()
 
-  console.log(search)
-
   useEffect(() => {
-    const query = queryString.parse(
-      router.asPath.substring(7)
-    )
+    /** Check queries on initial load */
+    const query = queryString.parse(router.asPath.substring(7))
 
-    const {keywords, page} = query
-    const querySort = query.sort
-    const queryLimit = query.limit
+    const { keywords, page } = query // deconstruct query variables
+    const querySort = query.sort // cannot deconstruct due to name conflict
+    const queryLimit = query.limit // cannot deconstruct due to name conflict
 
-    if (keywords) setSearch(keywords)
-    if (page && typeof page == "string") {
+    if (keywords && typeof keywords == 'string') {
+      setSearch(keywords)
+    }
+    if (page && typeof page == 'string') {
       setCurrentPage(parseInt(page) ? 1 : parseInt(page))
     }
-    if (querySort && typeof querySort == "string") {
+    if (querySort && typeof querySort == 'string') {
       setSort(parseInt(querySort) ? null : parseInt(querySort))
     }
-    if (queryLimit && typeof queryLimit == "string") {
+    if (queryLimit && typeof queryLimit == 'string') {
       setLimit(parseInt(queryLimit) ? 18 : parseInt(queryLimit))
-    }
-  }, [])
-  
-
-  useEffect(()=> {
-    console.log("initial search:", search)
-    if (search && search.length > 3) {
-      console.log("initial searching:", search)
-      const QUERY = `
-              query SearchProducts($search: String, $limit: Int, $page: Int, $sort: Int) {
-                productPage(search: $search, limit: $limit, page: $page, sort: $sort) {
-                  products {
-                    sku
-                    name
-                    price
-                    images
-                  }
-                  count
-                }
-              }
-            `
-      fetchAPI(QUERY, { variables: { search, limit, page: currentPage, sort } })
-        .then((data) => {
-          setResult(data.productPage)
-        })
-        .catch((err) => {})
     }
   }, [])
 

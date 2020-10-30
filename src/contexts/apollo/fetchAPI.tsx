@@ -1,5 +1,5 @@
 export async function fetchAPI(query, { variables = {} } = {}) {
-  /** Vercel Requirement use Absolute URLs */
+  /** Function is called on the front end too so NEXT_PUBLIC is used */
   const API_URL = `${process.env.NEXT_PUBLIC_UNEEK_DOMAIN}/api/graphql`
 
   const API_TOKEN = '' // provide token if required

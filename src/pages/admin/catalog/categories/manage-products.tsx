@@ -29,8 +29,8 @@ const Page = ({ result, session }) => {
   }, [])
 
   const UPDATE_CATEGORY_PRODUCTS = gql`
-    mutation UpdateCategoryProducts($category: String!) {
-      updateCategoryProducts(category: $category) {
+    mutation UpdateCategoryProducts($category: String!, $sort: String) {
+      updateCategoryProducts(category: $category, sort: $sort) {
         success
         message
       }
@@ -38,6 +38,40 @@ const Page = ({ result, session }) => {
   `
 
   const [updateCategoryProducts] = useMutation(UPDATE_CATEGORY_PRODUCTS)
+
+  const handleSortProductsBySKU = async ()  => {
+    try {
+      const response = await updateCategoryProducts({
+        variables: { category: result.category.category, sort: "sku" },
+      })
+
+      if (response.data.updateCategoryProducts.success) {
+        message.success(response.data.updateCategoryProducts.message)
+      } else {
+        message.error(response.data.updateCategoryProducts.message)
+      }
+    } catch (e) {
+      console.log(e.message)
+      message.error(`Error occured: "${e.message}"`)
+    }
+  }
+
+  const handleSortProductsByType = async ()  => {
+    try {
+      const response = await updateCategoryProducts({
+        variables: { category: result.category.category, sort: "product_type" },
+      })
+
+      if (response.data.updateCategoryProducts.success) {
+        message.success(response.data.updateCategoryProducts.message)
+      } else {
+        message.error(response.data.updateCategoryProducts.message)
+      }
+    } catch (e) {
+      console.log(e.message)
+      message.error(`Error occured: "${e.message}"`)
+    }
+  }
 
   const handleCheckInventory = async () => {
     try {
@@ -120,6 +154,8 @@ const Page = ({ result, session }) => {
           <h3>Parent: {result.category.parent}</h3>
           <h3>Category: {result.category.category}</h3>
           <Button onClick={handleCheckInventory}>Check Inventory</Button>
+          <Button onClick={handleSortProductsBySKU}>Sort By SKU</Button>
+          <Button onClick={handleSortProductsByType}>Sort By Type</Button>
 
           <Button onClick={handleSaveSortOrder}>Save Sort Order</Button>
           {products && (
@@ -131,10 +167,10 @@ const Page = ({ result, session }) => {
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >
-                    {products.map(({ _id, sku, name, images }, index) => {
+                    {products.map(({ _id, sku, name, primary_image }, index) => {
                       let productImage = ''
-                      if (images[0]) {
-                        productImage = images[0]
+                      if (primary_image) {
+                        productImage = primary_image
                       }
                       return (
                         <Draggable key={sku} draggableId={sku} index={index}>

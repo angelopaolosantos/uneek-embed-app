@@ -4,9 +4,7 @@ import { fetchAPI } from '../contexts/apollo/fetchAPI'
 import Link from 'next/link'
 import { Button, Divider } from 'rsuite'
 import ReactHtmlParser from 'react-html-parser'
-import {
-  formatNumber,
-} from '../utils/uneek-utilities'
+import { formatNumber } from '../utils/uneek-utilities'
 
 const Home = ({ query, result }) => {
   const popularProducts = result.products
@@ -42,13 +40,14 @@ const Home = ({ query, result }) => {
                   text-align: center;
                   padding: 15px;
                   margin: 5px;
-                  transition: all 0.5s
+                  transition: all 0.5s;
                 }
 
                 .product:hover {
                   border: 1px solid #d2d2d2;
                   transform: translateY(-10px);
-                  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+                    0 6px 20px 0 rgba(0, 0, 0, 0.19);
                 }
                 .responsive {
                   width: 100%;
@@ -116,6 +115,59 @@ const Home = ({ query, result }) => {
           </div>
         </section>
         <section className="popular-items-section">
+          <h1>Browse by Style</h1>
+          <div className="popular-styles">
+            <div>
+              <Link href="/categories/engagement-rings/halo">
+                <a>
+                  <img src="https://uneek-web-assets.s3.us-west-1.amazonaws.com/uneek-embed/images/650/sws232dhds-7x5em_1603323777949.webp" />
+                </a>
+              </Link>
+              <Link href="/categories/engagement-rings/halo">
+                <a>
+                  <h6>Halo</h6>
+                </a>
+              </Link>
+            </div>
+            <div>
+              <Link href="/categories/engagement-rings/classic">
+                <a>
+                  <img src="https://uneek-web-assets.s3.us-west-1.amazonaws.com/uneek-embed/images/650/swus020cw-6.5rd_1603325622446.webp" />
+                </a>
+              </Link>
+              <Link href="/categories/engagement-rings/classic">
+                <a>
+                  <h6>Classic</h6>
+                </a>
+              </Link>
+            </div>
+            <div>
+              <Link href="/categories/engagement-rings/three-stone">
+                <a>
+                  <img src="https://uneek-web-assets.s3.us-west-1.amazonaws.com/uneek-embed/images/650/LVS983RAD_1603319910985.webp" />
+                </a>
+              </Link>
+              <Link href="/categories/engagement-rings/three-stone">
+                <a>
+                  <h6>Three Stone</h6>
+                </a>
+              </Link>
+            </div>
+            <div>
+              <Link href="/categories/engagement-rings/solitaire">
+                <a>
+                  <img src="https://uneek-web-assets.s3.us-west-1.amazonaws.com/uneek-embed/images/650/sws118_1603325567670.webp" />
+                </a>
+              </Link>
+              <Link href="/categories/engagement-rings/solitaire">
+                <a>
+                  <h6>Solitaire</h6>
+                </a>
+              </Link>
+            </div>
+          </div>
+        </section>
+        <section className="popular-items-section">
           <h1>Popular Items</h1>
           <div className="popular-items">{productsHtml()} </div>
         </section>
@@ -162,6 +214,20 @@ const Home = ({ query, result }) => {
           }
           .about-section > div {
             padding: 15px;
+          }
+
+          .popular-styles {
+            display: grid;
+            grid-template-columns: 25% 25% 25% 25%;
+          }
+
+          .popular-styles div {
+            padding: 35px;
+          }
+
+          .popular-styles img {
+            width: 100%;
+            height: auto;
           }
           .popular-items-section {
             max-width: 992px;
@@ -245,9 +311,9 @@ const Home = ({ query, result }) => {
             }
 
             .popular-items {
-            display: grid;
-            grid-template-columns: auto auto;
-          }
+              display: grid;
+              grid-template-columns: auto auto;
+            }
           }
         `}
       </style>
