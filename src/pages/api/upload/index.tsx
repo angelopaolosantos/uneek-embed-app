@@ -1,7 +1,7 @@
 // Backend
 import formidable from 'formidable'
 import AWS from 'aws-sdk'
-import sharp from 'sharp'
+import sharp from 'sharp' //https://sharp.pixelplumbing.com/
 
 export const config = {
   api: {
@@ -36,14 +36,32 @@ export default async (req, res) => {
     const timeStamp = new Date().valueOf()
 
     /** resize images and save in webp format */
-    const imageData650 = await sharp(imageFile.path)
+    const imageDataWebp650 = await sharp(imageFile.path)
       .resize(650)
       .webp({ lossless: true })
       .toBuffer()
-    const imageData2500 = await sharp(imageFile.path)
+    const imageDataJpeg650 = await sharp(imageFile.path)
+      .resize(650)
+      .jpeg({
+        quality: 100,
+        chromaSubsampling: '4:4:4',
+      })
+      .toBuffer()
+
+    /*
+    const imageDataWebp2500 = await sharp(imageFile.path)
       .resize(2500)
       .webp({ lossless: true })
       .toBuffer()
+
+    const imageDataJpeg2500 = await sharp(imageFile.path)
+      .resize(2500)
+      .jpeg({
+        quality: 100,
+        chromaSubsampling: '4:4:4',
+      })
+      .toBuffer()
+      */
 
     /** AWS Bucket Name */
     const awsBucket = 'uneek-web-assets'
@@ -54,32 +72,30 @@ export default async (req, res) => {
       Bucket: awsBucket,
       Key: `${awsFolder}/images/650/${fileBaseName}_${timeStamp}.webp`,
       ACL: 'public-read',
-      Body: imageData650,
+      Body: imageDataWebp650,
     }
 
-    /** 2500x2500 WebP upload parameters */
     const params2 = {
       Bucket: awsBucket,
-      Key: `${awsFolder}/images/2500/${fileBaseName}_${timeStamp}.webp`,
+      Key: `${awsFolder}/images/jpeg/650/${fileBaseName}_${timeStamp}.jpg`,
       ACL: 'public-read',
-      Body: imageData2500,
+      Body: imageDataWebp650,
     }
 
-    /** Save Original File - Optional */
+    /** Save Original File - Optional
     const params3 = {
       Bucket: awsBucket,
       Key: `${awsFolder}/images/${timeStamp}_${imageFile.name}`,
       ACL: 'public-read',
       Body: require('fs').createReadStream(imageFile.path),
-    }
+    } */
 
     const response1 = s3.upload(params1).promise()
     const response2 = s3.upload(params2).promise()
-    const response3 = s3.upload(params3).promise()
 
     /** Run all promises */
-    try { 
-      const data = await Promise.all([response1, response2, response3])
+    try {
+      const data = await Promise.all([response1, response2])
       res.json({ success: true, message: 'Upload Success', file: data })
 
       return console.log('Upload Success: ', data)

@@ -78,124 +78,205 @@ export default async (req, res) => {
       to: process.env.MAILER_TO,
       subject: `Customer Inquiry from ${result.retailer}`,
       html: `
-      <!DOCTYPE html>
-<html lang="en">
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
   <head>
-    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Uneek Jewelry</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
   </head>
-  <body bgcolor="#ebebeb" style="font-family: Arial, Helvetica, sans-serif">
+
+  <body style="margin: 0; padding: 0">
     <table
-      width="800"
+      role="presentation"
       border="0"
-      style="margin: 0px auto; background-color: #fff"
+      cellpadding="0"
+      cellspacing="0"
+      width="100%"
+      bgcolor="#ebebeb"
     >
       <tr>
-        <td align="center">
-          <a target="_blank" href="https://www.uneekjewelry.com/"
-            ><img
-              style="margin: 15px auto"
-              src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px.png"
-          /></a>
-        </td>
-      </tr>
-      <tr>
-        <td align="center">
-          <img
-            width="49%"
-            src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_2.jpg"
-            style="-ms-interpolation-mode: bicubic"
-          />
-          <img
-            width="49%"
-            src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_1.jpg"
-            style="-ms-interpolation-mode: bicubic"
-          />
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 15px">
-        <h1>Customer Inquiry</h1>
-          From: ${result.retailer}<br>
-          <strong>Customer</strong> 
-          First Name: ${firstname}<br>
-          Last Name: ${lastname}<br>
-          Email Address: ${email}<br>
-          Phone Number: ${phone}<br>
-          Message: ${message}<br>
-          <hr>
-          Product: ${product.sku}<br>
-          Description: ${product.description}<br>
-          MSRP: ${product.price}<br>
-          <img src="${product.primary_image}" width="250">
-          
-        </td>
-      </tr>
-      <tr>
-        <td style="background-color: #5b5b5b; padding: 15px" align="center">
-          <a target="_blank" href="https://www.uneekjewelry.com/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px_white.png"
-          /></a>
-          <a target="_blank" href="https://www.facebook.com/UneekFineJewelry"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/facebook_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a target="_blank" href="https://www.instagram.com/uneekjewelry/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/instagram_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a target="_blank" href="https://www.pinterest.com/uneekjewelry/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/pinterest-white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a target="_blank" href="https://twitter.com/uneekjewelry"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/twitter_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a
-            target="_blank"
-            href="https://www.youtube.com/channel/UCMHuDQJoe7uMNSIO5Ekw73A"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/youtube_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a
-            target="_blank"
-            href="https://www.linkedin.com/company/uneek-jewelry/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/linkedin_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
+        <td>
+          <table
+            align="center"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="600"
+            style="border-collapse: collapse"
+            bgcolor="#ffffff"
+          >
+            <tr>
+              <td bgcolor="#ffffff" align="center" style="padding: 40px 0 30px 0">
+                <a target="_blank" href="https://www.uneekjewelry.com/"
+                  ><img
+                    style="margin: 15px auto"
+                    src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px.png"
+                /></a>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" style="padding: 5px">
+                <table
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="100%"
+                  style="border-collapse: collapse"
+                >
+                  <tr>
+                    <td>
+                      <img
+                        width="100%"
+                        src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_2.jpg"
+                        style="-ms-interpolation-mode: bicubic"
+                      />
+                    </td>
+                    <td>
+                      <img
+                        width="100%"
+                        src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_1.jpg"
+                        style="-ms-interpolation-mode: bicubic"
+                      />
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="font-size: 0; line-height: 0"
+                height="10"
+                bgcolor="#ffffff"
+              >
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" style="padding: 15px">
+                <h1>Customer Inquiry</h1>
+                From: ${result.retailer}<br />
+                <strong>Customer Information</strong><br />
+                First Name: ${firstname}<br />
+                Last Name: ${lastname}<br />
+                Email Address: ${email}<br />
+                Phone Number: ${phone}<br />
+                Message: ${message}<br />
+                <hr />
+                Product: ${product.sku}<br />
+                Description: ${product.description}<br />
+                MSRP: ${product.price}<br />
+                <img src="${product.primary_image}" width="250" />
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="font-size: 0; line-height: 0"
+                height="10"
+                bgcolor="#ffffff"
+              >
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#5b5b5b">
+                <table
+                  align="center"
+                  border="0"
+                  cellpadding="3"
+                  cellspacing="0"
+                  style="border-collapse: collapse"
+                  bgcolor="#5b5b5b"
+                >
+                  <tr>
+                    <td align="center" style="padding: 40px 0 30px 0">
+                      <a target="_blank" href="https://www.uneekjewelry.com/"
+                        ><img
+                          style="margin: 5px"
+                          src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px_white.png"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.facebook.com/UneekFineJewelry"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/facebook_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.instagram.com/uneekjewelry/"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/instagram_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.pinterest.com/uneekjewelry/"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/pinterest-white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a target="_blank" href="https://twitter.com/uneekjewelry"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/twitter_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.youtube.com/channel/UCMHuDQJoe7uMNSIO5Ekw73A"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/youtube_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.linkedin.com/company/uneek-jewelry/"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/linkedin_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
     </table>
   </body>
 </html>
+
       `,
     }
 
@@ -204,144 +285,233 @@ export default async (req, res) => {
       to: email,
       subject: `Your Uneek item inquiry has been received by ${result.retailer}`,
       html: `
-      <!DOCTYPE html>
-<html lang="en">
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
   <head>
-    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Uneek Jewelry</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
   </head>
-  <body bgcolor="#ebebeb" style="font-family: Arial, Helvetica, sans-serif">
+
+  <body style="margin: 0; padding: 0">
     <table
-      width="800"
+      role="presentation"
       border="0"
-      style="margin: 0px auto; background-color: #fff"
+      cellpadding="0"
+      cellspacing="0"
+      width="100%"
+      bgcolor="#ebebeb"
     >
       <tr>
-        <td align="center">
-          <a target="_blank" href="https://www.uneekjewelry.com/"
-            ><img
-              style="margin: 15px auto"
-              src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px.png"
-          /></a>
-        </td>
-      </tr>
-      <tr>
-        <td align="center">
-          <img
-            width="49%"
-            src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_2.jpg"
-            style="-ms-interpolation-mode: bicubic"
-          />
-          <img
-            width="49%"
-            src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_1.jpg"
-            style="-ms-interpolation-mode: bicubic"
-          />
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 15px">
-        <p>Dear ${(firstname + ' ' + lastname).trim()},</p>
+        <td>
+          <table
+            align="center"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="600"
+            style="border-collapse: collapse"
+            bgcolor="#ffffff"
+          >
+            <tr>
+              <td bgcolor="#ffffff" align="center" style="padding: 40px 0 30px 0">
+                <a target="_blank" href="https://www.uneekjewelry.com/"
+                  ><img
+                    style="margin: 15px auto"
+                    src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px.png"
+                /></a>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" style="padding: 5px">
+                <table
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="100%"
+                  style="border-collapse: collapse"
+                >
+                  <tr>
+                    <td>
+                      <img
+                        width="100%"
+                        src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_2.jpg"
+                        style="-ms-interpolation-mode: bicubic"
+                      />
+                    </td>
+                    <td>
+                      <img
+                        width="100%"
+                        src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_1.jpg"
+                        style="-ms-interpolation-mode: bicubic"
+                      />
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="font-size: 0; line-height: 0"
+                height="10"
+                bgcolor="#ffffff"
+              >
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" style="padding: 15px">
+                <p>Dear ${(firstname + ' ' + lastname).trim()},</p>
 
-        <p>Thank you for your interest in Style: <strong>${
-          product.sku
-        }</strong></p>
-        <img src="${product.primary_image}" width="250">
-        <p>
-          Uneek has hand selected the best retail partners across the country
-          who share our same values:
-        </p>
-        <ul>
-          <li>High quality craftsmanship</li>
-          <li>Exceptional customer service</li>
-          <li>Award-winning, one of a kind designs</li>
-        </ul>
+                <p>
+                  Thank you for your interest in Style:
+                  <strong>${ product.sku }</strong>
+                </p>
+                <img src="${product.primary_image}" width="250" />
+                <p>
+                  Uneek has hand selected the best retail partners across the
+                  country who share our same values:
+                </p>
+                <ul>
+                  <li>High quality craftsmanship</li>
+                  <li>Exceptional customer service</li>
+                  <li>Award-winning, one of a kind designs</li>
+                </ul>
 
-        <p>
-          A representative from ${
-            result.retailer
-          }, a Uneek authorized retailer, will
-          reach out to you shortly.
-        </p>
-        <p>
-          We look forward to helping you choose a special piece of jewelry from
-          Uneek.
-        </p>
-        <p><a target="_blank" href="https://www.uneekjewelry.com/" style="color: #000;">Learn more.</a></p>
-        <p class="align-left" style="text-align: right;">
-          Sincerely,<br>
-          <strong>The Uneek Team</strong><br>
-          #DareToBeUneek<br>
-          #BeUneek<br>
-          #EveryLoveIsUneek
-        </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="background-color: #5b5b5b; padding: 15px" align="center">
-          <a target="_blank" href="https://www.uneekjewelry.com/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px_white.png"
-          /></a>
-          <a target="_blank" href="https://www.facebook.com/UneekFineJewelry"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/facebook_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a target="_blank" href="https://www.instagram.com/uneekjewelry/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/instagram_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a target="_blank" href="https://www.pinterest.com/uneekjewelry/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/pinterest-white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a target="_blank" href="https://twitter.com/uneekjewelry"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/twitter_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a
-            target="_blank"
-            href="https://www.youtube.com/channel/UCMHuDQJoe7uMNSIO5Ekw73A"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/youtube_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a
-            target="_blank"
-            href="https://www.linkedin.com/company/uneek-jewelry/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/linkedin_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
+                <p>
+                  A representative from ${ result.retailer }, a Uneek authorized
+                  retailer, will reach out to you shortly.
+                </p>
+                <p>
+                  We look forward to helping you choose a special piece of
+                  jewelry from Uneek.
+                </p>
+                <p>
+                  <a
+                    target="_blank"
+                    href="https://www.uneekjewelry.com/"
+                    style="color: #000"
+                    >Learn more.</a
+                  >
+                </p>
+                <p class="align-left" style="text-align: right">
+                  Sincerely,<br />
+                  <strong>The Uneek Team</strong><br />
+                  #DareToBeUneek<br />
+                  #BeUneek<br />
+                  #EveryLoveIsUneek
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="font-size: 0; line-height: 0"
+                height="10"
+                bgcolor="#ffffff"
+              >
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#5b5b5b">
+                <table
+                  align="center"
+                  border="0"
+                  cellpadding="3"
+                  cellspacing="0"
+                  style="border-collapse: collapse"
+                  bgcolor="#5b5b5b"
+                >
+                  <tr>
+                    <td align="center" style="padding: 40px 0 30px 0">
+                      <a target="_blank" href="https://www.uneekjewelry.com/"
+                        ><img
+                          style="margin: 5px"
+                          src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px_white.png"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.facebook.com/UneekFineJewelry"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/facebook_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.instagram.com/uneekjewelry/"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/instagram_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.pinterest.com/uneekjewelry/"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/pinterest-white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a target="_blank" href="https://twitter.com/uneekjewelry"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/twitter_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.youtube.com/channel/UCMHuDQJoe7uMNSIO5Ekw73A"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/youtube_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.linkedin.com/company/uneek-jewelry/"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/linkedin_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
     </table>
   </body>
 </html>
+
+
       `,
     }
 
@@ -350,123 +520,205 @@ export default async (req, res) => {
       to: result.email,
       subject: `Customer Inquiry from ${result.retailer}`,
       html: `
-      <!DOCTYPE html>
-<html lang="en">
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
   <head>
-    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Uneek Jewelry</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
   </head>
-  <body bgcolor="#ebebeb" style="font-family: Arial, Helvetica, sans-serif">
+
+  <body style="margin: 0; padding: 0">
     <table
-      width="800"
+      role="presentation"
       border="0"
-      style="margin: 0px auto; background-color: #fff"
+      cellpadding="0"
+      cellspacing="0"
+      width="100%"
+      bgcolor="#ebebeb"
     >
       <tr>
-        <td align="center">
-          <a target="_blank" href="https://www.uneekjewelry.com/"
-            ><img
-              style="margin: 15px auto"
-              src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px.png"
-          /></a>
-        </td>
-      </tr>
-      <tr>
-        <td align="center">
-          <img
-            width="49%"
-            src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_2.jpg"
-            style="-ms-interpolation-mode: bicubic"
-          />
-          <img
-            width="49%"
-            src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_1.jpg"
-            style="-ms-interpolation-mode: bicubic"
-          />
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 15px">
-        <h1>Customer Inquiry</h1>
-          From: ${result.retailer}<br>
-          <strong>Customer</strong> 
-          First Name: ${firstname}<br>
-          Last Name: ${lastname}<br>
-          Email Address: ${email}<br>
-          Phone Number: ${phone}<br>
-          Message: ${message}<br>
-          <hr>
-          Product: ${product.sku}<br>
-          Description: ${product.description}<br>
-          MSRP: ${product.price}<br>
-          <img src="${product.primary_image}" width="250">
-        </td>
-      </tr>
-      <tr>
-        <td style="background-color: #5b5b5b; padding: 15px" align="center">
-          <a target="_blank" href="https://www.uneekjewelry.com/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px_white.png"
-          /></a>
-          <a target="_blank" href="https://www.facebook.com/UneekFineJewelry"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/facebook_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a target="_blank" href="https://www.instagram.com/uneekjewelry/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/instagram_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a target="_blank" href="https://www.pinterest.com/uneekjewelry/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/pinterest-white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a target="_blank" href="https://twitter.com/uneekjewelry"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/twitter_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a
-            target="_blank"
-            href="https://www.youtube.com/channel/UCMHuDQJoe7uMNSIO5Ekw73A"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/youtube_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
-          <a
-            target="_blank"
-            href="https://www.linkedin.com/company/uneek-jewelry/"
-            ><img
-              style="vertical-align: middle; margin: 5px"
-              width="35"
-              height="35"
-              src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/linkedin_white.png"
-              style="-ms-interpolation-mode: bicubic"
-          /></a>
+        <td>
+          <table
+            align="center"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="600"
+            style="border-collapse: collapse"
+            bgcolor="#ffffff"
+          >
+            <tr>
+              <td bgcolor="#ffffff" align="center" style="padding: 40px 0 30px 0">
+                <a target="_blank" href="https://www.uneekjewelry.com/"
+                  ><img
+                    style="margin: 15px auto"
+                    src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px.png"
+                /></a>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" style="padding: 5px">
+                <table
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="100%"
+                  style="border-collapse: collapse"
+                >
+                  <tr>
+                    <td>
+                      <img
+                        width="100%"
+                        src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_2.jpg"
+                        style="-ms-interpolation-mode: bicubic"
+                      />
+                    </td>
+                    <td>
+                      <img
+                        width="100%"
+                        src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/email_image_1.jpg"
+                        style="-ms-interpolation-mode: bicubic"
+                      />
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="font-size: 0; line-height: 0"
+                height="10"
+                bgcolor="#ffffff"
+              >
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" style="padding: 15px">
+                <h1>Customer Inquiry</h1>
+                From: ${result.retailer}<br />
+                <strong>Customer Information</strong><br />
+                First Name: ${firstname}<br />
+                Last Name: ${lastname}<br />
+                Email Address: ${email}<br />
+                Phone Number: ${phone}<br />
+                Message: ${message}<br />
+                <hr />
+                Product: ${product.sku}<br />
+                Description: ${product.description}<br />
+                MSRP: ${product.price}<br />
+                <img src="${product.primary_image}" width="250" />
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="font-size: 0; line-height: 0"
+                height="10"
+                bgcolor="#ffffff"
+              >
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#5b5b5b">
+                <table
+                  align="center"
+                  border="0"
+                  cellpadding="3"
+                  cellspacing="0"
+                  style="border-collapse: collapse"
+                  bgcolor="#5b5b5b"
+                >
+                  <tr>
+                    <td align="center" style="padding: 40px 0 30px 0">
+                      <a target="_blank" href="https://www.uneekjewelry.com/"
+                        ><img
+                          style="margin: 5px"
+                          src="https://uneek-embed-app.vercel.app/images/UNEEK_LOGO_WEB_150px_white.png"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.facebook.com/UneekFineJewelry"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/facebook_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.instagram.com/uneekjewelry/"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/instagram_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.pinterest.com/uneekjewelry/"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/pinterest-white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a target="_blank" href="https://twitter.com/uneekjewelry"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/twitter_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.youtube.com/channel/UCMHuDQJoe7uMNSIO5Ekw73A"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/youtube_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                    <td>
+                      <a
+                        target="_blank"
+                        href="https://www.linkedin.com/company/uneek-jewelry/"
+                        ><img
+                          style="margin: 5px"
+                          width="35"
+                          height="35"
+                          src="https://www.uneekjewelry.com/blog/wp-content/uploads/2020/02/linkedin_white.png"
+                          style="-ms-interpolation-mode: bicubic"
+                      /></a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
     </table>
   </body>
 </html>
+
       `,
     }
   } catch (e) {

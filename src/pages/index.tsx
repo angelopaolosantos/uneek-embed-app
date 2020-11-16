@@ -314,6 +314,11 @@ const Home = ({ query, result }) => {
               display: grid;
               grid-template-columns: auto auto;
             }
+
+            .popular-styles {
+              display: grid;
+              grid-template-columns: auto auto;
+          }
           }
         `}
       </style>

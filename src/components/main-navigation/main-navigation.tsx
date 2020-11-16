@@ -1,9 +1,9 @@
-import { Icon } from "rsuite";
-import DropdownEngagement from "./dropdown/dropdown-engagement";
-import DropdownFashion from "./dropdown/dropdown-fashion";
-import DropdownBands from "./dropdown/dropdown-bands"
-import DropdownOOAK from "./dropdown/dropdown-ooak";
-import Link from "next/link";
+import { Icon } from 'rsuite'
+import DropdownEngagement from './dropdown/dropdown-engagement'
+import DropdownFashion from './dropdown/dropdown-fashion'
+import DropdownBands from './dropdown/dropdown-bands'
+import DropdownOOAK from './dropdown/dropdown-ooak'
+import Link from 'next/link'
 
 const MainNavigation = () => {
   return (
@@ -11,30 +11,37 @@ const MainNavigation = () => {
       <div className="menu-wrapper">
         <ul className="menu">
           <li className="menu-item">
-            <Link href="/categories/engagement-rings"><a>Engagement Rings</a></Link>
+            <Link href="/categories/engagement-rings">
+              <a>Engagement Rings</a>
+            </Link>
             <div className="mega-menu">
               <DropdownEngagement />
             </div>
           </li>
           <li className="menu-item">
-          <Link href="/categories/wedding-and-anniversary-bands"><a>Wedding &amp; Anniversary Bands</a></Link>
+            <Link href="/categories/wedding-and-anniversary-bands">
+              <a>Wedding &amp; Anniversary Bands</a>
+            </Link>
             <div className="mega-menu">
               <DropdownBands />
             </div>
           </li>
           <li className="menu-item">
-          <Link href="/categories/fine-jewelry"><a>Fine Jewelry</a></Link>
+            <Link href="/categories/fine-jewelry">
+              <a>Fine Jewelry</a>
+            </Link>
             <div className="mega-menu">
               <DropdownFashion />
             </div>
           </li>
           <li className="menu-item">
-          <Link href="/categories/one-of-a-kind"><a>One Of A Kind</a></Link>
+            <Link href="/categories/one-of-a-kind">
+              <a>One Of A Kind</a>
+            </Link>
             <div className="mega-menu">
               <DropdownOOAK />
             </div>
           </li>
-          
         </ul>
         <ul className="menu">
           <li>
@@ -54,10 +61,24 @@ const MainNavigation = () => {
             top: 56px;
             width: 100%;
             display: none;
+            visibility: hidden;
+          }
+
+          @keyframes fade {
+            0% {
+              opacity: 0;
+            }
+
+            100% {
+              opacity: 1;
+            }
           }
 
           .menu-item:hover > .mega-menu {
             display: block;
+            visibility: visible;
+            opacity: 1;
+            animation: fade 1s;
           }
 
           .menu-wrapper {
@@ -80,7 +101,7 @@ const MainNavigation = () => {
         `}
       </style>
     </div>
-  );
-};
+  )
+}
 
-export default MainNavigation;
+export default MainNavigation

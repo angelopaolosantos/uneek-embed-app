@@ -55,7 +55,7 @@ const Page = ({ result, session }) => {
       const fileUploadResponse = await fileUpload(image.originFileObj)
       
       if (fileUploadResponse.data.success) {
-        newFiles = [...newFiles, fileUploadResponse.data.file[0].Location]
+        newFiles = [...newFiles, fileUploadResponse.data.file[1].Location] // fileUploadResponse.data.file[1].Location - 2nd image result (jpeg version)
       } else {
         message.error('File not upload...')
       }
@@ -65,8 +65,7 @@ const Page = ({ result, session }) => {
         const values = {
           images: [
             ...result.productById.images,
-            ...newFiles, // Save 1st Image Result 650x650 version
-            //fileUploadResponse.data.file[1].Location, // Save 2nd Image Result 2500x2500 version
+            ...newFiles, 
           ],
         }
 
