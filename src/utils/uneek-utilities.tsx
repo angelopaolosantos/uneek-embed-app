@@ -43,7 +43,9 @@ async function isPartnerAuthorized(partnerKey, parentUrl) {
     })
     console.log(result)
 
-    if (result?.verifyAccessKey.url == parentUrl) {
+    if (result?.verifyAccessKey.url === parentUrl) {
+      console.log("url1:", result?.verifyAccessKey.url)
+      console.log("url2:", parentUrl)
       console.log('Parent Website and Retailer is authorized')
       if (isBrowser) {
         window.sessionStorage.setItem('partner_key', result.verifyAccessKey.key)
