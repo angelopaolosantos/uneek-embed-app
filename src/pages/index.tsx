@@ -192,7 +192,7 @@ const Home = ({ query, result }) => {
         </section>
         <section>
           <iframe
-            src="//lightwidget.com/widgets/066a4dd31ad05860bff70365f33f424b.html"
+            src="https://cdn.lightwidget.com/widgets/066a4dd31ad05860bff70365f33f424b.html"
             scrolling="no"
             className="lightwidget-widget"
           ></iframe>
@@ -318,7 +318,7 @@ const Home = ({ query, result }) => {
             .popular-styles {
               display: grid;
               grid-template-columns: auto auto;
-          }
+            }
           }
         `}
       </style>
