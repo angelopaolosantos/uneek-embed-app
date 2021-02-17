@@ -9,108 +9,79 @@ import ReactHtmlParser from 'react-html-parser'
 import { SelectPicker } from 'rsuite'
 import { formatNumber } from '../../utils/uneek-utilities'
 
+const sortProducts = (products, value) => {
+  // Define sort functions here.
+  let sortedProducts = [...products] // create a copy of current products
+      switch (value) {
+        case 1: {
+          sortedProducts.sort((a, b) => (a.price > b.price ? 1 : -1))
+          console.log('sort by price: lowest to highest')
+          break
+        }
+        case 2: {
+          sortedProducts.sort((a, b) => (a.price < b.price ? 1 : -1))
+          console.log('sort by price: highest to lowest')
+          break
+        }
+        default: {
+          console.log('no sorting')
+        }
+      }
+  return sortedProducts
+}
+
 const paginate = (array, page_size, page_number) => {
   return array.slice((page_number - 1) * page_size, page_number * page_size)
 }
 
 const Page = ({ result, query }) => {
   const router = useRouter()
-  const [sort, setSort] = useState<number | null>(
-    query.sort ? parseInt(query.sort) : null
-  )
-  const [productsPerPage, setProductsPerPage] = useState(
-    query.perpage ? parseInt(query.perpage) : 18
-  )
-  const [activePage, setActivePage] = useState<number>(
-    query.page ? parseInt(query.page) : 1
-  )
 
-  const [products, setProducts] = useState([])
+  const [pageFilter, setPageFilter] = useState(
+    { sortBy: null, productsPerPage: 18, activePage: 1}
+  )
+  const [products, setProducts] = useState(result?.categories[0]?.products)
   const [pages, setPages] = useState<number>(0)
-  const [showProducts, setShowProducts] = useState([])
+  const [productsOnActivePage, setProductsOnActivePage] = useState([])
   const [category, setCategory] = useState('')
 
   useEffect(() => {
-    if (result.categories.length == 0) {
+    if (result?.categories?.length == undefined || result?.categories?.length == 0 ) {
       router.push('/404')
     } else {
-      let products = result.categories[0].products
-
-      if (sort) {
-        let sortedProducts = [...products] // create a copy of current products
-        switch (sort) {
-          case 1: {
-            sortedProducts.sort((a, b) => (a.price > b.price ? 1 : -1))
-            console.log('sort 1')
-            break
-          }
-          case 2: {
-            sortedProducts.sort((a, b) => (a.price < b.price ? 1 : -1))
-            console.log('sort 2')
-            break
-          }
-          default: {
-            console.log('sort null')
-            sortedProducts = result.categories[0].products
-          }
-        }
-
-        setProducts(sortedProducts)
-        setShowProducts(paginate(sortedProducts, productsPerPage, 1))
-      }else {
-        setProducts(products)
-        setShowProducts(paginate(products, productsPerPage, 1))
-      }
+      let sortedProducts = sortProducts([...result.categories[0].products],pageFilter.sortBy)
+      setProducts(sortedProducts)
+      setProductsOnActivePage(paginate(sortedProducts, pageFilter.productsPerPage, 1))
 
       setCategory(result.categories[0].name)
-      setPages(Math.ceil(products.length / productsPerPage))
-      setActivePage(1)
+      setPages(Math.ceil(products.length / pageFilter.productsPerPage))
+      setPageFilter({...pageFilter, activePage: 1})
     }
   }, [result])
 
   /** on changing products shown per page */
 
   const onProductsPerPageChange = (value) => {
-    setProductsPerPage(value)
+    setPageFilter({...pageFilter, activePage: 1, productsPerPage: value})
     setPages(Math.ceil(products.length / value))
-    setActivePage(1)
-    setShowProducts(paginate(products, value, 1))
+    setProductsOnActivePage(paginate(products, value, 1))
 
-    const asURL = `${query.category.join('/')}?page=1&perpage=${value}&sort=${sort}`
-    router.push(`?page=1&perpage=${value}&sort=${sort}`, asURL, { shallow: true })
+    const asURL = `${query.category.join('/')}?page=1&perpage=${value}&sort=${pageFilter.sortBy}`
+    router.push(`?page=1&perpage=${value}&sort=${pageFilter.sortBy}`, asURL, { shallow: true })
   }
 
   /** on changing sorting order */
-
   const onSortChange = (value) => {
-    let sortedProducts = [...products] // create a copy of current products
-    switch (value) {
-      case 1: {
-        sortedProducts.sort((a, b) => (a.price > b.price ? 1 : -1))
-        console.log('sort 1')
-        break
-      }
-      case 2: {
-        sortedProducts.sort((a, b) => (a.price < b.price ? 1 : -1))
-        console.log('sort 2')
-        break
-      }
-      default: {
-        console.log('sort null')
-        sortedProducts = result.categories[0].products
-      }
-    }
-
+    let sortedProducts = sortProducts([...result.categories[0].products], value)
     setProducts(sortedProducts)
-    setSort(value)
-    setActivePage(1)
-    setShowProducts(paginate(sortedProducts, productsPerPage, 1))
+    setPageFilter({...pageFilter, sortBy: value, activePage: 1})
+    setProductsOnActivePage(paginate(sortedProducts, pageFilter.productsPerPage, 1))
 
     const asURL = `${query.category.join(
       '/'
-    )}?page=${activePage}&perpage=${productsPerPage}&sort=${value}`
+    )}?page=${pageFilter.activePage}&perpage=${pageFilter.productsPerPage}&sort=${value}`
     router.push(
-      `?page=${activePage}&perpage=${productsPerPage}&sort=${value}`,
+      `?page=${pageFilter.activePage}&perpage=${pageFilter.productsPerPage}&sort=${value}`,
       asURL,
       { shallow: true }
     )
@@ -119,11 +90,11 @@ const Page = ({ result, query }) => {
   /** on changing page number */
 
   const onPageChange = (pageNumber) => {
-    setActivePage(pageNumber)
-    setShowProducts(paginate(products, productsPerPage, pageNumber))
+    setPageFilter({...pageFilter, activePage: pageNumber})
+    setProductsOnActivePage(paginate(products, pageFilter.productsPerPage, pageNumber))
 
-    const asURL = `${query.category.join('/')}?page=${pageNumber}&perpage=${productsPerPage}&sort=${sort}`
-    router.push(`?page=${pageNumber}&perpage=${productsPerPage}&sort=${sort}`, asURL, { shallow: true })
+    const asURL = `${query.category.join('/')}?page=${pageNumber}&perpage=${pageFilter.productsPerPage}&sort=${pageFilter.sortBy}`
+    router.push(`?page=${pageNumber}&perpage=${pageFilter.productsPerPage}&sort=${pageFilter.sortBy}`, asURL, { shallow: true })
     if (process.browser) {
       console.log(window)
       window.scrollTo(0, 0)
@@ -132,8 +103,8 @@ const Page = ({ result, query }) => {
 
   /** -------------- HTML ------------------ */
   const productsHtml = () => {
-    if (showProducts.length > 0) {
-      return showProducts.map((product) => {
+    if (productsOnActivePage.length > 0) {
+      return productsOnActivePage.map((product) => {
         return (
           <div key={product.sku} className="product">
             <div className="product-img">
@@ -229,8 +200,6 @@ const Page = ({ result, query }) => {
     size: 'xs',
   }
 
-  console.log(sort)
-
   return (
     <Template>
       <Head>
@@ -244,7 +213,7 @@ const Page = ({ result, query }) => {
             <SelectPicker
               {...selectPickerProps}
               data={sortData}
-              defaultValue={sort}
+              defaultValue={pageFilter.sortBy}
               onChange={onSortChange}
               cleanable={true}
             />
@@ -252,7 +221,7 @@ const Page = ({ result, query }) => {
             <SelectPicker
               {...selectPickerProps}
               data={productsPerPageData}
-              value={productsPerPage}
+              value={pageFilter.productsPerPage}
               onChange={onProductsPerPageChange}
               cleanable={false}
             />
@@ -266,7 +235,7 @@ const Page = ({ result, query }) => {
           pages={pages}
           maxButtons={5}
           ellipsis={true}
-          activePage={activePage}
+          activePage={pageFilter.activePage}
           onSelect={onPageChange}
           boundaryLinks={true}
         />

@@ -36,16 +36,12 @@ async function isPartnerAuthorized(partnerKey, parentUrl) {
     `
 
   if (partnerKey) {
-    console.log("partner key: ",partnerKey)
     // check if partner key is valid
     const result = await fetchAPI(VERIFY_ACCESS_KEY, {
       variables: { key: partnerKey },
     })
-    console.log(result)
-    console.log("url1:", result?.verifyAccessKey.url)
-    console.log("url2:", parentUrl)
-
-    if (result?.verifyAccessKey.url === parentUrl) {
+    
+    if (result?.verifyAccessKey?.url === parentUrl) {
       
       console.log('Parent Website and Retailer is authorized')
       if (isBrowser) {

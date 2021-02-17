@@ -9,6 +9,8 @@ import {
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
+const prod = process.env.NODE_ENV === 'production'
+
 const Template = (props) => {
   const {children, partnerKey} = props
   const router = useRouter()
@@ -17,9 +19,11 @@ const Template = (props) => {
   useEffect(() => {
     const parentUrl = getParentUrl()
     isPartnerAuthorized(partnerKey, parentUrl).then((data) => {
-      console.log(data)
-      if (data === false) {
-        //router.push('/unauthorized')
+      console.log("Is partner authorized:", data)
+      console.log("Production mode: ", prod)
+      if (data === false && prod) {
+        // Redirect to unauthorized page if not authorized and in production mode
+        router.push('/unauthorized')
       }
     })
   }, [])

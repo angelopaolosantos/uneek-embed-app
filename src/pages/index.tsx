@@ -5,9 +5,16 @@ import Link from 'next/link'
 import { Button, Divider } from 'rsuite'
 import ReactHtmlParser from 'react-html-parser'
 import { formatNumber } from '../utils/uneek-utilities'
+import { useContext } from 'react'
+import SettingsContext from '../contexts/settings/SettingsContext'
 
 const Home = ({ query, result }) => {
   const popularProducts = result.products
+
+  const { settings, setSettings } = useContext(SettingsContext)
+
+  console.log("Settings:", settings)
+  //setSettings("Off")
 
   const productsHtml = () => {
     if (popularProducts) {
@@ -340,6 +347,7 @@ export async function getServerSideProps({ query }) {
           }
         }`
 
+  // Fetch Popular Items
   const result = await fetchAPI(QUERY, {
     variables: { filter: { category: '/popular' } },
   })

@@ -8,18 +8,22 @@ import "pure-react-carousel/dist/react-carousel.es.css";
 //import "../styles/carousel.scss";
 import ApolloProvider from "../contexts/apollo/ApolloProvider";
 import Head from "next/head"
+import SettingsProvider from "../contexts/settings/SettingsProvider"
 
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  
   return (
     <ApolloProvider>
+      <SettingsProvider>
       <Head>
       <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"></meta>
       <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
       </Head>
       <Component {...pageProps} />
+      </SettingsProvider>
     </ApolloProvider>
   );
 }
