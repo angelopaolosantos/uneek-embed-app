@@ -5,7 +5,7 @@ export default {
     category: async (_parent, _args, _context, _info) => {
       try {
         const result = await _context.db
-          .collection('categories2')
+          .collection('categories')
           .findOne({ _id: ObjectId(_args.id) })
         return result
       } catch (e) {
@@ -16,7 +16,7 @@ export default {
     categories: async (_parent, _args, _context, _info) => {
       try {
         const result = await _context.db
-          .collection('categories2')
+          .collection('categories')
           .find(_args.filter)
           .sort({ category: 1 })
           .toArray()
@@ -30,7 +30,7 @@ export default {
   Mutation: {
     updateCategory: async (_parent, _args, _context, _info) => {
       try {
-        const response = await _context.db.collection('categories2').updateOne(
+        const response = await _context.db.collection('categories').updateOne(
           { _id: ObjectId(_args.id) },
           {
             $set: {
@@ -67,7 +67,7 @@ export default {
     },
     createCategory: async (_parent, _args, _context, _info) => {
       try {
-        const response = await _context.db.collection('categories2').insertOne({
+        const response = await _context.db.collection('categories').insertOne({
           ..._args.input,
         })
 
@@ -94,7 +94,7 @@ export default {
     deleteCategory: async (_parent, _args, _context, _info) => {
       try {
         const response = await _context.db
-          .collection('categories2')
+          .collection('categories')
           .deleteOne({ _id: ObjectId(_args.id) })
 
         if (response.deletedCount > 0) {
@@ -135,7 +135,7 @@ export default {
           .toArray()
 
           const response = await _context.db
-            .collection('categories2')
+            .collection('categories')
             .updateOne(
               { category },
               {
@@ -160,7 +160,7 @@ export default {
           console.log(productsData)
 
           const response = await _context.db
-            .collection('categories2')
+            .collection('categories')
             .updateOne(
               { category },
               {
@@ -183,7 +183,7 @@ export default {
 
           // Get Category products
           const categoryData = await _context.db
-            .collection('categories2')
+            .collection('categories')
             .findOne({ category })
 
           // update data
@@ -225,7 +225,7 @@ export default {
             //console.log("NewCatProd:", newCategoryProducts)
 
             const response = await _context.db
-              .collection('categories2')
+              .collection('categories')
               .updateOne(
                 { category },
                 {
@@ -236,7 +236,7 @@ export default {
               )
           } else {
             const response = await _context.db
-              .collection('categories2')
+              .collection('categories')
               .updateOne(
                 { category },
                 {
@@ -261,50 +261,5 @@ export default {
         }
       }
     },
-    /*
-    updateCategory2: async (_parent, _args, _context, _info) => {
-      console.log(_args.input)
-
-      return {
-        success: false,
-        message: 'Item was not updated.',
-      }
-      /*
-      try {
-        const response = await _context.db.collection('categories2').updateOne(
-          { _id: ObjectId(_args.id) },
-          {
-            $set: {
-              products: _args.input,
-            },
-          }
-        )
-
-        console.log(response)
-
-        if (response.matchedCount > 0) {
-          if (response.modifiedCount > 0) {
-            return {
-              success: true,
-              message: 'Item updated!',
-            }
-          }
-          return {
-            success: true,
-            message: 'Item found. No change made.',
-          }
-        }
-
-        return {
-          success: false,
-          message: 'Item was not updated.',
-        }
-      } catch (e) {
-        return {
-          success: false,
-          message: `Error occured, Item not updated.${e.message}`,
-        }
-      }
-    },*/
   },
 }
