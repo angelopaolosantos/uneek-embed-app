@@ -25,7 +25,7 @@ const Page = ({ result, session }) => {
   const [editProduct, { data }] = useMutation(EDIT_PRODUCT);
 
   const onFinish = async (values) => {
-    const id = result.productById._id;
+    const id = result.product._id;
     console.log(values)
     const response = await editProduct({ variables: { id, input: values } });
 
@@ -57,7 +57,7 @@ const Page = ({ result, session }) => {
       <Form
         {...layout}
         name="basic"
-        initialValues={result && result.productById ? { ...result.productById } : {}}
+        initialValues={result && result.product ? { ...result.product } : {}}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
@@ -66,7 +66,7 @@ const Page = ({ result, session }) => {
           name="sku"
           rules={[{ required: true, message: "Required" }]}
         >
-          <Input />
+          <Input style={{ width: 250 }} />
         </Form.Item>
         <Form.Item label="Status" name="status">
           <Select style={{ width: 120 }}>
@@ -92,6 +92,12 @@ const Page = ({ result, session }) => {
             <Option value="Accessory">Accessory</Option>
           </Select>
         </Form.Item>
+        <Form.Item label="Class" name="class">
+          <Input style={{ width: 250 }} />
+        </Form.Item>
+        <Form.Item label="Collection" name="collection">
+          <Input style={{ width: 250 }} />
+        </Form.Item>
         <Form.Item label="Gender" name="gender">
           <Select style={{ width: 120 }}>
             <Option value="Ladies">Ladies</Option>
@@ -111,8 +117,14 @@ const Page = ({ result, session }) => {
             <Option value="Platinum">Platinum</Option>
           </Select>
         </Form.Item>
+        <Form.Item label="Gemstone" name="gemstone">
+          <Input style={{ width: 250 }} />
+        </Form.Item>
+        <Form.Item label="Center Stone" name="center_stone">
+          <Input style={{ width: 250 }} />
+        </Form.Item>
         <Form.Item label="Center Size" name="center_size">
-          <Input />
+          <Input style={{ width: 250 }} />
         </Form.Item>
         <Form.Item label="Center Shape" name="center_shape">
           <Select style={{ width: 120 }}>
@@ -135,23 +147,18 @@ const Page = ({ result, session }) => {
         <Form.Item label="Side Stone Pieces" name="side_stone_pieces">
           <Input />
         </Form.Item>
-        <Form.Item label="Gemstone" name="gemstone">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Center Stone" name="center_stone">
-          <Input />
-        </Form.Item>
+        
         <Form.Item label="Price" name="price">
-          <Input />
+          <Input style={{ width: 100 }} />
         </Form.Item>
         <Form.Item label="Meta Keyword" name="meta_keyword">
-          <Input />
+          <Input style={{ width: 250 }} />
         </Form.Item>
         <Form.Item label="Meta Description" name="meta_description">
-          <Input />
+        <TextArea rows={4} />
         </Form.Item>
         <Form.Item label="Meta Title" name="meta_title">
-          <Input />
+          <Input style={{ width: 250 }} />
         </Form.Item>
 
         <Form.Item {...tailLayout}>
@@ -167,16 +174,16 @@ const Page = ({ result, session }) => {
       <Divider></Divider>
       <div>
       <h3>Images</h3>
-      <img src={result.productById.primary_image} width="250" />
-      <Link href={`/admin/catalog/products/images/?id=${result.productById._id}`}><Button>Update Images</Button></Link>
+      <img src={result.product.primary_image} width="100" />
+      <Link href={`/admin/catalog/products/images/?id=${result.product._id}`}><Button>Update Images</Button></Link>
       </div>
       <Divider></Divider>
-      <div><h3>Categories</h3> <ul>{ result.productById.category.map((data)=>{
+      <div><h3>Categories</h3> <ul>{ result.product.category.map((data)=>{
       return (<li>{data}</li>)
       })
       }
       </ul>
-      <Link href={`/admin/catalog/products/editCategories/?id=${result.productById._id}`}><Button>Update Categories</Button></Link>
+      <Link href={`/admin/catalog/products/editCategories/?id=${result.product._id}`}><Button>Update Categories</Button></Link>
       </div>
     </div>
     </Template>
@@ -196,15 +203,25 @@ export async function getServerSideProps({ query, res, req }) {
   const { id } = query;
 
   const QUERY = `
-            query GetProduct($id: ID!) {
-                productById(id: $id) {
+            query GetProduct($id: String!) {
+                product(search: $id, by: "id") {
                   _id
                   thumbnail
                   sku
                   name
                   description
                   product_type
+                  class
+                  collection
                   category
+                  options {
+                    name
+                    value
+                  }
+                  details {
+                    name
+                    value
+                  }
                   gender
                   price
                   status
@@ -221,6 +238,11 @@ export async function getServerSideProps({ query, res, req }) {
                   meta_keyword
                   meta_description
                   meta_title
+                  related_products {
+                    sku
+                    primary_image
+                  }
+                  tags
           }
       }`;
 

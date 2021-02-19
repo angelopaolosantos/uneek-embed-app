@@ -7,6 +7,7 @@ export default gql`
     product: Product
     sort: Int
   }
+
   type Category {
     _id: ID!
     name: String!

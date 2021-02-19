@@ -64,13 +64,16 @@ const Page = ({ result, session }) => {
 
         const values = {
           images: [
-            ...result.productById.images,
+            ...result.product.images,
             ...newFiles, 
           ],
         }
 
+        console.log("id:", result.product._id)
+        console.log("values:", values)
+
         const editProductResponse = await editProduct({
-          variables: { id: result.productById._id, input: values },
+          variables: { id: result.product._id, input: values },
         })
 
         if (
@@ -79,11 +82,12 @@ const Page = ({ result, session }) => {
         ) {
           message.success(editProductResponse.data.updateProduct.message)
           router.push(
-            `/admin/catalog/products/images?id=${result.productById._id}`
+            `/admin/catalog/products/images?id=${result.product._id}`
           )
         } else {
           message.error(editProductResponse.data.updateProduct.message)
         }
+        
       }
 
         // To do
@@ -92,7 +96,7 @@ const Page = ({ result, session }) => {
 
         let values = {
           images: [
-            ...result.productById.images,
+            ...result.product.images,
             fileUploadResponse.data.file[0].Location, // Save 1st Image Result 650x650 version
             //fileUploadResponse.data.file[1].Location, // Save 2nd Image Result 2500x2500 version
           ],
@@ -100,7 +104,7 @@ const Page = ({ result, session }) => {
 
         /** Save image url to MongoDB 
         const editProductResponse = await editProduct({
-          variables: { id: result.productById._id, input: values },
+          variables: { id: result.product._id, input: values },
         })
 
         if (
@@ -109,7 +113,7 @@ const Page = ({ result, session }) => {
         ) {
           message.success(editProductResponse.data.updateProduct.message)
           router.push(
-            `/admin/catalog/products/images?id=${result.productById._id}`
+            `/admin/catalog/products/images?id=${result.product._id}`
           )
         } else {
           message.error(editProductResponse.data.updateProduct.message)
@@ -125,7 +129,7 @@ const Page = ({ result, session }) => {
       if (fileUploadResponse.data.success) {
         let values = {
           images: [
-            ...result.productById.images,
+            ...result.product.images,
             fileUploadResponse.data.file[0].Location, // Save 1st Image Result 650x650 version
             //fileUploadResponse.data.file[1].Location, // Save 2nd Image Result 2500x2500 version
           ],
@@ -133,7 +137,7 @@ const Page = ({ result, session }) => {
 
         /** Save image url to MongoDB 
         const editProductResponse = await editProduct({
-          variables: { id: result.productById._id, input: values },
+          variables: { id: result.product._id, input: values },
         })
 
         if (
@@ -142,7 +146,7 @@ const Page = ({ result, session }) => {
         ) {
           message.success(editProductResponse.data.updateProduct.message)
           router.push(
-            `/admin/catalog/products/images?id=${result.productById._id}`
+            `/admin/catalog/products/images?id=${result.product._id}`
           )
         } else {
           message.error(editProductResponse.data.updateProduct.message)
@@ -165,16 +169,16 @@ const Page = ({ result, session }) => {
 
   const onRemoveImage = async (image) => {
     console.log("Removing Image: ", image)
-    let images = [...result.productById.images]
+    let images = [...result.product.images]
     var index = images.indexOf(image)
     images.splice(index, 1)
     const values = { images: images }
-    const id = result.productById._id
+    const id = result.product._id
     const response = await editProduct({ variables: { id, input: values } })
 
     if (response && response.data.updateProduct.success) {
       message.success(response.data.updateProduct.message)
-      router.push(`/admin/catalog/products/images?id=${result.productById._id}`)
+      router.push(`/admin/catalog/products/images?id=${result.product._id}`)
     } else {
       message.error(response.data.updateProduct.message)
     }
@@ -182,31 +186,31 @@ const Page = ({ result, session }) => {
 
   const onSetPrimaryImage = async (image) => {
     const values = { primary_image: image }
-    const id = result.productById._id
+    const id = result.product._id
     const response = await editProduct({ variables: { id, input: values } })
 
     if (response && response.data.updateProduct.success) {
       message.success(response.data.updateProduct.message)
-      router.push(`/admin/catalog/products/images?id=${result.productById._id}`)
+      router.push(`/admin/catalog/products/images?id=${result.product._id}`)
     } else {
       message.error(response.data.updateProduct.message)
     }
   }
 
-  console.log(result.productById.images)
+  console.log(result.product.images)
 
   const displayImages = () => {
     if (
-      Array.isArray(result.productById.images) &&
-      result.productById.images.length > 0
+      Array.isArray(result.product.images) &&
+      result.product.images.length > 0
     ) {
-      return result.productById.images.map((data) => {
+      return result.product.images.map((data) => {
         console.log(data ==result.primary_image)
         return (
           <li>
             <img src={data} width={200} />{' '}
             <a onClick={() => onRemoveImage(data)}>Remove</a> - 
-            {data != result.productById.primary_image && 
+            {data != result.product.primary_image && 
             <a onClick={() => onSetPrimaryImage(data)}>Set as Primary</a>
             }
           </li>
@@ -229,7 +233,7 @@ const Page = ({ result, session }) => {
         <a
           onClick={() => {
             router.push(
-              `/admin/catalog/products/edit?id=${result.productById._id}`
+              `/admin/catalog/products/edit?id=${result.product._id}`
             )
           }}
         >
@@ -237,9 +241,9 @@ const Page = ({ result, session }) => {
         </a>
         <div>
           <h1>Manage Product Images</h1>
-          Sku: {result.productById.sku}
+          Sku: {result.product.sku}
           <br />
-          Name: {result.productById.name}
+          Name: {result.product.name}
         </div>
         <Divider></Divider>
         <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
@@ -274,8 +278,8 @@ const Page = ({ result, session }) => {
       </div>
       <div>
       <h3>Primary Image</h3>
-          {result.productById.primary_image && (
-            <img src={result.productById.primary_image} width={200} />
+          {result.product.primary_image && (
+            <img src={result.product.primary_image} width={200} />
           )}
           <h3>Images</h3>
           <ul>{displayImages()}</ul>
@@ -297,8 +301,8 @@ export async function getServerSideProps({ query, req, res }) {
   const { id } = query
 
   const QUERY = `
-            query GetProduct($id: ID!) {
-                productById(id: $id) {
+            query GetProduct($id: String!) {
+                product(search: $id, by: "id") {
                   _id
                   sku
                   name
@@ -308,6 +312,8 @@ export async function getServerSideProps({ query, req, res }) {
           }`
 
   const result = await fetchAPI(QUERY, { variables: { id } })
+
+  console.log(result)
 
   return {
     props: {

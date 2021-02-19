@@ -24,10 +24,13 @@ const connect = async () => {
 
 export const getCategories = async () => {
   await connect()
-  const result = await db.collection('categories2').find({}, {}).toArray()
+  const result = await db.collection('categories').find({}, {}).toArray()
   return result
 }
 
+/**
+ * Used in getStaticPaths for products/[sku].tsx
+ */
 export const getProducts = async () => {
   await connect()
   const result = await db

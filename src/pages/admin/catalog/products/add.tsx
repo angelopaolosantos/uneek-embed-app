@@ -64,11 +64,11 @@ const Page = ({session}) => {
           name="sku"
           rules={[{ required: true, message: "Required" }]}
         >
-          <Input />
+          <Input style={{ width: 250 }} />
         </Form.Item>
         <Form.Item label="Status" name="status">
           <Select style={{ width: 120 }}>
-          <Option value="active">Active</Option>
+            <Option value="active">Active</Option>
             <Option value="inactive">Inactive</Option>
           </Select>
         </Form.Item>
@@ -77,9 +77,6 @@ const Page = ({session}) => {
         </Form.Item>
         <Form.Item label="Description" name="description">
           <TextArea rows={4} />
-        </Form.Item>
-        <Form.Item label="Images" name="images">
-          <Input />
         </Form.Item>
         <Form.Item label="Product Type" name="product_type">
           <Select style={{ width: 200 }}>
@@ -93,8 +90,11 @@ const Page = ({session}) => {
             <Option value="Accessory">Accessory</Option>
           </Select>
         </Form.Item>
-        <Form.Item label="Category" name="category">
-          <Input />
+        <Form.Item label="Class" name="class">
+          <Input style={{ width: 250 }} />
+        </Form.Item>
+        <Form.Item label="Collection" name="collection">
+          <Input style={{ width: 250 }} />
         </Form.Item>
         <Form.Item label="Gender" name="gender">
           <Select style={{ width: 120 }}>
@@ -115,8 +115,14 @@ const Page = ({session}) => {
             <Option value="Platinum">Platinum</Option>
           </Select>
         </Form.Item>
+        <Form.Item label="Gemstone" name="gemstone">
+          <Input style={{ width: 250 }} />
+        </Form.Item>
+        <Form.Item label="Center Stone" name="center_stone">
+          <Input style={{ width: 250 }} />
+        </Form.Item>
         <Form.Item label="Center Size" name="center_size">
-          <Input />
+          <Input style={{ width: 250 }} />
         </Form.Item>
         <Form.Item label="Center Shape" name="center_shape">
           <Select style={{ width: 120 }}>
@@ -139,17 +145,18 @@ const Page = ({session}) => {
         <Form.Item label="Side Stone Pieces" name="side_stone_pieces">
           <Input />
         </Form.Item>
-        <Form.Item label="Gemstone" name="gemstone">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Center Stone" name="center_stone">
-          <Input />
-        </Form.Item>
+        
         <Form.Item label="Price" name="price">
-          <Input />
+          <Input style={{ width: 100 }} />
         </Form.Item>
         <Form.Item label="Meta Keyword" name="meta_keyword">
-          <Input />
+          <Input style={{ width: 250 }} />
+        </Form.Item>
+        <Form.Item label="Meta Description" name="meta_description">
+        <TextArea rows={4} />
+        </Form.Item>
+        <Form.Item label="Meta Title" name="meta_title">
+          <Input style={{ width: 250 }} />
         </Form.Item>
 
         <Form.Item {...tailLayout}>

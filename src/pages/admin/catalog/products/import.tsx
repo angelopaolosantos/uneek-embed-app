@@ -91,13 +91,14 @@ const Page = ({ session }) => {
         worker: true,
         header: true,
         dynamicTyping: true,
+        skipEmptyLines: true,
         // Uncomment this to handle big files:
         //step: function (row) {
         //  console.log('Row:', row.data)
         //},
         complete: function (results: any) {
           console.log('All done')
-          console.log(results)
+          console.log('result:', results)
           if (results && results.data.length > 0) {
             setProducts(results.data)
           }
@@ -120,6 +121,8 @@ const Page = ({ session }) => {
   const onUpdateProducts = async () => {
     let productsWithStatus = [...products]
 
+    //console.log("Products: ",products)
+    console.log("Products: ", productsWithStatus)
     /** Remove and log information */
     productsWithStatus.forEach((product)=>{delete product.log})
 
@@ -143,13 +146,10 @@ const Page = ({ session }) => {
         }
       })
     )
-
+    
     setProducts(productsWithStatus)
     form.resetFields()
   }
-
-  
-  console.log("Products: ",products)
 
   return (
     <Template session={session}>

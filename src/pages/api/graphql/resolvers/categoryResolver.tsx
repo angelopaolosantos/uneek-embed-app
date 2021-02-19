@@ -39,29 +39,27 @@ export default {
           }
         )
 
-        console.log(response)
-
         if (response.matchedCount > 0) {
           if (response.modifiedCount > 0) {
             return {
               success: true,
-              message: 'Item updated!',
+              message: 'Category updated!',
             }
           }
           return {
             success: true,
-            message: 'Item found. No change made.',
+            message: 'Category found. No change made.',
           }
         }
 
         return {
           success: false,
-          message: 'Item was not updated.',
+          message: 'Category was not updated.',
         }
       } catch (e) {
         return {
           success: false,
-          message: `Error occured, Item not updated.${e.message}`,
+          message: `Error occured, Category not updated.${e.message}`,
         }
       }
     },
@@ -76,18 +74,18 @@ export default {
         if (response.insertedId) {
           return {
             success: true,
-            message: `Item created! _id: ${response.insertedId}`,
+            message: `Category created! _id: ${response.insertedId}`,
           }
         }
 
         return {
           success: false,
-          message: 'Item was not created.',
+          message: 'Category was not created.',
         }
       } catch (e) {
         return {
           success: false,
-          message: 'Error occured, Item was not created.',
+          message: 'Error occured, Category was not created.',
         }
       }
     },
@@ -100,20 +98,20 @@ export default {
         if (response.deletedCount > 0) {
           return {
             success: true,
-            message: `Item deleted!`,
+            message: `Category deleted!`,
           }
         }
 
         return {
           success: false,
-          message: 'Item was not deleted.',
+          message: 'Category was not deleted.',
         }
       } catch (e) {
         console.log(e.message)
         // throw new Error(e.message)
         return {
           success: false,
-          message: 'Error occured, Item was not deleted.',
+          message: 'Error occured, Category was not deleted.',
         }
       }
     },
@@ -125,61 +123,54 @@ export default {
 
       try {
         // Get products
-        
 
         if (sort == 'sku') {
           const productsData = await _context.db
-          .collection('products')
-          .find({ category: { $all: [category] }, status: 'active' })
-          .sort({ sku: 1 })
-          .toArray()
+            .collection('products')
+            .find({ category: { $all: [category] }, status: 'active' })
+            .sort({ sku: 1 })
+            .toArray()
 
-          const response = await _context.db
-            .collection('categories')
-            .updateOne(
-              { category },
-              {
-                $set: {
-                  products: productsData,
-                },
-              }
-            )
-
-            return {
-              success: true,
-              message: 'Category products updated, sorted by SKU',
+          const response = await _context.db.collection('categories').updateOne(
+            { category },
+            {
+              $set: {
+                products: productsData,
+              },
             }
-            
+          )
+
+          return {
+            success: true,
+            message: 'Category products updated, sorted by SKU',
+          }
         } else if (sort == 'product_type') {
           const productsData = await _context.db
-          .collection('products')
-          .find({ category: { $all: [category] }, status: 'active' })
-          .sort({ product_type: 1 })
-          .toArray()
+            .collection('products')
+            .find({ category: { $all: [category] }, status: 'active' })
+            .sort({ product_type: 1 })
+            .toArray()
 
           console.log(productsData)
 
-          const response = await _context.db
-            .collection('categories')
-            .updateOne(
-              { category },
-              {
-                $set: {
-                  products: productsData,
-                },
-              }
-            )
-
-            return {
-              success: true,
-              message: 'Category products updated, sorted by Type',
+          const response = await _context.db.collection('categories').updateOne(
+            { category },
+            {
+              $set: {
+                products: productsData,
+              },
             }
+          )
 
+          return {
+            success: true,
+            message: 'Category products updated, sorted by Type',
+          }
         } else {
           const productsData = await _context.db
-          .collection('products')
-          .find({ category: { $all: [category] }, status: 'active' })
-          .toArray()
+            .collection('products')
+            .find({ category: { $all: [category] }, status: 'active' })
+            .toArray()
 
           // Get Category products
           const categoryData = await _context.db
@@ -207,14 +198,14 @@ export default {
               }
             })
 
-            /** Check currentProducts, remove items not found in productsData  */
+            /** Check currentProducts, remove Categorys not found in productsData  */
             const newCurrentProducts = currentProducts.filter((product) => {
               const productIndex = productsData.findIndex(
                 (object) => object.sku == product.sku
               )
 
               if (productIndex == -1) {
-                // Item not found, remove from list
+                // Category not found, remove from list
                 return false
               }
               return true

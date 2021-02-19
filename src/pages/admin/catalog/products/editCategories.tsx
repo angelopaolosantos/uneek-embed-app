@@ -35,14 +35,14 @@ const Page = ({ result, session }) => {
   const [editProduct, { data }] = useMutation(EDIT_PRODUCT)
 
   const onAddCategory = async (category) => {
-    const values = { category: [...result.productById.category, category] }
-    const id = result.productById._id
+    const values = { category: [...result.product.category, category] }
+    const id = result.product._id
     const response = await editProduct({ variables: { id, input: values } })
 
     if (response && response.data.updateProduct.success) {
       message.success(response.data.updateProduct.message)
       router.push(
-        `/admin/catalog/products/editCategories?id=${result.productById._id}`
+        `/admin/catalog/products/editCategories?id=${result.product._id}`
       )
     } else {
       message.error(response.data.updateProduct.message)
@@ -50,17 +50,17 @@ const Page = ({ result, session }) => {
   }
 
   const onRemoveCategory = async (category) => {
-    let categories = [...result.productById.category]
+    let categories = [...result.product.category]
     var index = categories.indexOf(category)
     categories.splice(index, 1)
     const values = { category: categories }
-    const id = result.productById._id
+    const id = result.product._id
     const response = await editProduct({ variables: { id, input: values } })
 
     if (response && response.data.updateProduct.success) {
       message.success(response.data.updateProduct.message)
       router.push(
-        `/admin/catalog/products/editCategories?id=${result.productById._id}`
+        `/admin/catalog/products/editCategories?id=${result.product._id}`
       )
     } else {
       message.error(response.data.updateProduct.message)
@@ -92,10 +92,10 @@ const Page = ({ result, session }) => {
         let index = -1
 
         if (
-          result.productById.category &&
-          result.productById.category.length > 0
+          result.product.category &&
+          result.product.category.length > 0
         ) {
-          index = result.productById.category.indexOf(record.category)
+          index = result.product.category.indexOf(record.category)
         }
         return (
           <Space size="middle">
@@ -145,7 +145,7 @@ const Page = ({ result, session }) => {
       <a
         onClick={() => {
           router.push(
-            `/admin/catalog/products/edit?id=${result.productById._id}`
+            `/admin/catalog/products/edit?id=${result.product._id}`
           )
         }}
       >
@@ -153,13 +153,13 @@ const Page = ({ result, session }) => {
       </a>
       <h1>Edit Product Categories</h1>
       <div>
-        Sku: {result.productById.sku}
+        Sku: {result.product.sku}
         <br />
-        Name: {result.productById.name}
+        Name: {result.product.name}
         <br />
         <h3>Category/Categories:</h3>
         <ul>
-          {result.productById.category.map((data) => {
+          {result.product.category.map((data) => {
             return (
               <li>
                 {data} - <a onClick={() => onRemoveCategory(data)}>Remove</a>
@@ -195,8 +195,8 @@ export async function getServerSideProps({ query, req, res }) {
   const { id } = query
 
   const QUERY = `
-            query GetProduct($id: ID!) {
-                productById(id: $id) {
+            query GetProduct($id: String!) {
+                product(search: $id, by: "id") {
                   _id
                   thumbnail
                   sku

@@ -3,12 +3,15 @@ import { AuthenticationError } from 'apollo-server-micro'
 
 export default {
   Query: {
-    /**  http://localhost:3000/search*/
+    /**  
+     * Front end product search
+     * http://localhost:3000/search*/
     productPage: async (_parent, _args, _context, _info) => {
       let mongoSearch = {}
       let limit = 18
       let sort = null
       let page = 1
+      
       if (_args.sort) {
         sort = _args.sort
       }
@@ -88,6 +91,7 @@ export default {
 
       return { products: result, count: pageCount }
     },
+    /*
     productCategoryPage: async (_parent, _args, _context, _info) => {
       let mongoSearch = {}
       let limit = 9
@@ -121,17 +125,53 @@ export default {
 
       return { products: result, count: pageCount }
     },
-    product: async (_parent, _args, _context, _info) => {
+    */
+
+    /*product: async (_parent, _args, _context, _info) => {
       const result = await _context.db.collection('products').findOne(_args)
       return result
+    },*/
+
+    product: async (_parent, _args, _context, _info) => {
+      try {
+      
+      const { search, by } = _args
+
+      let filter
+
+      switch(by) {
+        case "id": {
+          filter = { _id: ObjectId(search) }
+          break
+        }
+        case "sku": {
+          filter = { sku: search }
+          break
+        }
+        default: {
+          filter = { sku: search }
+          break
+        }
+      }
+
+      const result = await _context.db
+        .collection('products')
+        .findOne(filter)
+      return result
+      } catch (e) {
+        console.log(e.message)
+        throw new Error(e.message)
+      }
     },
+    
     /** /categories/[...categories] */
+    /*
     products: async (_parent, _args, _context, _info) => {
       /*if(_context.auth?.permissions.includes("read:products")){
       console.log(_context.auth.permissions)
       } else {
         throw new AuthenticationError('Unauthorized Access')
-      }*/
+      }
       let filter = _args.filter
 
       if (filter && 'category' in filter) {
@@ -143,8 +183,11 @@ export default {
         .find(filter)
         .toArray()
       return result
-    },
-    /** Admin */
+    },*/
+
+
+    /**
+     *  Admin */
     productsSearch: async (_parent, _args, _context, _info) => {
       let search = {}
       if (_args.search) {
@@ -161,14 +204,107 @@ export default {
       return result
     },
     /** Admin */
+    /*
     productById: async (_parent, _args, _context, _info) => {
       console.log(_args)
       const result = await _context.db
         .collection('products')
         .findOne({ _id: ObjectId(_args.id) })
       return result
-    },
+    },*/
+  
+
+  /**
+   * Updated Product Queries
+   */
+
+  // look for pages using this
+
+  products: async (_parent, _args, _context, _info) => {
+    /*if(_context.auth?.permissions.includes("read:products")){
+    console.log(_context.auth.permissions)
+    } else {
+      throw new AuthenticationError('Unauthorized Access')
+    }*/
+    let { filter, page, limit, sort, sortDirection } = _args
+    page = page === undefined ? 1 : page
+    limit = limit === undefined ? 0 : limit
+    let skip = (page - 1) * limit
+
+    if (filter && 'category' in filter) {
+      // reformat filter category query
+      filter.category = { $all: filter.category }
+    }
+
+    let match_rules = []
+
+    if (filter && 'options' in filter) {
+      // reformat filter option query
+      for (let option of filter.options) {
+        match_rules = [...match_rules, { $elemMatch: option }]
+      }
+
+      filter.options = { $all: match_rules }
+    }
+
+    match_rules = []
+
+    if (filter && 'details' in filter) {
+      // reformat filter details query
+      for (let detail of filter.details) {
+        match_rules = [...match_rules, { $elemMatch: detail }]
+      }
+
+      filter.options = { $all: match_rules }
+    }
+
+    // handle sorting
+    switch (sortDirection) {
+      case "asc": {
+        sortDirection = 1;
+        break
+      }
+      case "desc": {
+        sortDirection = -1;
+        break
+      }
+      default: {
+        sortDirection = 1;
+      }
+    }
+
+    switch (sort) {
+      case 'sku': {
+       sort = { sku: sortDirection }
+        break
+      }
+      case 'price': {
+       sort = { price: sortDirection }
+        break
+      }
+      default: {
+       sort = undefined
+      }
+    }
+
+    try {
+    const result = await _context.db
+      .collection('products_test')
+      .find(filter)
+      .skip(skip)
+      .limit(limit)
+      .sort(sort)
+      .toArray()
+    
+    return result
+    } catch(e) {
+      console.log(e.message)
+      throw new Error(e.message)
+    }
   },
+
+},
+
   Mutation: {
     updateProduct: async (_parent, _args, _context, _info) => {
       try {
@@ -305,6 +441,18 @@ export default {
 
       if (input.images) {
         input.images = JSON.parse(input.images)
+      }
+
+      if (input.tags) {
+        input.tags = JSON.parse(input.tags)
+      }
+
+      if (input.options) {
+        input.options = JSON.parse(input.options)
+      }
+
+      if (input.details) {
+        input.details = JSON.parse(input.details)
       }
 
       try {
