@@ -55,7 +55,7 @@ const Page = ({ result, query }) => {
       setProductsOnActivePage(paginate(sortedProducts, pageFilter.productsPerPage, 1))
 
       setCategory(result.categories[0].name)
-      setPages(Math.ceil(products.length / pageFilter.productsPerPage))
+      setPages(Math.ceil(sortedProducts.length / pageFilter.productsPerPage))
       setPageFilter({...pageFilter, activePage: 1})
     }
   }, [result])
