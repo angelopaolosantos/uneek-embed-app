@@ -8,6 +8,7 @@ import Link from 'next/link'
 import ReactHtmlParser from 'react-html-parser'
 import { SelectPicker } from 'rsuite'
 import { formatNumber } from '../../utils/uneek-utilities'
+import { getCategories } from '../api/direct'
 
 const sortProducts = (products, value) => {
   // Define sort functions here.
