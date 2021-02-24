@@ -289,7 +289,7 @@ export default {
 
     try {
     const result = await _context.db
-      .collection('products_test')
+      .collection('products')
       .find(filter)
       .skip(skip)
       .limit(limit)

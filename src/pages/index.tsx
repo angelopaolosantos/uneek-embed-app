@@ -13,7 +13,7 @@ const Home = ({ query, result }) => {
 
   const { settings, setSettings } = useContext(SettingsContext)
 
-  console.log("Settings:", settings)
+  console.log('Settings:', settings)
   //setSettings("Off")
 
   const productsHtml = () => {
