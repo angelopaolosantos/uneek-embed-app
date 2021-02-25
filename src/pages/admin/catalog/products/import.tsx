@@ -22,6 +22,7 @@ import { useState } from 'react'
 import { setPriority } from 'os'
 import { join } from 'path'
 import { gql, useMutation } from '@apollo/client'
+import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -131,6 +132,9 @@ const Page = ({ session }) => {
       products.map(async (product) => {
         console.log('Upserting ', product.sku)
         if (product.sku) {
+        
+          //console.log(product)
+          
           const response: any = await upsertProduct({
             variables: { input: product },
           })
@@ -143,6 +147,7 @@ const Page = ({ session }) => {
           console.log('Object Index:', objectIndex)
           productsWithStatus[objectIndex].log =
             response.data.upsertProduct.message
+          
         }
       })
     )

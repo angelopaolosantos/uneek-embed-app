@@ -443,6 +443,10 @@ export default {
         input.images = JSON.parse(input.images)
       }
 
+      if (input.price) {
+        input.price = parseFloat(input.price)
+      }
+
       if (input.tags) {
         input.tags = JSON.parse(input.tags)
       }
